@@ -35,6 +35,8 @@ add_executable(instruments_info examples/instruments_info.cpp)
 target_link_libraries(instruments_info PRIVATE bybit_client)
 add_executable(basic_linear examples/basic_linear.cpp)
 target_link_libraries(basic_linear PRIVATE bybit_client)
+add_executable(market_kline examples/market_kline.cpp)
+target_link_libraries(market_kline PRIVATE bybit_client)
 
 # Enable as FetchContent/git submodule consumer
 include(GNUInstallDirs)

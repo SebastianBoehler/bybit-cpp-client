@@ -14,6 +14,19 @@ class PublicRestClient {
   std::string get_instruments_info(int limit = 1000);
   std::string get_tickers(const std::string& symbol = "");
   std::string get_orderbook(const std::string& symbol, int limit = 50);
+  std::string get_kline(const std::string& symbol, const std::string& interval,
+                        const std::optional<std::string>& start = std::nullopt,
+                        const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_mark_price_kline(const std::string& symbol, const std::string& interval,
+                                   const std::optional<std::string>& start = std::nullopt,
+                                   const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_index_price_kline(const std::string& symbol, const std::string& interval,
+                                    const std::optional<std::string>& start = std::nullopt,
+                                    const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_premium_index_price_kline(const std::string& symbol, const std::string& interval,
+                                            const std::optional<std::string>& start = std::nullopt,
+                                            const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_recent_trades(const std::string& symbol, int limit = 50);
 
  private:
   HttpClient& http_;
@@ -57,6 +70,19 @@ class RestClient {
   std::string get_instruments_info(int limit = 1000);
   std::string get_tickers(const std::string& symbol = "");
   std::string get_orderbook(const std::string& symbol, int limit = 50);
+  std::string get_kline(const std::string& symbol, const std::string& interval,
+                        const std::optional<std::string>& start = std::nullopt,
+                        const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_mark_price_kline(const std::string& symbol, const std::string& interval,
+                                   const std::optional<std::string>& start = std::nullopt,
+                                   const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_index_price_kline(const std::string& symbol, const std::string& interval,
+                                    const std::optional<std::string>& start = std::nullopt,
+                                    const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_premium_index_price_kline(const std::string& symbol, const std::string& interval,
+                                            const std::optional<std::string>& start = std::nullopt,
+                                            const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_recent_trades(const std::string& symbol, int limit = 50);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,

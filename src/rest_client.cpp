@@ -1,5 +1,6 @@
 #include "bybit/rest_client.hpp"
 
+#include <optional>
 #include <utility>
 
 namespace bybit {
@@ -27,6 +28,29 @@ std::string RestClient::get_tickers(const std::string& symbol) {
 }
 std::string RestClient::get_orderbook(const std::string& symbol, int limit) {
   return public_.get_orderbook(symbol, limit);
+}
+std::string RestClient::get_kline(const std::string& symbol, const std::string& interval,
+                                  const std::optional<std::string>& start, const std::optional<std::string>& end,
+                                  int limit) {
+  return public_.get_kline(symbol, interval, start, end, limit);
+}
+std::string RestClient::get_mark_price_kline(const std::string& symbol, const std::string& interval,
+                                             const std::optional<std::string>& start,
+                                             const std::optional<std::string>& end, int limit) {
+  return public_.get_mark_price_kline(symbol, interval, start, end, limit);
+}
+std::string RestClient::get_index_price_kline(const std::string& symbol, const std::string& interval,
+                                              const std::optional<std::string>& start,
+                                              const std::optional<std::string>& end, int limit) {
+  return public_.get_index_price_kline(symbol, interval, start, end, limit);
+}
+std::string RestClient::get_premium_index_price_kline(const std::string& symbol, const std::string& interval,
+                                                      const std::optional<std::string>& start,
+                                                      const std::optional<std::string>& end, int limit) {
+  return public_.get_premium_index_price_kline(symbol, interval, start, end, limit);
+}
+std::string RestClient::get_recent_trades(const std::string& symbol, int limit) {
+  return public_.get_recent_trades(symbol, limit);
 }
 std::string RestClient::submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                                      const std::string& qty, const std::string& order_link_id, int position_idx) {
