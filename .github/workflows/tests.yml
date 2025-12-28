@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Tests
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,7 +23,8 @@ jobs:
       - name: Build
         run: cmake --build build --config Release
 
-      - name: Test (public endpoints only)
+      - name: Run tests (public endpoints only by default)
         run: ctest --test-dir build --output-on-failure
         env:
           BYBIT_BUILD_TESTS: "ON"
+          # Optionally set BYBIT_API_KEY/BYBIT_API_SECRET/BYBIT_CATEGORY to run private/readonly test
