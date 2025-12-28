@@ -52,6 +52,9 @@ std::string RestClient::get_premium_index_price_kline(const std::string& symbol,
 std::string RestClient::get_recent_trades(const std::string& symbol, int limit) {
   return public_.get_recent_trades(symbol, limit);
 }
+std::string RestClient::get_funding_history(const std::string& symbol, int limit) {
+  return public_.get_funding_history(symbol, limit);
+}
 std::string RestClient::submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                                      const std::string& qty, const std::string& order_link_id, int position_idx) {
   return private_.submit_order(symbol, side, order_type, qty, order_link_id, position_idx);
@@ -78,6 +81,34 @@ std::string RestClient::cancel_order(const std::string& symbol, const std::strin
 std::string RestClient::amend_order(const std::string& symbol, const std::string& order_id,
                                     const std::optional<std::string>& qty, const std::optional<std::string>& price) {
   return private_.amend_order(symbol, order_id, qty, price);
+}
+std::string RestClient::get_transaction_log(int limit, const std::optional<std::string>& cursor) {
+  return private_.get_transaction_log(limit, cursor);
+}
+std::string RestClient::move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol,
+                                      const std::string& qty, int position_idx) {
+  return private_.move_position(from_uid, to_uid, symbol, qty, position_idx);
+}
+std::string RestClient::set_trading_stop(const std::string& symbol, int position_idx,
+                                         const std::optional<std::string>& take_profit,
+                                         const std::optional<std::string>& stop_loss,
+                                         const std::optional<std::string>& trailing_stop) {
+  return private_.set_trading_stop(symbol, position_idx, take_profit, stop_loss, trailing_stop);
+}
+std::string RestClient::set_risk_limit(const std::string& symbol, const std::string& risk_id, int position_idx) {
+  return private_.set_risk_limit(symbol, risk_id, position_idx);
+}
+std::string RestClient::add_margin(const std::string& symbol, const std::string& margin, int position_idx) {
+  return private_.add_margin(symbol, margin, position_idx);
+}
+std::string RestClient::switch_position_mode(const std::string& mode, int position_idx) {
+  return private_.switch_position_mode(mode, position_idx);
+}
+std::string RestClient::switch_margin_mode(const std::string& symbol, const std::string& mode, int leverage) {
+  return private_.switch_margin_mode(symbol, mode, leverage);
+}
+std::string RestClient::cancel_all(const std::string& symbol) {
+  return private_.cancel_all(symbol);
 }
 
 }  // namespace bybit

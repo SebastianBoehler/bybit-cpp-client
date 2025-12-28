@@ -46,6 +46,7 @@
     "stdexcept": "cpp",
     "cstdarg": "cpp",
     "ctime": "cpp",
-    "streambuf": "cpp"
+    "streambuf": "cpp",
+    "forward_list": "cpp"
   }
 }

@@ -73,4 +73,10 @@ std::string PublicRestClient::get_recent_trades(const std::string& symbol, int l
   return http_.get("/v5/market/recent-trade", params, false);
 }
 
+std::string PublicRestClient::get_funding_history(const std::string& symbol, int limit) {
+  std::vector<std::pair<std::string, std::string>> params{
+      {"category", category_}, {"symbol", symbol}, {"limit", std::to_string(limit)}};
+  return http_.get("/v5/market/funding/history", params, false);
+}
+
 }  // namespace bybit

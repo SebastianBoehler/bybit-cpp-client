@@ -4,7 +4,7 @@ A lightweight C++ wrapper for Bybit REST v5 endpoints. Focused on REST first; we
 
 ## Features
 
-- REST v5 endpoints: query API key, account info, positions, instruments, submit order, set leverage, historic orders, fee rate.
+- General Bybit REST v5 C++ API wrapper.
 - Shared HTTP helper with HMAC-SHA256 signing (OpenSSL) and libcurl transport.
 - Public/private client split for maintainability; facade `RestClient` preserves simple usage.
 - Clang-format hook (git pre-commit) for consistent style.

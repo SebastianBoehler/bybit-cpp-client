@@ -87,4 +87,76 @@ std::string PrivateRestClient::amend_order(const std::string& symbol, const std:
   return http_.post("/v5/order/amend", to_json_object(body_kv), true);
 }
 
+std::string PrivateRestClient::get_transaction_log(int limit, const std::optional<std::string>& cursor) {
+  std::vector<std::pair<std::string, std::string>> params{{"accountType", category_}, {"limit", std::to_string(limit)}};
+  if (cursor) params.emplace_back("cursor", *cursor);
+  return http_.get("/v5/account/transaction-log", params, true);
+}
+
+std::string PrivateRestClient::move_position(const std::string& from_uid, const std::string& to_uid,
+                                             const std::string& symbol, const std::string& qty, int position_idx) {
+  std::vector<std::pair<std::string, std::string>> body_kv{{"fromUid", from_uid},
+                                                           {"toUid", to_uid},
+                                                           {"symbol", symbol},
+                                                           {"qty", qty},
+                                                           {"positionIdx", std::to_string(position_idx)},
+                                                           {"recvWindow", http_.recv_window()}};
+  return http_.post("/v5/position/move-position", to_json_object(body_kv), true);
+}
+
+std::string PrivateRestClient::set_trading_stop(const std::string& symbol, int position_idx,
+                                                const std::optional<std::string>& take_profit,
+                                                const std::optional<std::string>& stop_loss,
+                                                const std::optional<std::string>& trailing_stop) {
+  std::vector<std::pair<std::string, std::string>> body_kv{{"category", category_},
+                                                           {"symbol", symbol},
+                                                           {"positionIdx", std::to_string(position_idx)},
+                                                           {"recvWindow", http_.recv_window()}};
+  if (take_profit) body_kv.emplace_back("takeProfit", *take_profit);
+  if (stop_loss) body_kv.emplace_back("stopLoss", *stop_loss);
+  if (trailing_stop) body_kv.emplace_back("trailingStop", *trailing_stop);
+  return http_.post("/v5/position/trading-stop", to_json_object(body_kv), true);
+}
+
+std::string PrivateRestClient::set_risk_limit(const std::string& symbol, const std::string& risk_id, int position_idx) {
+  std::vector<std::pair<std::string, std::string>> body_kv{{"category", category_},
+                                                           {"symbol", symbol},
+                                                           {"riskId", risk_id},
+                                                           {"positionIdx", std::to_string(position_idx)},
+                                                           {"recvWindow", http_.recv_window()}};
+  return http_.post("/v5/position/set-risk-limit", to_json_object(body_kv), true);
+}
+
+std::string PrivateRestClient::add_margin(const std::string& symbol, const std::string& margin, int position_idx) {
+  std::vector<std::pair<std::string, std::string>> body_kv{{"category", category_},
+                                                           {"symbol", symbol},
+                                                           {"margin", margin},
+                                                           {"positionIdx", std::to_string(position_idx)},
+                                                           {"recvWindow", http_.recv_window()}};
+  return http_.post("/v5/position/add-margin", to_json_object(body_kv), true);
+}
+
+std::string PrivateRestClient::switch_position_mode(const std::string& mode, int position_idx) {
+  std::vector<std::pair<std::string, std::string>> body_kv{{"category", category_},
+                                                           {"mode", mode},
+                                                           {"positionIdx", std::to_string(position_idx)},
+                                                           {"recvWindow", http_.recv_window()}};
+  return http_.post("/v5/position/switch-mode", to_json_object(body_kv), true);
+}
+
+std::string PrivateRestClient::switch_margin_mode(const std::string& symbol, const std::string& mode, int leverage) {
+  std::vector<std::pair<std::string, std::string>> body_kv{{"category", category_},
+                                                           {"symbol", symbol},
+                                                           {"mode", mode},
+                                                           {"leverage", std::to_string(leverage)},
+                                                           {"recvWindow", http_.recv_window()}};
+  return http_.post("/v5/account/set-margin-mode", to_json_object(body_kv), true);
+}
+
+std::string PrivateRestClient::cancel_all(const std::string& symbol) {
+  std::vector<std::pair<std::string, std::string>> body_kv{
+      {"category", category_}, {"symbol", symbol}, {"recvWindow", http_.recv_window()}};
+  return http_.post("/v5/order/cancel-all", to_json_object(body_kv), true);
+}
+
 }  // namespace bybit

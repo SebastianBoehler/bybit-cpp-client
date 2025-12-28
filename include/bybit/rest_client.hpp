@@ -27,6 +27,7 @@ class PublicRestClient {
                                             const std::optional<std::string>& start = std::nullopt,
                                             const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_recent_trades(const std::string& symbol, int limit = 50);
+  std::string get_funding_history(const std::string& symbol, int limit = 50);
 
  private:
   HttpClient& http_;
@@ -52,6 +53,18 @@ class PrivateRestClient {
   std::string amend_order(const std::string& symbol, const std::string& order_id,
                           const std::optional<std::string>& qty = std::nullopt,
                           const std::optional<std::string>& price = std::nullopt);
+  std::string get_transaction_log(int limit = 50, const std::optional<std::string>& cursor = std::nullopt);
+  std::string move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol,
+                            const std::string& qty, int position_idx = 1);
+  std::string set_trading_stop(const std::string& symbol, int position_idx,
+                               const std::optional<std::string>& take_profit = std::nullopt,
+                               const std::optional<std::string>& stop_loss = std::nullopt,
+                               const std::optional<std::string>& trailing_stop = std::nullopt);
+  std::string set_risk_limit(const std::string& symbol, const std::string& risk_id, int position_idx = 1);
+  std::string add_margin(const std::string& symbol, const std::string& margin, int position_idx = 1);
+  std::string switch_position_mode(const std::string& mode, int position_idx = 1);
+  std::string switch_margin_mode(const std::string& symbol, const std::string& mode, int leverage);
+  std::string cancel_all(const std::string& symbol);
 
  private:
   HttpClient& http_;
@@ -83,6 +96,7 @@ class RestClient {
                                             const std::optional<std::string>& start = std::nullopt,
                                             const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_recent_trades(const std::string& symbol, int limit = 50);
+  std::string get_funding_history(const std::string& symbol, int limit = 50);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
@@ -95,6 +109,18 @@ class RestClient {
   std::string amend_order(const std::string& symbol, const std::string& order_id,
                           const std::optional<std::string>& qty = std::nullopt,
                           const std::optional<std::string>& price = std::nullopt);
+  std::string get_transaction_log(int limit = 50, const std::optional<std::string>& cursor = std::nullopt);
+  std::string move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol,
+                            const std::string& qty, int position_idx = 1);
+  std::string set_trading_stop(const std::string& symbol, int position_idx,
+                               const std::optional<std::string>& take_profit = std::nullopt,
+                               const std::optional<std::string>& stop_loss = std::nullopt,
+                               const std::optional<std::string>& trailing_stop = std::nullopt);
+  std::string set_risk_limit(const std::string& symbol, const std::string& risk_id, int position_idx = 1);
+  std::string add_margin(const std::string& symbol, const std::string& margin, int position_idx = 1);
+  std::string switch_position_mode(const std::string& mode, int position_idx = 1);
+  std::string switch_margin_mode(const std::string& symbol, const std::string& mode, int leverage);
+  std::string cancel_all(const std::string& symbol);
 
  private:
   HttpClient http_;
