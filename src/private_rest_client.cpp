@@ -59,4 +59,32 @@ std::string PrivateRestClient::get_fee_rate() {
   return http_.get("/v5/account/fee-rate", params, true);
 }
 
+std::string PrivateRestClient::get_wallet_balance(const std::optional<std::string>& coin) {
+  std::vector<std::pair<std::string, std::string>> params{{"accountType", category_}};
+  if (coin) params.emplace_back("coin", *coin);
+  return http_.get("/v5/account/wallet-balance", params, true);
+}
+
+std::string PrivateRestClient::get_open_orders(const std::optional<std::string>& symbol, int limit) {
+  std::vector<std::pair<std::string, std::string>> params{{"category", category_}, {"limit", std::to_string(limit)}};
+  if (symbol) params.emplace_back("symbol", *symbol);
+  return http_.get("/v5/order/realtime", params, true);
+}
+
+std::string PrivateRestClient::cancel_order(const std::string& symbol, const std::string& order_id) {
+  std::vector<std::pair<std::string, std::string>> body_kv{
+      {"category", category_}, {"symbol", symbol}, {"orderId", order_id}, {"recvWindow", http_.recv_window()}};
+  return http_.post("/v5/order/cancel", to_json_object(body_kv), true);
+}
+
+std::string PrivateRestClient::amend_order(const std::string& symbol, const std::string& order_id,
+                                           const std::optional<std::string>& qty,
+                                           const std::optional<std::string>& price) {
+  std::vector<std::pair<std::string, std::string>> body_kv{
+      {"category", category_}, {"symbol", symbol}, {"orderId", order_id}, {"recvWindow", http_.recv_window()}};
+  if (qty) body_kv.emplace_back("qty", *qty);
+  if (price) body_kv.emplace_back("price", *price);
+  return http_.post("/v5/order/amend", to_json_object(body_kv), true);
+}
+
 }  // namespace bybit

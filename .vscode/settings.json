@@ -28,6 +28,24 @@
     "unordered_map": "cpp",
     "utility": "cpp",
     "variant": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "__verbose_abort": "cpp",
+    "cctype": "cpp",
+    "clocale": "cpp",
+    "cmath": "cpp",
+    "cstddef": "cpp",
+    "cstdint": "cpp",
+    "cstdio": "cpp",
+    "cstdlib": "cpp",
+    "cstring": "cpp",
+    "cwctype": "cpp",
+    "execution": "cpp",
+    "initializer_list": "cpp",
+    "iosfwd": "cpp",
+    "limits": "cpp",
+    "stdexcept": "cpp",
+    "cstdarg": "cpp",
+    "ctime": "cpp",
+    "streambuf": "cpp"
   }
 }
