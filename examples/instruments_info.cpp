@@ -1,9 +1,10 @@
 #include <cstdlib>
 #include <iostream>
-#include <optional>
+#include <string>
 
 #include "bybit/rest_client.hpp"
 
+// Fetches instrument info for a given category and symbol, prints raw JSON.
 int main() {
   const char* key = std::getenv("BYBIT_API_KEY");
   const char* secret = std::getenv("BYBIT_API_SECRET");
@@ -12,15 +13,16 @@ int main() {
     return 1;
   }
 
+  const std::string symbol = "SUIUSDT";
   bybit::RestClient client{key, secret, "linear"};
+
   try {
-    std::cout << "Positions (USDT settle):\n" << client.get_position_info(std::optional<std::string>{"USDT"}) << "\n\n";
-    std::cout << "Instruments (first 50):\n" << client.get_instruments_info(50) << "\n";
-    // Example market order (disabled by default):
-    // client.submit_order("BTCUSDT", "Buy", "Market", "0.001", "demo-order", 1);
+    std::cout << "Instrument info for " << symbol << ":\n";
+    std::cout << client.get_instruments_info(50) << "\n";
   } catch (const std::exception& ex) {
     std::cerr << "Error: " << ex.what() << "\n";
     return 1;
   }
+
   return 0;
 }

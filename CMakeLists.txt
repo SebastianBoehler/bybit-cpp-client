@@ -28,6 +28,14 @@ target_link_libraries(bybit_client
         CURL::libcurl
 )
 
+# Examples
+add_executable(sui_leverage_cycle examples/sui_leverage_cycle.cpp)
+target_link_libraries(sui_leverage_cycle PRIVATE bybit_client)
+add_executable(instruments_info examples/instruments_info.cpp)
+target_link_libraries(instruments_info PRIVATE bybit_client)
+add_executable(basic_linear examples/basic_linear.cpp)
+target_link_libraries(basic_linear PRIVATE bybit_client)
+
 # Enable as FetchContent/git submodule consumer
 include(GNUInstallDirs)
 install(TARGETS bybit_client
