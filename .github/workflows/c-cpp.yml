@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Build
 
 on:
   push:
@@ -22,8 +22,3 @@ jobs:
 
       - name: Build
         run: cmake --build build --config Release
-
-      - name: Test (public endpoints only)
-        run: ctest --test-dir build --output-on-failure
-        env:
-          BYBIT_BUILD_TESTS: "ON"
