@@ -28,6 +28,8 @@ class PublicRestClient {
                                             const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_recent_trades(const std::string& symbol, int limit = 50);
   std::string get_funding_history(const std::string& symbol, int limit = 50);
+  std::string get_open_interest(const std::string& symbol, const std::string& interval, int limit = 50);
+  std::string get_long_short_ratio(const std::string& symbol, const std::string& period, int limit = 50);
 
  private:
   HttpClient& http_;
@@ -97,6 +99,8 @@ class RestClient {
                                             const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_recent_trades(const std::string& symbol, int limit = 50);
   std::string get_funding_history(const std::string& symbol, int limit = 50);
+  std::string get_open_interest(const std::string& symbol, const std::string& interval, int limit = 50);
+  std::string get_long_short_ratio(const std::string& symbol, const std::string& period, int limit = 50);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,

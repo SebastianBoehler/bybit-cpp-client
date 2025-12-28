@@ -84,15 +84,20 @@
       <header>
         <div class="badge">REST v5</div>
         <h1>Bybit C++ Client</h1>
-        <p>
-          Lightweight REST v5 wrapper in modern C++, split into public/private clients with shared signing and HTTP helpers.
-        </p>
+        <p>Lightweight REST v5 wrapper in modern C++, split into public/private clients with shared signing and HTTP helpers.</p>
       </header>
 
       <section>
         <h2>Scope</h2>
         <ul>
-          <li>REST endpoints: getQueryApiKey, getAccountInfo, getPositionInfo, getInstrumentsInfo, submitOrder, setLeverage, getHistoricOrders, getFeeRate.</li>
+          <li>
+            Public market: instruments info, tickers, orderbook, klines (mark/index/premium), recent trades, funding history, open interest, long/short ratio.
+          </li>
+          <li>
+            Private/account: query api key, account info, position info, submit/cancel/amend order, open orders, wallet balance, fee rate, historic orders,
+            transaction log, move position.
+          </li>
+          <li>Position/account controls: trading stop (TP/SL/trailing), set risk limit, add margin, switch position/margin mode, cancel all.</li>
           <li>Shared auth/signing (HMAC-SHA256) and libcurl transport.</li>
           <li>Public vs private client separation; facade <code>RestClient</code> retains simple API.</li>
         </ul>

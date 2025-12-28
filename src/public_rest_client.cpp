@@ -79,4 +79,16 @@ std::string PublicRestClient::get_funding_history(const std::string& symbol, int
   return http_.get("/v5/market/funding/history", params, false);
 }
 
+std::string PublicRestClient::get_open_interest(const std::string& symbol, const std::string& interval, int limit) {
+  std::vector<std::pair<std::string, std::string>> params{
+      {"category", category_}, {"symbol", symbol}, {"interval", interval}, {"limit", std::to_string(limit)}};
+  return http_.get("/v5/market/open-interest", params, false);
+}
+
+std::string PublicRestClient::get_long_short_ratio(const std::string& symbol, const std::string& period, int limit) {
+  std::vector<std::pair<std::string, std::string>> params{
+      {"category", category_}, {"symbol", symbol}, {"period", period}, {"limit", std::to_string(limit)}};
+  return http_.get("/v5/market/account-ratio", params, false);
+}
+
 }  // namespace bybit

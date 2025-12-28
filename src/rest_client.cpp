@@ -55,6 +55,12 @@ std::string RestClient::get_recent_trades(const std::string& symbol, int limit) 
 std::string RestClient::get_funding_history(const std::string& symbol, int limit) {
   return public_.get_funding_history(symbol, limit);
 }
+std::string RestClient::get_open_interest(const std::string& symbol, const std::string& interval, int limit) {
+  return public_.get_open_interest(symbol, interval, limit);
+}
+std::string RestClient::get_long_short_ratio(const std::string& symbol, const std::string& period, int limit) {
+  return public_.get_long_short_ratio(symbol, period, limit);
+}
 std::string RestClient::submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                                      const std::string& qty, const std::string& order_link_id, int position_idx) {
   return private_.submit_order(symbol, side, order_type, qty, order_link_id, position_idx);
