@@ -47,6 +47,7 @@
     "cstdarg": "cpp",
     "ctime": "cpp",
     "streambuf": "cpp",
-    "forward_list": "cpp"
+    "forward_list": "cpp",
+    "__node_handle": "cpp"
   }
 }

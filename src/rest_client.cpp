@@ -17,8 +17,9 @@ std::string RestClient::get_query_api_key() {
 std::string RestClient::get_account_info() {
   return private_.get_account_info();
 }
-std::string RestClient::get_position_info(const std::optional<std::string>& settle_coin, int limit) {
-  return private_.get_position_info(settle_coin, limit);
+std::string RestClient::get_position_info(const std::optional<std::string>& settle_coin,
+                                          const std::optional<std::string>& symbol, int limit) {
+  return private_.get_position_info(settle_coin, symbol, limit);
 }
 std::string RestClient::get_instruments_info(int limit) {
   return public_.get_instruments_info(limit);
@@ -62,8 +63,9 @@ std::string RestClient::get_long_short_ratio(const std::string& symbol, const st
   return public_.get_long_short_ratio(symbol, period, limit);
 }
 std::string RestClient::submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
-                                     const std::string& qty, const std::string& order_link_id, int position_idx) {
-  return private_.submit_order(symbol, side, order_type, qty, order_link_id, position_idx);
+                                     const std::string& qty, const std::string& order_link_id, int position_idx,
+                                     const std::string& price, const std::string& time_in_force) {
+  return private_.submit_order(symbol, side, order_type, qty, order_link_id, position_idx, price, time_in_force);
 }
 std::string RestClient::set_leverage(const std::string& symbol, const std::string& buy_leverage,
                                      const std::string& sell_leverage) {

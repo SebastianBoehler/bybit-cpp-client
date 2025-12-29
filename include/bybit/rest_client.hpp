@@ -42,9 +42,11 @@ class PrivateRestClient {
 
   std::string get_query_api_key();
   std::string get_account_info();
-  std::string get_position_info(const std::optional<std::string>& settle_coin = std::nullopt, int limit = 200);
+  std::string get_position_info(const std::optional<std::string>& settle_coin = std::nullopt,
+                                const std::optional<std::string>& symbol = std::nullopt, int limit = 200);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
-                           const std::string& qty, const std::string& order_link_id, int position_idx);
+                           const std::string& qty, const std::string& order_link_id, int position_idx,
+                           const std::string& price = "", const std::string& time_in_force = "GTC");
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
                            const std::string& sell_leverage);
   std::string get_historic_orders(const std::string& order_id);
@@ -81,7 +83,8 @@ class RestClient {
 
   std::string get_query_api_key();
   std::string get_account_info();
-  std::string get_position_info(const std::optional<std::string>& settle_coin = std::nullopt, int limit = 200);
+  std::string get_position_info(const std::optional<std::string>& settle_coin = std::nullopt,
+                                const std::optional<std::string>& symbol = std::nullopt, int limit = 200);
   std::string get_instruments_info(int limit = 1000);
   std::string get_tickers(const std::string& symbol = "");
   std::string get_orderbook(const std::string& symbol, int limit = 50);
@@ -102,7 +105,8 @@ class RestClient {
   std::string get_open_interest(const std::string& symbol, const std::string& interval, int limit = 50);
   std::string get_long_short_ratio(const std::string& symbol, const std::string& period, int limit = 50);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
-                           const std::string& qty, const std::string& order_link_id, int position_idx);
+                           const std::string& qty, const std::string& order_link_id, int position_idx,
+                           const std::string& price = "", const std::string& time_in_force = "GTC");
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
                            const std::string& sell_leverage);
   std::string get_historic_orders(const std::string& order_id);

@@ -19,15 +19,18 @@ std::string PrivateRestClient::get_account_info() {
   return http_.get("/v5/account/info", {}, true);
 }
 
-std::string PrivateRestClient::get_position_info(const std::optional<std::string>& settle_coin, int limit) {
+std::string PrivateRestClient::get_position_info(const std::optional<std::string>& settle_coin,
+                                                 const std::optional<std::string>& symbol, int limit) {
   std::vector<std::pair<std::string, std::string>> params{{"category", category_}, {"limit", std::to_string(limit)}};
   if (settle_coin) params.emplace_back("settleCoin", *settle_coin);
+  if (symbol) params.emplace_back("symbol", *symbol);
   return http_.get("/v5/position/list", params, true);
 }
 
 std::string PrivateRestClient::submit_order(const std::string& symbol, const std::string& side,
                                             const std::string& order_type, const std::string& qty,
-                                            const std::string& order_link_id, int position_idx) {
+                                            const std::string& order_link_id, int position_idx,
+                                            const std::string& price, const std::string& time_in_force) {
   std::vector<std::pair<std::string, std::string>> body_kv{{"category", category_},
                                                            {"symbol", symbol},
                                                            {"side", side},
@@ -36,6 +39,8 @@ std::string PrivateRestClient::submit_order(const std::string& symbol, const std
                                                            {"orderLinkId", order_link_id},
                                                            {"positionIdx", std::to_string(position_idx)},
                                                            {"recvWindow", http_.recv_window()}};
+  if (!price.empty()) body_kv.emplace_back("price", price);
+  if (!time_in_force.empty()) body_kv.emplace_back("timeInForce", time_in_force);
   return http_.post("/v5/order/create", to_json_object(body_kv), true);
 }
 
