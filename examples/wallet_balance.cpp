@@ -5,13 +5,21 @@
 
 #include "bybit/rest_client.hpp"
 
-int main() {
+int main(int argc, char** argv) {
   const char* key = std::getenv("BYBIT_API_KEY");
   const char* secret = std::getenv("BYBIT_API_SECRET");
-  const char* category = std::getenv("BYBIT_CATEGORY");  // e.g., "UNIFIED"
-  const char* coins = std::getenv("BYBIT_COINS");        // optional comma-separated uppercase list
-  if (!key || !secret || !category) {
-    std::cerr << "Please set BYBIT_API_KEY, BYBIT_API_SECRET, and BYBIT_CATEGORY\n";
+  const char* coins = std::getenv("BYBIT_COINS");  // optional comma-separated uppercase list
+
+  if (argc < 2) {
+    std::cerr << "Usage: " << argv[0] << " <category>\n";
+    std::cerr << "  category examples: UNIFIED, linear, inverse, spot\n";
+    return 1;
+  }
+
+  const std::string category = argv[1];
+
+  if (!key || !secret) {
+    std::cerr << "Please set BYBIT_API_KEY and BYBIT_API_SECRET\n";
     return 1;
   }
 
