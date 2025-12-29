@@ -50,4 +50,12 @@ SignedRequest Signer::sign(const std::string& api_key, const std::string& api_se
   return {timestamp, recv_window, signature};
 }
 
+SignedRequest Signer::sign_with_timestamp(const std::string& api_key, const std::string& api_secret,
+                                          const std::string& payload, const std::string& timestamp,
+                                          const std::string& recv_window) {
+  std::string to_sign = timestamp + api_key + recv_window + payload;
+  std::string signature = hmac_sha256_hex(api_secret, to_sign);
+  return {timestamp, recv_window, signature};
+}
+
 }  // namespace bybit

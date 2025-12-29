@@ -1,10 +1,11 @@
-# Bybit C++ Client (REST v5)
+# Bybit C++ Client (REST v5 + WS)
 
 A lightweight C++ wrapper for Bybit REST v5 endpoints. Focused on REST first; websocket integration can follow.
 
 ## Features
 
-- General Bybit REST v5 C++ API wrapper.
+- General Bybit REST v5 C++ API wrapper; optional WebSocket v5 client (public/private) behind
+  `-DBYBIT_ENABLE_WEBSOCKET=ON`.
 - Shared HTTP helper with HMAC-SHA256 signing (OpenSSL) and libcurl transport.
 - Public/private client split for maintainability; facade `RestClient` preserves simple usage.
 - Clang-format hook (git pre-commit) for consistent style.
@@ -16,6 +17,10 @@ A lightweight C++ wrapper for Bybit REST v5 endpoints. Focused on REST first; we
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 cmake --install build --prefix dist
+
+# Enable websocket client (fetches ixwebsocket)
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBYBIT_ENABLE_WEBSOCKET=ON
+cmake --build build
 ```
 
 ## Use via FetchContent
@@ -33,7 +38,7 @@ add_executable(app main.cpp)
 target_link_libraries(app PRIVATE Bybit::bybit_client)
 ```
 
-## Minimal usage
+## Minimal REST usage
 
 ```cpp
 #include <bybit/rest_client.hpp>
@@ -50,9 +55,31 @@ int main() {
 }
 ```
 
+## Minimal WebSocket usage
+
+```cpp
+#include <bybit/websocket_client.hpp>
+#include <iostream>
+
+int main() {
+  // public linear ticker stream
+  bybit::WebSocketClient ws{"wss://stream.bybit.com/v5/public/linear"};
+  ws.set_message_handler([](const std::string& msg) { std::cout << msg << "\n"; });
+  ws.connect();
+  ws.subscribe({"tickers.BTCUSDT"}, "sub-1");
+  // keep process alive in your app loop; this example omits cleanup for brevity
+}
+```
+
 ## Examples
 
-See `examples/basic_linear.cpp` (USDT-margined) and `examples/basic_spot.cpp` for common flows. Requires `BYBIT_API_KEY`/`BYBIT_API_SECRET` in env; set `BYBIT_CATEGORY` as needed (e.g., `linear` or `spot`).
+- `examples/basic_linear.cpp` (USDT-margined), `examples/basic_spot.cpp`: REST flows.
+- `examples/ws_market_data.cpp`: WebSocket market data demo (tickers, orderbook, klines, public trades). Build with
+  `-DBYBIT_ENABLE_WEBSOCKET=ON`.
+- `examples/ws_orderbook.cpp`: WebSocket order book depth-50 stream demo. Build with `-DBYBIT_ENABLE_WEBSOCKET=ON`.
+
+Requires `BYBIT_API_KEY`/`BYBIT_API_SECRET` in env for private REST tests; set `BYBIT_CATEGORY` as needed (e.g., `linear`
+or `spot`).
 
 ## Environment & tests
 
@@ -67,6 +94,6 @@ See `examples/basic_linear.cpp` (USDT-margined) and `examples/basic_spot.cpp` fo
 ## Roadmap
 
 - Optional: migrate HMAC to OpenSSL EVP_MAC to silence deprecation warnings.
-- Add websocket support (positions/tickers) after REST parity is stable.
+- Add websocket coverage (positions/tickers) — initial dedicated client shipped behind optional flag.
 - Broaden REST coverage beyond current endpoints.
 - Expand automated tests (unit/integration) across public/private calls.

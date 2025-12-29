@@ -110,6 +110,10 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 cmake --install build --prefix dist</pre
         >
+        <p>
+          Enable WebSocket client (fetches <code>ixwebsocket</code>):<br />
+          <code>cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBYBIT_ENABLE_WEBSOCKET=ON</code>
+        </p>
       </section>
 
       <section>
@@ -128,7 +132,7 @@ target_link_libraries(app PRIVATE Bybit::bybit_client)</pre
       </section>
 
       <section>
-        <h2>Minimal example</h2>
+        <h2>Minimal REST example</h2>
         <pre>
 #include &lt;bybit/rest_client.hpp&gt;
 #include &lt;iostream&gt;
@@ -141,6 +145,22 @@ int main() {
   } catch (const std::exception&amp; ex) {
     std::cerr &lt;&lt; "Error: " &lt;&lt; ex.what() &lt;&lt; "\n";
   }
+}</pre
+        >
+      </section>
+
+      <section>
+        <h2>Minimal WebSocket example</h2>
+        <pre>
+#include &lt;bybit/websocket_client.hpp&gt;
+#include &lt;iostream&gt;
+
+int main() {
+  bybit::WebSocketClient ws{"wss://stream.bybit.com/v5/public/linear"};
+  ws.set_message_handler([](const std::string&amp; msg) { std::cout &lt;&lt; msg &lt;&lt; "\n"; });
+  ws.connect();
+  ws.subscribe({"tickers.BTCUSDT"}, "demo-1");
+  // keep process alive in your loop; omitted here for brevity
 }</pre
         >
       </section>

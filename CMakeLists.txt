@@ -13,6 +13,7 @@ add_library(bybit_client
     src/public_rest_client.cpp
     src/private_rest_client.cpp
     src/signing.cpp
+    src/websocket_client.cpp
 )
 
 target_include_directories(bybit_client
@@ -28,6 +29,25 @@ target_link_libraries(bybit_client
         CURL::libcurl
 )
 
+option(BYBIT_ENABLE_WEBSOCKET "Enable websocket client (requires ixwebsocket)" OFF)
+if(BYBIT_ENABLE_WEBSOCKET)
+    include(FetchContent)
+    # Ensure ixwebsocket builds with TLS + OpenSSL backend.
+    set(USE_TLS ON CACHE BOOL "Enable TLS in ixwebsocket" FORCE)
+    set(USE_OPEN_SSL ON CACHE BOOL "Force OpenSSL backend in ixwebsocket" FORCE)
+    set(IXWEBSOCKET_USE_TLS ON CACHE BOOL "Enable TLS for ixwebsocket" FORCE)
+    FetchContent_Declare(
+        ixwebsocket
+        GIT_REPOSITORY https://github.com/machinezone/IXWebSocket.git
+        GIT_TAG v11.3.3
+        FIND_PACKAGE_ARGS
+    )
+    FetchContent_MakeAvailable(ixwebsocket)
+    find_package(Threads REQUIRED)
+    target_link_libraries(bybit_client PUBLIC ixwebsocket::ixwebsocket Threads::Threads)
+    target_compile_definitions(bybit_client PUBLIC BYBIT_ENABLE_WEBSOCKET=1)
+endif()
+
 # Examples
 add_executable(sui_leverage_cycle examples/sui_leverage_cycle.cpp)
 target_link_libraries(sui_leverage_cycle PRIVATE bybit_client)
@@ -37,6 +57,10 @@ add_executable(basic_linear examples/basic_linear.cpp)
 target_link_libraries(basic_linear PRIVATE bybit_client)
 add_executable(market_kline examples/market_kline.cpp)
 target_link_libraries(market_kline PRIVATE bybit_client)
+add_executable(ws_market_data examples/ws_market_data.cpp)
+target_link_libraries(ws_market_data PRIVATE bybit_client)
+add_executable(ws_orderbook examples/ws_orderbook.cpp)
+target_link_libraries(ws_orderbook PRIVATE bybit_client)
 
 # Enable as FetchContent/git submodule consumer
 include(GNUInstallDirs)
@@ -80,5 +104,8 @@ if(BYBIT_BUILD_TESTS)
         add_executable(bybit_public_test tests/test_public.cpp)
         target_link_libraries(bybit_public_test PRIVATE bybit_client)
         add_test(NAME bybit_public_test COMMAND bybit_public_test)
+        add_executable(bybit_signing_test tests/test_signing.cpp)
+        target_link_libraries(bybit_signing_test PRIVATE bybit_client)
+        add_test(NAME bybit_signing_test COMMAND bybit_signing_test)
     endif()
 endif()
