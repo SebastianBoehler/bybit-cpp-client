@@ -1,7 +1,11 @@
 #include "bybit/websocket_client.hpp"
 
+#include <openssl/hmac.h>
+
 #include <algorithm>
 #include <chrono>
+#include <iomanip>
+#include <iostream>
 #include <sstream>
 
 #include "bybit/signing.hpp"
@@ -16,6 +20,18 @@ std::string join_args(const std::vector<std::string>& topics) {
     if (i + 1 < topics.size()) oss << ",";
   }
   oss << "]";
+  return oss.str();
+}
+
+std::string hmac_sha256_hex(const std::string& key, const std::string& data) {
+  unsigned int len = EVP_MAX_MD_SIZE;
+  unsigned char out[EVP_MAX_MD_SIZE];
+  HMAC(EVP_sha256(), key.data(), static_cast<int>(key.size()), reinterpret_cast<const unsigned char*>(data.data()),
+       data.size(), out, &len);
+  std::ostringstream oss;
+  for (unsigned int i = 0; i < len; ++i) {
+    oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(out[i]);
+  }
   return oss.str();
 }
 }  // namespace
@@ -67,7 +83,10 @@ void WebSocketClient::connect() {
         std::scoped_lock lock(state_mutex_);
         reconnect_attempts_ = 0;
       }
-        // Ensure subscriptions are sent after the socket is open.
+        // Authenticate first if keys are provided, then resubscribe remembered topics.
+        if (!api_key_.empty() && !api_secret_.empty()) {
+          authenticate();
+        }
         resubscribe_all();
         break;
       case ix::WebSocketMessageType::Close:
@@ -85,20 +104,15 @@ void WebSocketClient::connect() {
         break;
     }
   });
-
   ws_.start();
-
-  // Fire auth immediately; ixwebsocket will queue if not yet open.
-  if (!api_key_.empty()) {
-    authenticate();
-  }
-
   start_ping_timer();
 #endif
 }
 
 void WebSocketClient::close() {
-#ifdef BYBIT_ENABLE_WEBSOCKET
+#ifndef BYBIT_ENABLE_WEBSOCKET
+  throw std::runtime_error("WebSocket support disabled at build time. Rebuild with BYBIT_ENABLE_WEBSOCKET=ON.");
+#else
   stop_ping_timer();
   ws_.stop();
 #endif
@@ -110,6 +124,22 @@ bool WebSocketClient::is_open() const {
 #else
   return false;
 #endif
+}
+
+void WebSocketClient::subscribe_topic(const std::string& topic, const std::string& req_id) {
+  subscribe(std::vector<std::string>{topic}, req_id);
+}
+
+void WebSocketClient::subscribe_topics(const std::vector<std::string>& topics, const std::string& req_id) {
+  subscribe(topics, req_id);
+}
+
+void WebSocketClient::unsubscribe_topic(const std::string& topic, const std::string& req_id) {
+  unsubscribe(std::vector<std::string>{topic}, req_id);
+}
+
+void WebSocketClient::unsubscribe_topics(const std::vector<std::string>& topics, const std::string& req_id) {
+  unsubscribe(topics, req_id);
 }
 
 void WebSocketClient::subscribe(const std::vector<std::string>& topics, const std::string& req_id) {
@@ -194,17 +224,27 @@ void WebSocketClient::authenticate() {
 #ifndef BYBIT_ENABLE_WEBSOCKET
   throw std::runtime_error("WebSocket support disabled at build time. Rebuild with BYBIT_ENABLE_WEBSOCKET=ON.");
 #else
-  auto timestamp = now_ms();
-  auto signed_req = Signer::sign_with_timestamp(api_key_, api_secret_, "", timestamp, recv_window_);
+  // Bybit v5 private WS auth: expires_ms must be in the future. Signature = HMAC_SHA256(secret, "GET/realtime" +
+  // expires_ms)
+  auto expires_ms = std::to_string(std::stoll(now_ms()) + 10000);  // +10s buffer
+  const std::string to_sign = "GET/realtime" + expires_ms;
+  const std::string signature = hmac_sha256_hex(api_secret_, to_sign);
   std::ostringstream oss;
-  oss << "{\"op\":\"auth\",\"args\":[\"" << api_key_ << "\"," << signed_req.timestamp << ",\"" << signed_req.signature
-      << "\"]}";
+  // Bybit expects [api_key, expires_ms, signature].
+  // Use numeric expires in JSON (no quotes).
+  oss << "{\"op\":\"auth\",\"args\":[\"" << api_key_ << "\"," << expires_ms << ",\"" << signature << "\"]}";
+  std::cerr << "[ws auth] to_sign=\"" << to_sign << "\" payload=" << oss.str() << "\n";
   send_raw(oss.str());
 #endif
 }
 
 std::string WebSocketClient::serialize_args(const std::vector<std::string>& topics) const {
-  return join_args(topics);
+  std::string args;
+  for (size_t i = 0; i < topics.size(); ++i) {
+    if (i > 0) args += ",";
+    args += "\"" + topics[i] + "\"";
+  }
+  return "[" + args + "]";
 }
 
 void WebSocketClient::remember_topics(const std::vector<std::string>& topics) {

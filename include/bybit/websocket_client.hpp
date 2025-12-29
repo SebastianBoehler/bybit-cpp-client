@@ -34,6 +34,12 @@ class WebSocketClient {
   void close();
   bool is_open() const;
 
+  // Generic topic subscribe/unsubscribe (raw topic strings).
+  void subscribe_topic(const std::string& topic, const std::string& req_id = "");
+  void subscribe_topics(const std::vector<std::string>& topics, const std::string& req_id = "");
+  void unsubscribe_topic(const std::string& topic, const std::string& req_id = "");
+  void unsubscribe_topics(const std::vector<std::string>& topics, const std::string& req_id = "");
+
   void subscribe(const std::vector<std::string>& topics, const std::string& req_id = "");
   void unsubscribe(const std::vector<std::string>& topics, const std::string& req_id = "");
   void ping(const std::string& req_id = "");

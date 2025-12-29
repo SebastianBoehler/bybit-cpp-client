@@ -28,10 +28,14 @@ int main() {
   const std::string endpoint = getenv_or("BYBIT_WS_ENDPOINT", "wss://stream.bybit.com/v5/public/linear");
   const std::string symbols_csv = getenv_or("BYBIT_WS_SYMBOLS", "BTCUSDT,ETHUSDT");
   const auto symbols = split_symbols(symbols_csv);
+  const std::string topics_csv = getenv_or("BYBIT_WS_TOPICS", "");
+  const auto extra_topics = split_symbols(topics_csv);
   const int runtime_sec = 120;
 
   std::cerr << "[demo] endpoint=" << endpoint << " symbols=" << symbols_csv << " runtime=" << runtime_sec
-            << "s (tickers/orderbook/kline/trades)\n";
+            << "s (tickers/orderbook/kline/trades)";
+  if (!extra_topics.empty()) std::cerr << " extra_topics=" << topics_csv;
+  std::cerr << "\n";
 
   bybit::WebSocketClient ws{endpoint};
 
@@ -53,6 +57,10 @@ int main() {
   ws.subscribe(orderbook_topics, "orderbook");
   ws.subscribe_kline(symbols, "1", "kline-1");  // 1-minute bars
   ws.subscribe_public_trades(symbols, "trades-1");
+  if (!extra_topics.empty()) {
+    // Allow arbitrary topics via BYBIT_WS_TOPICS, e.g. "orderbook.50.BTCUSDT,kline.5.ETHUSDT"
+    ws.subscribe_topics(extra_topics, "custom");
+  }
 
   std::this_thread::sleep_for(std::chrono::seconds(runtime_sec));
 

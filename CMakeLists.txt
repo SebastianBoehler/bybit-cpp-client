@@ -61,6 +61,8 @@ add_executable(ws_market_data examples/ws_market_data.cpp)
 target_link_libraries(ws_market_data PRIVATE bybit_client)
 add_executable(ws_orderbook examples/ws_orderbook.cpp)
 target_link_libraries(ws_orderbook PRIVATE bybit_client)
+add_executable(ws_private_positions examples/ws_private_positions.cpp)
+target_link_libraries(ws_private_positions PRIVATE bybit_client)
 
 # Enable as FetchContent/git submodule consumer
 include(GNUInstallDirs)
