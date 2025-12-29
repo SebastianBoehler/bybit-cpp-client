@@ -12,6 +12,8 @@ class PublicRestClient {
  public:
   PublicRestClient(HttpClient& http, std::string category);
   std::string get_instruments_info(int limit = 1000);
+  std::string get_instruments_info(const std::optional<std::string>& symbol, int limit = 1000,
+                                   const std::optional<std::string>& cursor = std::nullopt);
   std::string get_tickers(const std::string& symbol = "");
   std::string get_orderbook(const std::string& symbol, int limit = 50);
   std::string get_kline(const std::string& symbol, const std::string& interval,
