@@ -77,8 +77,8 @@ std::string RestClient::get_historic_orders(const std::string& order_id) {
 std::string RestClient::get_fee_rate() {
   return private_.get_fee_rate();
 }
-std::string RestClient::get_wallet_balance(const std::optional<std::string>& coin) {
-  return private_.get_wallet_balance(coin);
+std::string RestClient::get_wallet_balance(const std::string& category, const std::optional<std::string>& coin) {
+  return private_.get_wallet_balance(category, coin);
 }
 std::string RestClient::get_open_orders(const std::optional<std::string>& symbol, int limit) {
   return private_.get_open_orders(symbol, limit);

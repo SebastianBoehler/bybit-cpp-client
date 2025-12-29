@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
   try {
     bybit::RestClient client{key, secret, category};
     std::optional<std::string> coins_opt = (coins && *coins) ? std::optional<std::string>{coins} : std::nullopt;
-    auto balances = client.get_wallet_balance(coins_opt);
+    auto balances = client.get_wallet_balance(category, coins_opt);
     std::cout << "Wallet balance response:\n" << balances << "\n";
   } catch (const std::exception& ex) {
     std::cerr << "Error: " << ex.what() << "\n";

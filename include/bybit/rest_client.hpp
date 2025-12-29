@@ -53,7 +53,8 @@ class PrivateRestClient {
                            const std::string& sell_leverage);
   std::string get_historic_orders(const std::string& order_id);
   std::string get_fee_rate();
-  std::string get_wallet_balance(const std::optional<std::string>& coin = std::nullopt);
+  // category is provided per-call to avoid forcing a single accountType for all operations.
+  std::string get_wallet_balance(const std::string& category, const std::optional<std::string>& coin = std::nullopt);
   std::string get_open_orders(const std::optional<std::string>& symbol = std::nullopt, int limit = 50);
   std::string cancel_order(const std::string& symbol, const std::string& order_id);
   std::string amend_order(const std::string& symbol, const std::string& order_id,
@@ -113,7 +114,8 @@ class RestClient {
                            const std::string& sell_leverage);
   std::string get_historic_orders(const std::string& order_id);
   std::string get_fee_rate();
-  std::string get_wallet_balance(const std::optional<std::string>& coin = std::nullopt);
+  // category is provided per-call to avoid forcing a single accountType for all operations.
+  std::string get_wallet_balance(const std::string& category, const std::optional<std::string>& coin = std::nullopt);
   std::string get_open_orders(const std::optional<std::string>& symbol = std::nullopt, int limit = 50);
   std::string cancel_order(const std::string& symbol, const std::string& order_id);
   std::string amend_order(const std::string& symbol, const std::string& order_id,

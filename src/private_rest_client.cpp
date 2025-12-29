@@ -64,8 +64,8 @@ std::string PrivateRestClient::get_fee_rate() {
   return http_.get("/v5/account/fee-rate", params, true);
 }
 
-std::string PrivateRestClient::get_wallet_balance(const std::optional<std::string>& coin) {
-  std::vector<std::pair<std::string, std::string>> params{{"accountType", category_}};
+std::string PrivateRestClient::get_wallet_balance(const std::string& category, const std::optional<std::string>& coin) {
+  std::vector<std::pair<std::string, std::string>> params{{"accountType", category}};
   if (coin) params.emplace_back("coin", *coin);
   return http_.get("/v5/account/wallet-balance", params, true);
 }
