@@ -48,6 +48,19 @@
     "ctime": "cpp",
     "streambuf": "cpp",
     "forward_list": "cpp",
-    "__node_handle": "cpp"
+    "__node_handle": "cpp",
+    "__tree": "cpp",
+    "algorithm": "cpp",
+    "fstream": "cpp",
+    "future": "cpp",
+    "list": "cpp",
+    "map": "cpp",
+    "random": "cpp",
+    "regex": "cpp",
+    "set": "cpp",
+    "__config": "cpp",
+    "*.tcc": "cpp",
+    "chrono": "cpp",
+    "functional": "cpp"
   }
 }

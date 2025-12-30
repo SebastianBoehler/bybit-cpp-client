@@ -1,4 +1,5 @@
 #include <optional>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -7,6 +8,43 @@
 #include "bybit/rest_client.hpp"
 
 namespace bybit {
+namespace {
+std::string json_escape_local(const std::string& input) {
+  std::ostringstream oss;
+  for (char c : input) {
+    switch (c) {
+      case '"':
+        oss << "\\\"";
+        break;
+      case '\\':
+        oss << "\\\\";
+        break;
+      default:
+        oss << c;
+        break;
+    }
+  }
+  return oss.str();
+}
+
+std::string build_batch_body(const std::string& category, const std::string& recv_window,
+                             const std::vector<std::vector<std::pair<std::string, std::string>>>& requests) {
+  std::ostringstream oss;
+  oss << "{\"category\":\"" << json_escape_local(category) << "\",\"request\":[";
+  for (size_t i = 0; i < requests.size(); ++i) {
+    const auto& kvs = requests[i];
+    oss << "{";
+    for (size_t j = 0; j < kvs.size(); ++j) {
+      oss << "\"" << json_escape_local(kvs[j].first) << "\":\"" << json_escape_local(kvs[j].second) << "\"";
+      if (j + 1 < kvs.size()) oss << ",";
+    }
+    oss << "}";
+    if (i + 1 < requests.size()) oss << ",";
+  }
+  oss << "],\"recvWindow\":\"" << json_escape_local(recv_window) << "\"}";
+  return oss.str();
+}
+}  // namespace
 
 PrivateRestClient::PrivateRestClient(HttpClient& http, std::string category)
     : http_(http), category_(std::move(category)) {}
@@ -30,7 +68,8 @@ std::string PrivateRestClient::get_position_info(const std::optional<std::string
 std::string PrivateRestClient::submit_order(const std::string& symbol, const std::string& side,
                                             const std::string& order_type, const std::string& qty,
                                             const std::string& order_link_id, int position_idx,
-                                            const std::string& price, const std::string& time_in_force) {
+                                            const std::string& price, const std::string& time_in_force,
+                                            const std::optional<bool>& reduce_only) {
   std::vector<std::pair<std::string, std::string>> body_kv{{"category", category_},
                                                            {"symbol", symbol},
                                                            {"side", side},
@@ -41,7 +80,18 @@ std::string PrivateRestClient::submit_order(const std::string& symbol, const std
                                                            {"recvWindow", http_.recv_window()}};
   if (!price.empty()) body_kv.emplace_back("price", price);
   if (!time_in_force.empty()) body_kv.emplace_back("timeInForce", time_in_force);
+  if (reduce_only.has_value()) body_kv.emplace_back("reduceOnly", *reduce_only ? "true" : "false");
   return http_.post("/v5/order/create", to_json_object(body_kv), true);
+}
+
+std::string PrivateRestClient::batch_submit_orders(
+    const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests) {
+  return http_.post("/v5/order/create-batch", build_batch_body(category_, http_.recv_window(), order_requests), true);
+}
+
+std::string PrivateRestClient::batch_cancel_orders(
+    const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests) {
+  return http_.post("/v5/order/cancel-batch", build_batch_body(category_, http_.recv_window(), cancel_requests), true);
 }
 
 std::string PrivateRestClient::set_leverage(const std::string& symbol, const std::string& buy_leverage,

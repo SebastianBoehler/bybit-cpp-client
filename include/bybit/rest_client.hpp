@@ -48,7 +48,10 @@ class PrivateRestClient {
                                 const std::optional<std::string>& symbol = std::nullopt, int limit = 200);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx,
-                           const std::string& price = "", const std::string& time_in_force = "GTC");
+                           const std::string& price = "", const std::string& time_in_force = "GTC",
+                           const std::optional<bool>& reduce_only = std::nullopt);
+  std::string batch_submit_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests);
+  std::string batch_cancel_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
                            const std::string& sell_leverage);
   std::string get_historic_orders(const std::string& order_id);
@@ -109,7 +112,10 @@ class RestClient {
   std::string get_long_short_ratio(const std::string& symbol, const std::string& period, int limit = 50);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx,
-                           const std::string& price = "", const std::string& time_in_force = "GTC");
+                           const std::string& price = "", const std::string& time_in_force = "GTC",
+                           const std::optional<bool>& reduce_only = std::nullopt);
+  std::string batch_submit_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests);
+  std::string batch_cancel_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
                            const std::string& sell_leverage);
   std::string get_historic_orders(const std::string& order_id);
