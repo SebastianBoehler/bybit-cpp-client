@@ -52,6 +52,7 @@ class PrivateRestClient {
                            const std::optional<bool>& reduce_only = std::nullopt);
   std::string batch_submit_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests);
   std::string batch_cancel_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests);
+  std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
                            const std::string& sell_leverage);
   std::string get_historic_orders(const std::string& order_id);
@@ -116,6 +117,7 @@ class RestClient {
                            const std::optional<bool>& reduce_only = std::nullopt);
   std::string batch_submit_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests);
   std::string batch_cancel_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests);
+  std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
                            const std::string& sell_leverage);
   std::string get_historic_orders(const std::string& order_id);

@@ -94,6 +94,11 @@ std::string PrivateRestClient::batch_cancel_orders(
   return http_.post("/v5/order/cancel-batch", build_batch_body(category_, http_.recv_window(), cancel_requests), true);
 }
 
+std::string PrivateRestClient::batch_amend_orders(
+    const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests) {
+  return http_.post("/v5/order/amend-batch", build_batch_body(category_, http_.recv_window(), amend_requests), true);
+}
+
 std::string PrivateRestClient::set_leverage(const std::string& symbol, const std::string& buy_leverage,
                                             const std::string& sell_leverage) {
   std::vector<std::pair<std::string, std::string>> body_kv{{"category", category_},

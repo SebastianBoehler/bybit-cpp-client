@@ -77,6 +77,10 @@ std::string RestClient::batch_cancel_orders(
     const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests) {
   return private_.batch_cancel_orders(cancel_requests);
 }
+std::string RestClient::batch_amend_orders(
+    const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests) {
+  return private_.batch_amend_orders(amend_requests);
+}
 std::string RestClient::set_leverage(const std::string& symbol, const std::string& buy_leverage,
                                      const std::string& sell_leverage) {
   return private_.set_leverage(symbol, buy_leverage, sell_leverage);
