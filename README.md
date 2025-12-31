@@ -1,5 +1,8 @@
 # Bybit C++ Client (REST v5 + WS)
 
+[![Build](https://github.com/SebastianBoehler/bybit-cpp-client/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/SebastianBoehler/bybit-cpp-client/actions/workflows/c-cpp.yml)
+[![Tests](https://github.com/SebastianBoehler/bybit-cpp-client/actions/workflows/tests.yml/badge.svg)](https://github.com/SebastianBoehler/bybit-cpp-client/actions/workflows/tests.yml)
+
 A lightweight C++ wrapper for Bybit REST v5 endpoints. Focused on REST first; websocket integration can follow.
 
 ## Features
