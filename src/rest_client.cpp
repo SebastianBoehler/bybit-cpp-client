@@ -65,9 +65,11 @@ std::string RestClient::get_long_short_ratio(const std::string& symbol, const st
 std::string RestClient::submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                                      const std::string& qty, const std::string& order_link_id, int position_idx,
                                      const std::string& price, const std::string& time_in_force,
-                                     const std::optional<bool>& reduce_only) {
+                                     const std::optional<bool>& reduce_only,
+                                     const std::optional<std::string>& bbo_side_type,
+                                     const std::optional<std::string>& bbo_level) {
   return private_.submit_order(symbol, side, order_type, qty, order_link_id, position_idx, price, time_in_force,
-                               reduce_only);
+                               reduce_only, bbo_side_type, bbo_level);
 }
 std::string RestClient::batch_submit_orders(
     const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests) {

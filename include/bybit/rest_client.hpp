@@ -49,7 +49,9 @@ class PrivateRestClient {
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx,
                            const std::string& price = "", const std::string& time_in_force = "GTC",
-                           const std::optional<bool>& reduce_only = std::nullopt);
+                           const std::optional<bool>& reduce_only = std::nullopt,
+                           const std::optional<std::string>& bbo_side_type = std::nullopt,
+                           const std::optional<std::string>& bbo_level = std::nullopt);
   std::string batch_submit_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests);
   std::string batch_cancel_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests);
   std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);
@@ -114,7 +116,9 @@ class RestClient {
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx,
                            const std::string& price = "", const std::string& time_in_force = "GTC",
-                           const std::optional<bool>& reduce_only = std::nullopt);
+                           const std::optional<bool>& reduce_only = std::nullopt,
+                           const std::optional<std::string>& bbo_side_type = std::nullopt,
+                           const std::optional<std::string>& bbo_level = std::nullopt);
   std::string batch_submit_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests);
   std::string batch_cancel_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests);
   std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);

@@ -69,7 +69,9 @@ std::string PrivateRestClient::submit_order(const std::string& symbol, const std
                                             const std::string& order_type, const std::string& qty,
                                             const std::string& order_link_id, int position_idx,
                                             const std::string& price, const std::string& time_in_force,
-                                            const std::optional<bool>& reduce_only) {
+                                            const std::optional<bool>& reduce_only,
+                                            const std::optional<std::string>& bbo_side_type,
+                                            const std::optional<std::string>& bbo_level) {
   std::vector<std::pair<std::string, std::string>> body_kv{{"category", category_},
                                                            {"symbol", symbol},
                                                            {"side", side},
@@ -81,6 +83,8 @@ std::string PrivateRestClient::submit_order(const std::string& symbol, const std
   if (!price.empty()) body_kv.emplace_back("price", price);
   if (!time_in_force.empty()) body_kv.emplace_back("timeInForce", time_in_force);
   if (reduce_only.has_value()) body_kv.emplace_back("reduceOnly", *reduce_only ? "true" : "false");
+  if (bbo_side_type.has_value()) body_kv.emplace_back("bboSideType", *bbo_side_type);
+  if (bbo_level.has_value()) body_kv.emplace_back("bboLevel", *bbo_level);
   return http_.post("/v5/order/create", to_json_object(body_kv), true);
 }
 
