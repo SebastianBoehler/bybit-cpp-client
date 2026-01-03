@@ -33,12 +33,34 @@ include(FetchContent)
 FetchContent_Declare(
   bybit_cpp_client
   GIT_REPOSITORY https://github.com/SebastianBoehler/bybit-cpp-client.git
-  GIT_TAG main
+  GIT_TAG v0.1.0  # Pin to a specific release version
 )
 FetchContent_MakeAvailable(bybit_cpp_client)
 
 add_executable(app main.cpp)
-target_link_libraries(app PRIVATE Bybit::bybit_client)
+target_link_libraries(app PRIVATE bybit_client)
+```
+
+### Version Pinning
+
+You can pin to:
+
+- **Specific release**: `GIT_TAG v0.1.0`
+- **Latest main**: `GIT_TAG main`
+- **Specific commit**: `GIT_TAG <commit-sha>`
+
+Check the [Releases](https://github.com/SebastianBoehler/bybit-cpp-client/releases) page for available versions.
+
+### Check Version at Runtime
+
+```cpp
+#include <bybit/version.hpp>
+#include <iostream>
+
+int main() {
+    std::cout << "bybit-cpp-client version: " << bybit::version_string << "\n";
+    // Or use macros: BYBIT_VERSION_MAJOR, BYBIT_VERSION_MINOR, BYBIT_VERSION_PATCH
+}
 ```
 
 ## Minimal REST usage

@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential pkg-config libssl-dev libcurl4-openssl-dev
+
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Run tests
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          body: |
+            ## bybit-cpp-client ${{ steps.version.outputs.VERSION }}
+
+            ### Installation via FetchContent
+
+            ```cmake
+            include(FetchContent)
+            FetchContent_Declare(
+              bybit_cpp_client
+              GIT_REPOSITORY https://github.com/SebastianBoehler/bybit-cpp-client.git
+              GIT_TAG ${{ github.ref_name }}
+            )
+            FetchContent_MakeAvailable(bybit_cpp_client)
+            ```
+
+            ### Changes
+            See [CHANGELOG.md](https://github.com/SebastianBoehler/bybit-cpp-client/blob/main/CHANGELOG.md) for details.
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          generate_release_notes: true
