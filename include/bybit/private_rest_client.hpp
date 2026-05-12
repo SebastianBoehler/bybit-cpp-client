@@ -40,7 +40,10 @@ class PrivateRestClient {
   std::string get_option_asset_info();
   std::string get_pay_info(const std::optional<std::string>& coin = std::nullopt);
   std::string get_trade_info_for_analysis(const QueryParams& filters);
+  std::string sign_agreement(const std::string& json_body);
   std::string get_sub_uid_list();
+  std::string get_sub_uid_list_unlimited(const QueryParams& filters = {});
+  std::string get_fund_custodial_sub_accounts(const QueryParams& filters = {});
   std::string create_demo_account();
   std::string create_sub_uid(const std::string& json_body);
   std::string delete_sub_uid(const std::string& sub_member_id);
@@ -52,6 +55,7 @@ class PrivateRestClient {
   std::string update_sub_api_key(const std::string& json_body);
   std::string delete_sub_api_key(const std::optional<std::string>& api_key = std::nullopt);
   std::string get_uid_wallet_type(const std::optional<std::string>& member_ids = std::nullopt);
+  std::string get_friend_referrals(const QueryParams& filters = {});
   std::string get_affiliate_user_list(const QueryParams& filters = {});
   std::string get_affiliate_user_info(const QueryParams& filters = {});
   std::string get_broker_earnings(const QueryParams& filters = {});

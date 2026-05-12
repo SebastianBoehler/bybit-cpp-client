@@ -25,6 +25,18 @@ std::string PrivateRestClient::get_sub_uid_list() {
   return http_.get("/v5/user/query-sub-members", {}, true);
 }
 
+std::string PrivateRestClient::get_sub_uid_list_unlimited(const QueryParams& filters) {
+  return http_.get("/v5/user/submembers", filters, true);
+}
+
+std::string PrivateRestClient::get_fund_custodial_sub_accounts(const QueryParams& filters) {
+  return http_.get("/v5/user/escrow_sub_members", filters, true);
+}
+
+std::string PrivateRestClient::sign_agreement(const std::string& json_body) {
+  return http_.post("/v5/user/agreement", json_body, true);
+}
+
 std::string PrivateRestClient::create_demo_account() {
   return http_.post("/v5/user/create-demo-member", "{}", true);
 }
@@ -72,6 +84,10 @@ std::string PrivateRestClient::get_uid_wallet_type(const std::optional<std::stri
   QueryParams params;
   if (member_ids) params.emplace_back("memberIds", *member_ids);
   return http_.get("/v5/user/get-member-type", params, true);
+}
+
+std::string PrivateRestClient::get_friend_referrals(const QueryParams& filters) {
+  return http_.get("/v5/user/invitation/referrals", filters, true);
 }
 
 std::string PrivateRestClient::get_affiliate_user_list(const QueryParams& filters) {

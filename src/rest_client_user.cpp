@@ -9,6 +9,18 @@ std::string RestClient::get_sub_uid_list() {
   return private_.get_sub_uid_list();
 }
 
+std::string RestClient::get_sub_uid_list_unlimited(const QueryParams& filters) {
+  return private_.get_sub_uid_list_unlimited(filters);
+}
+
+std::string RestClient::get_fund_custodial_sub_accounts(const QueryParams& filters) {
+  return private_.get_fund_custodial_sub_accounts(filters);
+}
+
+std::string RestClient::sign_agreement(const std::string& json_body) {
+  return private_.sign_agreement(json_body);
+}
+
 std::string RestClient::create_demo_account() {
   return private_.create_demo_account();
 }
@@ -51,6 +63,10 @@ std::string RestClient::delete_sub_api_key(const std::optional<std::string>& api
 
 std::string RestClient::get_uid_wallet_type(const std::optional<std::string>& member_ids) {
   return private_.get_uid_wallet_type(member_ids);
+}
+
+std::string RestClient::get_friend_referrals(const QueryParams& filters) {
+  return private_.get_friend_referrals(filters);
 }
 
 std::string RestClient::get_affiliate_user_list(const QueryParams& filters) {

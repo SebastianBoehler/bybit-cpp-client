@@ -39,9 +39,9 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Server time | `GET /v5/market/time` | `get_server_time()` |
 | Advanced market data | `GET /v5/market/*` | `get_rpi_orderbook(...)`, `get_adl_alert(...)`, `get_fee_group_info(...)` |
 | API key validation | `GET /v5/user/query-api` | `get_query_api_key()` |
-| Subaccounts | `GET/POST /v5/user/*sub*` | `get_sub_uid_list()`, `create_sub_uid(...)`, `freeze_sub_uid(...)`, `delete_sub_uid(...)` |
+| Subaccounts | `GET/POST /v5/user/*sub*` | `get_sub_uid_list()`, `get_sub_uid_list_unlimited(...)`, `get_fund_custodial_sub_accounts(...)` |
 | API key management | `POST /v5/user/*api` | `create_sub_api_key(...)`, `update_master_api_key(...)`, `update_sub_api_key(...)` |
-| User wallet and affiliate info | `GET /v5/user/get-member-type`, `GET /v5/user/aff-customer-info` | `get_uid_wallet_type(...)`, `get_affiliate_user_info(...)` |
+| User wallet and referral info | `GET /v5/user/get-member-type`, `GET /v5/user/invitation/referrals` | `get_uid_wallet_type(...)`, `get_friend_referrals(...)` |
 | Affiliate user list | `GET /v5/affiliate/aff-user-list` | `get_affiliate_user_list(...)` |
 | Spot margin state and leverage | `GET/POST /v5/spot-margin-trade/*` | `get_spot_margin_state()`, `switch_spot_margin_mode(...)`, `set_spot_margin_leverage(...)` |
 | Spot margin rates and collateral | `GET /v5/spot-margin-trade/data`, `GET /v5/spot-margin-trade/collateral`, `GET /v5/spot-margin-trade/currency-data` | `get_spot_margin_vip_data(...)`, `get_spot_margin_tiered_collateral_ratio(...)`, `get_spot_margin_currency_data(...)` |
@@ -59,6 +59,7 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Account margin mode | `GET /v5/account/info` | `get_account_info()` |
 | Account upgrade and demo trading | `POST /v5/account/upgrade-to-uta`, `POST /v5/account/demo-apply-money`, `POST /v5/user/create-demo-member` | `upgrade_to_unified_account()`, `request_demo_trading_funds(...)`, `create_demo_account()` |
 | Account instruments | `GET /v5/account/instruments-info` | `get_account_instruments_info(...)` |
+| Agreement signing | `POST /v5/user/agreement` | `sign_agreement(...)` |
 | Transferable amount | `GET /v5/account/withdrawal` | `get_transferable_amount(...)` |
 | Collateral info | `GET /v5/account/collateral-info` | `get_collateral_info(...)` |
 | Set collateral coin | `POST /v5/account/set-collateral-switch` | `set_collateral_coin(...)` |

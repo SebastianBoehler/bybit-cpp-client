@@ -65,7 +65,7 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | --- | --- |
 | `GET /v5/user/query-api` | `get_query_api_key()` |
 | `POST /v5/user/create-demo-member` | `create_demo_account()` |
-| `GET /v5/user/query-sub-members` | `get_sub_uid_list()` |
+| `GET /v5/user/query-sub-members`, `GET /v5/user/submembers` | `get_sub_uid_list()`, `get_sub_uid_list_unlimited(...)` |
 | `POST /v5/user/create-sub-member` | `create_sub_uid(...)` |
 | `POST /v5/user/del-submember` | `delete_sub_uid(...)` |
 | `POST /v5/user/frozen-sub-member` | `freeze_sub_uid(...)` |
@@ -76,10 +76,11 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | `POST /v5/user/update-sub-api` | `update_sub_api_key(...)` |
 | `POST /v5/user/delete-sub-api` | `delete_sub_api_key(...)` |
 | `GET /v5/user/get-member-type` | `get_uid_wallet_type(...)` |
-| `GET /v5/user/aff-customer-info` | `get_affiliate_user_info(...)` |
+| `GET /v5/user/aff-customer-info`, `GET /v5/user/invitation/referrals` | `get_affiliate_user_info(...)`, `get_friend_referrals(...)` |
 | `GET /v5/account/info` | `get_account_info()` |
 | `POST /v5/account/upgrade-to-uta` | `upgrade_to_unified_account()` |
 | `POST /v5/account/demo-apply-money` | `request_demo_trading_funds(...)` |
+| `POST /v5/user/agreement` | `sign_agreement(...)` |
 | `GET /v5/account/instruments-info` | `get_account_instruments_info(...)` |
 | `GET /v5/account/wallet-balance` | `get_wallet_balance(...)` |
 | `GET /v5/account/withdrawal` | `get_transferable_amount(...)` |
@@ -290,7 +291,6 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | `POST /v5/alpha/trade/*` | `get_web3_trade_quote(...)`, `execute_web3_purchase(...)`, `get_web3_order_list(...)` |
 
 ## Partially Covered or Needs Review
-
 | Area | Status |
 | --- | --- |
 | Legacy Move Position | `move_position(...)` is retained for compatibility with the old singular path. Prefer `move_positions(...)` for the current Bybit V5 endpoint. |
