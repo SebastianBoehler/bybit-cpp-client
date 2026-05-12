@@ -1,17 +1,55 @@
 #pragma once
 
-#include "bybit/rest_client_components.hpp"
+#include <optional>
+#include <string>
+#include <vector>
+
+#include "bybit/http_client.hpp"
 
 namespace bybit {
 
-// Facade preserving previous interface while delegating to public/private clients.
-class RestClient {
+using QueryParams = std::vector<std::pair<std::string, std::string>>;
+
+struct MovePositionLeg {
+  std::string category, symbol, price, side, qty;
+};
+
+struct CollateralCoinSwitch {
+  std::string coin, collateral_switch;
+};
+
+class PublicRestClient {
  public:
-  explicit RestClient(std::string api_key, std::string api_secret, std::string category,
-                      std::string base_url = "https://api.bybit.com", std::string recv_window = "5000");
-  RestClient(std::string api_key, std::string api_secret, std::string category, HttpOptions options);
-  RestClient(std::string api_key, std::string api_secret, std::string category, std::string base_url,
-             std::string recv_window, HttpOptions options);
+  PublicRestClient(HttpClient& http, std::string category);
+  std::string get_server_time();
+  std::string get_instruments_info(int limit = 1000);
+  std::string get_instruments_info(const std::optional<std::string>& symbol, int limit = 1000,
+                                   const std::optional<std::string>& cursor = std::nullopt);
+  std::string get_tickers(const std::string& symbol = "");
+  std::string get_orderbook(const std::string& symbol, int limit = 50);
+  std::string get_kline(const std::string& symbol, const std::string& interval,
+                        const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_mark_price_kline(const std::string& symbol, const std::string& interval,
+                                   const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_index_price_kline(const std::string& symbol, const std::string& interval,
+                                    const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_premium_index_price_kline(const std::string& symbol, const std::string& interval,
+                                            const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
+  std::string get_recent_trades(const std::string& symbol, int limit = 50);
+  std::string get_funding_history(const std::string& symbol, int limit = 50);
+  std::string get_open_interest(const std::string& symbol, const std::string& interval, int limit = 50);
+  std::string get_long_short_ratio(const std::string& symbol, const std::string& period, int limit = 50);
+  std::string get_risk_limit(const std::optional<std::string>& symbol = std::nullopt,
+                             const std::optional<std::string>& cursor = std::nullopt);
+
+ private:
+  HttpClient& http_;
+  std::string category_;
+};
+
+class PrivateRestClient {
+ public:
+  PrivateRestClient(HttpClient& http, std::string category);
 
   std::string get_query_api_key();
   std::string get_account_info();
@@ -76,24 +114,6 @@ class RestClient {
   std::string create_withdrawal(const std::string& json_body);
   std::string get_position_info(const std::optional<std::string>& settle_coin = std::nullopt,
                                 const std::optional<std::string>& symbol = std::nullopt, int limit = 200);
-  std::string get_instruments_info(int limit = 1000);
-  std::string get_tickers(const std::string& symbol = "");
-  std::string get_orderbook(const std::string& symbol, int limit = 50);
-  std::string get_kline(const std::string& symbol, const std::string& interval,
-                        const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
-  std::string get_mark_price_kline(const std::string& symbol, const std::string& interval,
-                                   const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
-  std::string get_index_price_kline(const std::string& symbol, const std::string& interval,
-                                    const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
-  std::string get_premium_index_price_kline(const std::string& symbol, const std::string& interval,
-                                            const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
-  std::string get_recent_trades(const std::string& symbol, int limit = 50);
-  std::string get_funding_history(const std::string& symbol, int limit = 50);
-  std::string get_open_interest(const std::string& symbol, const std::string& interval, int limit = 50);
-  std::string get_long_short_ratio(const std::string& symbol, const std::string& period, int limit = 50);
-  std::string get_server_time();
-  std::string get_risk_limit(const std::optional<std::string>& symbol = std::nullopt,
-                             const std::optional<std::string>& cursor = std::nullopt);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx,
                            const std::string& price = "", const std::string& time_in_force = "GTC", const std::optional<bool>& reduce_only = std::nullopt,
@@ -110,7 +130,6 @@ class RestClient {
   std::string get_closed_options_positions(const QueryParams& filters = {});
   std::string get_fee_rate();
   std::string get_borrow_quota(const std::string& symbol, const std::string& side);
-  // category is provided per-call to avoid forcing a single accountType for all operations.
   std::string get_wallet_balance(const std::string& category, const std::optional<std::string>& coin = std::nullopt);
   std::string get_open_orders(const std::optional<std::string>& symbol = std::nullopt, int limit = 50);
   std::string get_realtime_orders(const QueryParams& filters = {});
@@ -135,9 +154,8 @@ class RestClient {
   std::string cancel_all(const std::string& symbol);
 
  private:
-  HttpClient http_;
-  PublicRestClient public_;
-  PrivateRestClient private_;
+  HttpClient& http_;
+  std::string category_;
 };
 
 }  // namespace bybit
