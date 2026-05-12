@@ -23,7 +23,7 @@ The library does not ship mock data, hidden fallbacks, or trading opinions. It s
 
 - REST V5 facade with public/private client separation.
 - HMAC-SHA256 request signing through OpenSSL and HTTP transport through libcurl.
-- Persistent libcurl easy handle per client for connection reuse, TLS session reuse, and per-handle DNS caching.
+- Persistent libcurl handles plus shared DNS/TLS-session caching for lower request setup cost.
 - Broad public market coverage including filter-complete instruments info, RPI orderbooks, volatility, ADL alerts, and fee groups.
 - Optional WebSocket V5 client behind `-DBYBIT_ENABLE_WEBSOCKET=ON`.
 - CMake install targets for package consumers, submodules, and `FetchContent`.

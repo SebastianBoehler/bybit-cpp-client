@@ -10,6 +10,7 @@ int main() {
   options.request_timeout_ms = 2500;
   options.dns_cache_timeout_seconds = 120;
   options.max_connections = 16;
+  options.share_dns_and_ssl_session_cache = false;
   options.tcp_keepalive = false;
   options.tcp_nodelay = false;
   options.proxy = "http://127.0.0.1:9";
@@ -18,6 +19,7 @@ int main() {
   bybit::HttpClient http{"key", "secret", "https://api.bybit.com", "5000", options};
   if (http.options().connect_timeout_ms != 1500 || http.options().request_timeout_ms != 2500 ||
       http.options().dns_cache_timeout_seconds != 120 || http.options().max_connections != 16 ||
+      http.options().share_dns_and_ssl_session_cache ||
       http.options().tcp_keepalive || http.options().tcp_nodelay ||
       http.options().proxy != "http://127.0.0.1:9" || http.options().user_agent != "bybit-cpp-client-test") {
     std::cerr << "HttpOptions were not retained by HttpClient\n";

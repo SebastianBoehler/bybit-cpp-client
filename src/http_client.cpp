@@ -58,11 +58,39 @@ void ensure_curl_global() {
   }
 }
 
+std::mutex& curl_share_mutex() {
+  static std::mutex mutex;
+  return mutex;
+}
+
+void curl_share_lock(CURL*, curl_lock_data, curl_lock_access, void*) { curl_share_mutex().lock(); }
+
+void curl_share_unlock(CURL*, curl_lock_data, void*) { curl_share_mutex().unlock(); }
+
+CURLSH* shared_curl_cache() {
+  static CURLSH* share = [&]() {
+    CURLSH* handle = curl_share_init();
+    if (!handle) throw std::runtime_error("Failed to init curl share handle");
+    if (curl_share_setopt(handle, CURLSHOPT_LOCKFUNC, curl_share_lock) != CURLSHE_OK ||
+        curl_share_setopt(handle, CURLSHOPT_UNLOCKFUNC, curl_share_unlock) != CURLSHE_OK ||
+        curl_share_setopt(handle, CURLSHOPT_SHARE, CURL_LOCK_DATA_DNS) != CURLSHE_OK ||
+        curl_share_setopt(handle, CURLSHOPT_SHARE, CURL_LOCK_DATA_SSL_SESSION) != CURLSHE_OK) {
+      curl_share_cleanup(handle);
+      throw std::runtime_error("Failed to configure curl share handle");
+    }
+    return handle;
+  }();
+  return share;
+}
+
 void apply_options(CURL* curl, const HttpOptions& options) {
   curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT_MS, options.connect_timeout_ms);
   curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, options.request_timeout_ms);
   curl_easy_setopt(curl, CURLOPT_DNS_CACHE_TIMEOUT, options.dns_cache_timeout_seconds);
   curl_easy_setopt(curl, CURLOPT_MAXCONNECTS, options.max_connections);
+  if (options.share_dns_and_ssl_session_cache) {
+    curl_easy_setopt(curl, CURLOPT_SHARE, shared_curl_cache());
+  }
   curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, options.tcp_keepalive ? 1L : 0L);
   curl_easy_setopt(curl, CURLOPT_TCP_NODELAY, options.tcp_nodelay ? 1L : 0L);
   if (options.tcp_keepalive) {

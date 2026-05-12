@@ -14,6 +14,7 @@ struct HttpOptions {
   long request_timeout_ms = 30000;
   long dns_cache_timeout_seconds = 300;
   long max_connections = 8;
+  bool share_dns_and_ssl_session_cache = true;
   bool tcp_keepalive = true;
   bool tcp_nodelay = true;
   long tcp_keepidle_seconds = 60;
