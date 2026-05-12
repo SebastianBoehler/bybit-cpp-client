@@ -51,6 +51,8 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `POST /v5/position/set-risk-limit` | `set_risk_limit(...)` |
 | `POST /v5/position/add-margin` | `add_margin(...)` |
 | `GET /v5/position/closed-pnl` | `get_closed_pnl(...)` |
+| `POST /v5/position/move-positions` | `move_positions(...)` |
+| `GET /v5/position/move-history` | `get_move_position_history(...)` |
 
 ### Account and User
 
@@ -67,7 +69,7 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 
 | Area | Status |
 | --- | --- |
-| Move Position | A legacy `move_position(...)` wrapper exists, but the current Bybit endpoint is `POST /v5/position/move-positions` and requires a list of legs with `category`, `symbol`, `price`, `side`, and `qty`. Treat this as not fully covered until a current-shape method is added. |
+| Legacy Move Position | `move_position(...)` is retained for compatibility with the old singular path. Prefer `move_positions(...)` for the current Bybit V5 endpoint. |
 | WebSocket | Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, but this coverage file tracks REST first. |
 
 ## Not Yet Covered
@@ -76,8 +78,6 @@ High-value REST gaps:
 
 - `POST /v5/order/pre-check`
 - `POST /v5/order/disconnected-cancel-all`
-- current-shape `POST /v5/position/move-positions`
-- `GET /v5/position/move-history`
 - `POST /v5/position/set-auto-add-margin`
 - `POST /v5/position/confirm-pending-mmr`
 - broader Account endpoints such as collateral, borrow history, coin greeks, MMP, and repayment

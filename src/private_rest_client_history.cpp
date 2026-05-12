@@ -40,6 +40,10 @@ std::string PrivateRestClient::get_closed_pnl(const QueryParams& filters) {
   return http_.get("/v5/position/closed-pnl", with_category(category_, filters), true);
 }
 
+std::string PrivateRestClient::get_move_position_history(const QueryParams& filters) {
+  return http_.get("/v5/position/move-history", with_category(category_, filters), true);
+}
+
 std::string PrivateRestClient::get_borrow_quota(const std::string& symbol, const std::string& side) {
   QueryParams params{{"category", "spot"}, {"symbol", symbol}, {"side", side}};
   return http_.get("/v5/order/spot-borrow-check", params, true);

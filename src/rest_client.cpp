@@ -146,6 +146,13 @@ std::string RestClient::move_position(const std::string& from_uid, const std::st
                                       const std::string& qty, int position_idx) {
   return private_.move_position(from_uid, to_uid, symbol, qty, position_idx);
 }
+std::string RestClient::move_positions(const std::string& from_uid, const std::string& to_uid,
+                                       const std::vector<MovePositionLeg>& legs) {
+  return private_.move_positions(from_uid, to_uid, legs);
+}
+std::string RestClient::get_move_position_history(const QueryParams& filters) {
+  return private_.get_move_position_history(filters);
+}
 std::string RestClient::set_trading_stop(const std::string& symbol, int position_idx,
                                          const std::optional<std::string>& take_profit,
                                          const std::optional<std::string>& stop_loss,

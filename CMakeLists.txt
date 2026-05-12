@@ -13,6 +13,7 @@ add_library(bybit_client
     src/public_rest_client.cpp
     src/private_rest_client.cpp
     src/private_rest_client_history.cpp
+    src/private_rest_client_position.cpp
     src/signing.cpp
     src/websocket_client.cpp
     src/websocket_topics.cpp

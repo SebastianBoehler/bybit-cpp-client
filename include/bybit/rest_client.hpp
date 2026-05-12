@@ -10,6 +10,14 @@ namespace bybit {
 
 using QueryParams = std::vector<std::pair<std::string, std::string>>;
 
+struct MovePositionLeg {
+  std::string category;
+  std::string symbol;
+  std::string price;
+  std::string side;
+  std::string qty;
+};
+
 class PublicRestClient {
  public:
   PublicRestClient(HttpClient& http, std::string category);
@@ -79,6 +87,9 @@ class PrivateRestClient {
   std::string get_transaction_log(int limit = 50, const std::optional<std::string>& cursor = std::nullopt);
   std::string move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol,
                             const std::string& qty, int position_idx = 1);
+  std::string move_positions(const std::string& from_uid, const std::string& to_uid,
+                             const std::vector<MovePositionLeg>& legs);
+  std::string get_move_position_history(const QueryParams& filters = {});
   std::string set_trading_stop(const std::string& symbol, int position_idx,
                                const std::optional<std::string>& take_profit = std::nullopt,
                                const std::optional<std::string>& stop_loss = std::nullopt,
@@ -157,6 +168,9 @@ class RestClient {
   std::string get_transaction_log(int limit = 50, const std::optional<std::string>& cursor = std::nullopt);
   std::string move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol,
                             const std::string& qty, int position_idx = 1);
+  std::string move_positions(const std::string& from_uid, const std::string& to_uid,
+                             const std::vector<MovePositionLeg>& legs);
+  std::string get_move_position_history(const QueryParams& filters = {});
   std::string set_trading_stop(const std::string& symbol, int position_idx,
                                const std::optional<std::string>& take_profit = std::nullopt,
                                const std::optional<std::string>& stop_loss = std::nullopt,

@@ -48,6 +48,8 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Filtered order history | `GET /v5/order/history` | `get_order_history(...)` |
 | Execution history | `GET /v5/execution/list` | `get_trade_history(...)` |
 | Closed PnL | `GET /v5/position/closed-pnl` | `get_closed_pnl(...)` |
+| Move positions | `POST /v5/position/move-positions` | `move_positions(...)` |
+| Move position history | `GET /v5/position/move-history` | `get_move_position_history(...)` |
 | Fee rates | `GET /v5/account/fee-rate` | `get_fee_rate()` |
 | Spot borrow quota | `GET /v5/order/spot-borrow-check` | `get_borrow_quota(...)` |
 

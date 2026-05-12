@@ -4,7 +4,6 @@ This project should become a complete, serious C++ Bybit Open API V5 library: br
 
 ## Near Term
 
-- Add current-shape support for `POST /v5/position/move-positions`.
 - Add richer order placement options without making simple market orders harder to use.
 - Add structured request builders for high-risk endpoints while preserving raw JSON response access.
 - Expand public tests that do not require credentials.

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 
 #include "bybit/http_client.hpp"
 #include "bybit/rest_client.hpp"
@@ -21,6 +22,11 @@ int main() {
   }
 
   bybit::RestClient client{"key", "secret", "linear", options};
-  (void)client;
+  try {
+    client.move_positions("from", "to", {});
+    std::cerr << "move_positions accepted an empty leg list\n";
+    return 1;
+  } catch (const std::invalid_argument&) {
+  }
   return 0;
 }
