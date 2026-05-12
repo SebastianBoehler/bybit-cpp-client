@@ -65,6 +65,7 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Asset transfers | `POST /v5/asset/transfer/*transfer` | `create_internal_transfer(...)`, `create_universal_transfer(...)` |
 | Asset history | `GET /v5/asset/fundinghistory`, `GET /v5/asset/delivery-record`, `GET /v5/asset/settlement-record` | `get_funding_account_history(...)`, `get_delivery_records(...)`, `get_settlement_records(...)` |
 | Asset conversion | `GET/POST /v5/asset/exchange/*` | `get_convert_coin_list(...)`, `request_convert_quote(...)`, `confirm_convert_quote(...)`, `get_convert_status(...)`, `get_convert_history(...)` |
+| Small-balance and fiat conversion | `GET/POST /v5/asset/covert/*`, `GET/POST /v5/fiat/*` | `request_small_balance_quote(...)`, `confirm_small_balance_quote(...)`, `request_fiat_quote(...)`, `confirm_fiat_quote(...)` |
 | Deposit records and settings | `GET/POST /v5/asset/deposit/*` | `get_deposit_records(...)`, `get_sub_deposit_records(...)`, `set_deposit_account(...)` |
 | Coin and withdrawal info | `GET /v5/asset/coin/query-info`, `GET /v5/asset/withdraw/*` | `get_coin_info(...)`, `get_withdrawable_amount(...)`, `get_withdrawal_records(...)` |
 | Withdrawal address and lifecycle | `GET/POST /v5/asset/withdraw/*` | `get_withdrawal_address_list(...)`, `create_withdrawal(...)`, `cancel_withdrawal(...)` |
@@ -97,7 +98,7 @@ Recent Bybit changes to keep in mind:
 - `Get API Key Information` includes `FiatBitPay` while the older `FiatBybitPay` field remains during transition.
 - `Place Order` supports BBO order parameters `bboSideType` and `bboLevel`; this client already exposes optional parameters for them.
 - Manual borrow/repay, Delta Neutral mode, pay info, option asset info, and spot trade analysis are active Account endpoints and are now wrapped.
-- Asset endpoints now cover core balances, portfolio overview, transfers, funding/delivery/settlement history, exchange records, crypto convert quote/execute/status/history, deposit records/settings, deposit addresses, coin metadata, withdrawable amount, VASP metadata, withdrawal addresses, withdrawal records, withdrawal creation, and cancellation.
+- Asset endpoints now cover core balances, portfolio overview, transfers, funding/delivery/settlement history, exchange records, crypto convert quote/execute/status/history, small-balance convert, fiat convert, deposit records/settings, deposit addresses, coin metadata, withdrawable amount, VASP metadata, withdrawal addresses, withdrawal records, withdrawal creation, and cancellation.
 - User endpoints now cover sub UID management, sub API key management, master API key mutation/deletion, UID wallet type, and affiliate user info.
 - Spot Margin Trade now covers UTA margin state, leverage, public VIP data, currency data, historical rates, tiered collateral ratio, position tiers, coin state, max borrowable amount, repayment controls, fixed-rate borrow lifecycle, and liability info.
 

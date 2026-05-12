@@ -57,6 +57,50 @@ std::string RestClient::get_convert_history(const QueryParams& filters) {
   return private_.get_convert_history(filters);
 }
 
+std::string RestClient::get_small_balance_coins(const QueryParams& filters) {
+  return private_.get_small_balance_coins(filters);
+}
+
+std::string RestClient::request_small_balance_quote(const std::string& json_body) {
+  return private_.request_small_balance_quote(json_body);
+}
+
+std::string RestClient::confirm_small_balance_quote(const std::string& quote_id) {
+  return private_.confirm_small_balance_quote(quote_id);
+}
+
+std::string RestClient::get_small_balance_history(const QueryParams& filters) {
+  return private_.get_small_balance_history(filters);
+}
+
+std::string RestClient::get_fiat_convert_coin_list(const QueryParams& filters) {
+  return private_.get_fiat_convert_coin_list(filters);
+}
+
+std::string RestClient::get_fiat_reference_price(const std::string& symbol) {
+  return private_.get_fiat_reference_price(symbol);
+}
+
+std::string RestClient::request_fiat_quote(const QueryParams& params) {
+  return private_.request_fiat_quote(params);
+}
+
+std::string RestClient::confirm_fiat_quote(const QueryParams& params) {
+  return private_.confirm_fiat_quote(params);
+}
+
+std::string RestClient::get_fiat_convert_status(const QueryParams& filters) {
+  return private_.get_fiat_convert_status(filters);
+}
+
+std::string RestClient::get_fiat_convert_history(const QueryParams& filters) {
+  return private_.get_fiat_convert_history(filters);
+}
+
+std::string RestClient::get_fiat_balance(const QueryParams& filters) {
+  return private_.get_fiat_balance(filters);
+}
+
 std::string RestClient::get_asset_sub_uids() {
   return private_.get_asset_sub_uids();
 }

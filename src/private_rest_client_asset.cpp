@@ -59,6 +59,50 @@ std::string PrivateRestClient::get_convert_history(const QueryParams& filters) {
   return http_.get("/v5/asset/exchange/query-convert-history", filters, true);
 }
 
+std::string PrivateRestClient::get_small_balance_coins(const QueryParams& filters) {
+  return http_.get("/v5/asset/covert/small-balance-list", filters, true);
+}
+
+std::string PrivateRestClient::request_small_balance_quote(const std::string& json_body) {
+  return http_.post("/v5/asset/covert/get-quote", json_body, true);
+}
+
+std::string PrivateRestClient::confirm_small_balance_quote(const std::string& quote_id) {
+  return http_.post("/v5/asset/covert/small-balance-execute", to_json_object({{"quoteId", quote_id}}), true);
+}
+
+std::string PrivateRestClient::get_small_balance_history(const QueryParams& filters) {
+  return http_.get("/v5/asset/covert/small-balance-history", filters, true);
+}
+
+std::string PrivateRestClient::get_fiat_convert_coin_list(const QueryParams& filters) {
+  return http_.get("/v5/fiat/query-coin-list", filters, true);
+}
+
+std::string PrivateRestClient::get_fiat_reference_price(const std::string& symbol) {
+  return http_.get("/v5/fiat/reference-price", {{"symbol", symbol}}, true);
+}
+
+std::string PrivateRestClient::request_fiat_quote(const QueryParams& params) {
+  return http_.post("/v5/fiat/quote-apply", to_json_object(params), true);
+}
+
+std::string PrivateRestClient::confirm_fiat_quote(const QueryParams& params) {
+  return http_.post("/v5/fiat/trade-execute", to_json_object(params), true);
+}
+
+std::string PrivateRestClient::get_fiat_convert_status(const QueryParams& filters) {
+  return http_.get("/v5/fiat/trade-query", filters, true);
+}
+
+std::string PrivateRestClient::get_fiat_convert_history(const QueryParams& filters) {
+  return http_.get("/v5/fiat/query-trade-history", filters, true);
+}
+
+std::string PrivateRestClient::get_fiat_balance(const QueryParams& filters) {
+  return http_.get("/v5/fiat/balance-query", filters, true);
+}
+
 std::string PrivateRestClient::get_asset_sub_uids() {
   return http_.get("/v5/asset/transfer/query-sub-member-list", {}, true);
 }

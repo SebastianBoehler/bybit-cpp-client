@@ -121,6 +121,17 @@ class PrivateRestClient {
   std::string confirm_convert_quote(const std::string& quote_tx_id);
   std::string get_convert_status(const std::string& quote_tx_id, const std::string& account_type);
   std::string get_convert_history(const QueryParams& filters = {});
+  std::string get_small_balance_coins(const QueryParams& filters);
+  std::string request_small_balance_quote(const std::string& json_body);
+  std::string confirm_small_balance_quote(const std::string& quote_id);
+  std::string get_small_balance_history(const QueryParams& filters = {});
+  std::string get_fiat_convert_coin_list(const QueryParams& filters = {});
+  std::string get_fiat_reference_price(const std::string& symbol);
+  std::string request_fiat_quote(const QueryParams& params);
+  std::string confirm_fiat_quote(const QueryParams& params);
+  std::string get_fiat_convert_status(const QueryParams& filters);
+  std::string get_fiat_convert_history(const QueryParams& filters = {});
+  std::string get_fiat_balance(const QueryParams& filters = {});
   std::string get_asset_sub_uids();
   std::string get_all_coin_balances(const QueryParams& filters);
   std::string get_single_coin_balance(const QueryParams& filters);

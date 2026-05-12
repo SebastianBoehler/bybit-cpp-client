@@ -122,6 +122,17 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `POST /v5/asset/exchange/convert-execute` | `confirm_convert_quote(...)` |
 | `GET /v5/asset/exchange/convert-result-query` | `get_convert_status(...)` |
 | `GET /v5/asset/exchange/query-convert-history` | `get_convert_history(...)` |
+| `GET /v5/asset/covert/small-balance-list` | `get_small_balance_coins(...)` |
+| `POST /v5/asset/covert/get-quote` | `request_small_balance_quote(...)` |
+| `POST /v5/asset/covert/small-balance-execute` | `confirm_small_balance_quote(...)` |
+| `GET /v5/asset/covert/small-balance-history` | `get_small_balance_history(...)` |
+| `GET /v5/fiat/query-coin-list` | `get_fiat_convert_coin_list(...)` |
+| `GET /v5/fiat/reference-price` | `get_fiat_reference_price(...)` |
+| `POST /v5/fiat/quote-apply` | `request_fiat_quote(...)` |
+| `POST /v5/fiat/trade-execute` | `confirm_fiat_quote(...)` |
+| `GET /v5/fiat/trade-query` | `get_fiat_convert_status(...)` |
+| `GET /v5/fiat/query-trade-history` | `get_fiat_convert_history(...)` |
+| `GET /v5/fiat/balance-query` | `get_fiat_balance(...)` |
 | `GET /v5/asset/transfer/query-sub-member-list` | `get_asset_sub_uids()` |
 | `GET /v5/asset/transfer/query-account-coins-balance` | `get_all_coin_balances(...)` |
 | `GET /v5/asset/transfer/query-account-coin-balance` | `get_single_coin_balance(...)` |
@@ -180,7 +191,7 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 
 High-value REST gaps:
 
-- remaining Asset endpoints for small-balance convert, fiat-convert, and broker-specific transfer controls
+- remaining Asset endpoints for broker-specific transfer controls
 
 Product areas not in scope yet:
 - Account upgrade, demo-funds, portfolio margin info, Spot Margin normal-account endpoints, and remaining niche account-mode operations
