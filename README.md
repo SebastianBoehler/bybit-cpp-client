@@ -23,6 +23,7 @@ The library does not ship mock data, hidden fallbacks, or trading opinions. It s
 
 - REST V5 facade with public/private client separation.
 - HMAC-SHA256 request signing through OpenSSL and HTTP transport through libcurl.
+- Persistent libcurl easy handle per client for connection reuse, TLS session reuse, and per-handle DNS caching.
 - Optional WebSocket V5 client behind `-DBYBIT_ENABLE_WEBSOCKET=ON`.
 - CMake install targets for package consumers, submodules, and `FetchContent`.
 - Small examples for market data, positions, wallet balance, orders, and WebSocket streams.
@@ -183,6 +184,8 @@ ctest --test-dir build-ws --output-on-failure
 ```
 
 Keep route methods thin. Shared signing, encoding, request dispatch, and category-specific details should live in reusable helpers rather than being duplicated across endpoints.
+
+See [`docs/performance.md`](./docs/performance.md) for the current transport-performance model and [`ROADMAP.md`](./ROADMAP.md) for the path toward broader coverage and stronger library ergonomics.
 
 ## Repository Layout
 

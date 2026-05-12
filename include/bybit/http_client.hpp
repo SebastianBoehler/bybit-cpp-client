@@ -2,6 +2,7 @@
 
 #include <curl/curl.h>
 
+#include <mutex>
 #include <optional>
 #include <string>
 #include <vector>
@@ -12,6 +13,12 @@ namespace bybit {
 class HttpClient {
  public:
   HttpClient(std::string api_key, std::string api_secret, std::string base_url, std::string recv_window);
+  ~HttpClient();
+
+  HttpClient(const HttpClient&) = delete;
+  HttpClient& operator=(const HttpClient&) = delete;
+  HttpClient(HttpClient&&) = delete;
+  HttpClient& operator=(HttpClient&&) = delete;
 
   // GET with optional signing.
   std::string get(const std::string& path, const std::vector<std::pair<std::string, std::string>>& params,
@@ -30,6 +37,8 @@ class HttpClient {
   std::string api_secret_;
   std::string base_url_;
   std::string recv_window_;
+  mutable std::mutex curl_mutex_;
+  CURL* curl_;
 };
 
 std::string to_json_object(const std::vector<std::pair<std::string, std::string>>& kvs);

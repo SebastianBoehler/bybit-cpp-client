@@ -3,6 +3,7 @@
 #include <curl/curl.h>
 
 #include <algorithm>
+#include <mutex>
 #include <sstream>
 #include <stdexcept>
 
@@ -47,6 +48,8 @@ std::string json_escape(const std::string& input) {
 
 void ensure_curl_global() {
   static bool initialized = false;
+  static std::mutex init_mutex;
+  std::lock_guard<std::mutex> lock(init_mutex);
   if (!initialized) {
     if (curl_global_init(CURL_GLOBAL_DEFAULT) != 0) {
       throw std::runtime_error("Failed to init curl");
@@ -83,8 +86,21 @@ HttpClient::HttpClient(std::string api_key, std::string api_secret, std::string 
     : api_key_(std::move(api_key)),
       api_secret_(std::move(api_secret)),
       base_url_(std::move(base_url)),
-      recv_window_(std::move(recv_window)) {
+      recv_window_(std::move(recv_window)),
+      curl_(nullptr) {
   ensure_curl_global();
+  curl_ = curl_easy_init();
+  if (!curl_) {
+    throw std::runtime_error("Failed to init curl easy handle");
+  }
+  curl_easy_setopt(curl_, CURLOPT_TCP_KEEPALIVE, 1L);
+  curl_easy_setopt(curl_, CURLOPT_DNS_CACHE_TIMEOUT, 300L);
+}
+
+HttpClient::~HttpClient() {
+  if (curl_) {
+    curl_easy_cleanup(curl_);
+  }
 }
 
 std::string HttpClient::get(const std::string& path, const std::vector<std::pair<std::string, std::string>>& params,
@@ -101,6 +117,9 @@ std::string HttpClient::get(const std::string& path, const std::vector<std::pair
   }
 
   std::string payload = query;
+  std::string response;
+  std::lock_guard<std::mutex> lock(curl_mutex_);
+
   struct curl_slist* headers = nullptr;
   if (is_private) {
     auto signed_req = Signer::sign(api_key_, api_secret_, payload, recv_window_);
@@ -110,24 +129,19 @@ std::string HttpClient::get(const std::string& path, const std::vector<std::pair
     headers = curl_slist_append(headers, ("X-BAPI-SIGN: " + signed_req.signature).c_str());
   }
 
-  CURL* curl = curl_easy_init();
-  if (!curl) {
-    if (headers) curl_slist_free_all(headers);
-    throw std::runtime_error("Failed to init curl easy handle");
-  }
+  curl_easy_reset(curl_);
+  curl_easy_setopt(curl_, CURLOPT_TCP_KEEPALIVE, 1L);
+  curl_easy_setopt(curl_, CURLOPT_DNS_CACHE_TIMEOUT, 300L);
+  curl_easy_setopt(curl_, CURLOPT_URL, url.c_str());
+  curl_easy_setopt(curl_, CURLOPT_HTTPGET, 1L);
+  curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, write_callback);
+  curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &response);
+  if (headers) curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, headers);
 
-  std::string response;
-  curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-  curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
-  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
-  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-  if (headers) curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-
-  auto res = curl_easy_perform(curl);
+  auto res = curl_easy_perform(curl_);
   long status = 0;
-  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
+  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status);
 
-  curl_easy_cleanup(curl);
   if (headers) curl_slist_free_all(headers);
 
   if (res != CURLE_OK) {
@@ -144,6 +158,8 @@ std::string HttpClient::get(const std::string& path, const std::vector<std::pair
 std::string HttpClient::post(const std::string& path, const std::string& body, bool is_private) const {
   std::string url = join_url(base_url_, path);
   std::string payload = body;
+  std::string response;
+  std::lock_guard<std::mutex> lock(curl_mutex_);
 
   struct curl_slist* headers = nullptr;
   headers = curl_slist_append(headers, "Content-Type: application/json");
@@ -155,25 +171,20 @@ std::string HttpClient::post(const std::string& path, const std::string& body, b
     headers = curl_slist_append(headers, ("X-BAPI-SIGN: " + signed_req.signature).c_str());
   }
 
-  CURL* curl = curl_easy_init();
-  if (!curl) {
-    curl_slist_free_all(headers);
-    throw std::runtime_error("Failed to init curl easy handle");
-  }
+  curl_easy_reset(curl_);
+  curl_easy_setopt(curl_, CURLOPT_TCP_KEEPALIVE, 1L);
+  curl_easy_setopt(curl_, CURLOPT_DNS_CACHE_TIMEOUT, 300L);
+  curl_easy_setopt(curl_, CURLOPT_URL, url.c_str());
+  curl_easy_setopt(curl_, CURLOPT_POST, 1L);
+  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, body.c_str());
+  curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, write_callback);
+  curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &response);
+  curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, headers);
 
-  std::string response;
-  curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-  curl_easy_setopt(curl, CURLOPT_POST, 1L);
-  curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
-  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
-  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-  curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-
-  auto res = curl_easy_perform(curl);
+  auto res = curl_easy_perform(curl_);
   long status = 0;
-  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status);
+  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status);
 
-  curl_easy_cleanup(curl);
   curl_slist_free_all(headers);
 
   if (res != CURLE_OK) {
