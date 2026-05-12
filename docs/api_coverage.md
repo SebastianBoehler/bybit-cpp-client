@@ -9,7 +9,7 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | Endpoint | Method |
 | --- | --- |
 | `GET /v5/market/time` | `get_server_time()` |
-| `GET /v5/market/instruments-info` | `get_instruments_info(...)` |
+| `GET /v5/market/instruments-info` with symbol, symbolType, status, baseCoin, limit, and cursor filters | `get_instruments_info(...)` |
 | `GET /v5/market/tickers` | `get_tickers(...)` |
 | `GET /v5/market/orderbook` | `get_orderbook(...)` |
 | `GET /v5/market/kline` | `get_kline(...)` |

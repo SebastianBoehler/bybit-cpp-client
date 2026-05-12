@@ -1,4 +1,5 @@
 #include <optional>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -6,6 +7,16 @@
 #include "bybit/rest_client.hpp"
 
 namespace bybit {
+namespace {
+
+bool has_param(const QueryParams& params, const std::string& key) {
+  for (const auto& param : params) {
+    if (param.first == key) return true;
+  }
+  return false;
+}
+
+}  // namespace
 
 PublicRestClient::PublicRestClient(HttpClient& http, std::string category)
     : http_(http), category_(std::move(category)) {}
@@ -15,8 +26,20 @@ std::string PublicRestClient::get_server_time() {
 }
 
 std::string PublicRestClient::get_instruments_info(int limit) {
-  std::vector<std::pair<std::string, std::string>> params{{"category", category_}, {"limit", std::to_string(limit)}};
-  return http_.get("/v5/market/instruments-info", params, false);
+  return get_instruments_info(QueryParams{{"limit", std::to_string(limit)}});
+}
+
+std::string PublicRestClient::get_instruments_info(QueryParams filters) {
+  if (!has_param(filters, "category")) filters.emplace_back("category", category_);
+  return http_.get("/v5/market/instruments-info", filters, false);
+}
+
+std::string PublicRestClient::get_instruments_info(const std::optional<std::string>& symbol, int limit,
+                                                   const std::optional<std::string>& cursor) {
+  QueryParams params{{"limit", std::to_string(limit)}};
+  if (symbol) params.emplace_back("symbol", *symbol);
+  if (cursor) params.emplace_back("cursor", *cursor);
+  return get_instruments_info(std::move(params));
 }
 
 std::string PublicRestClient::get_tickers(const std::string& symbol) {

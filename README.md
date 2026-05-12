@@ -24,7 +24,7 @@ The library does not ship mock data, hidden fallbacks, or trading opinions. It s
 - REST V5 facade with public/private client separation.
 - HMAC-SHA256 request signing through OpenSSL and HTTP transport through libcurl.
 - Persistent libcurl easy handle per client for connection reuse, TLS session reuse, and per-handle DNS caching.
-- Broad public market coverage including RPI orderbooks, volatility, insurance, delivery prices, ADL alerts, and fee groups.
+- Broad public market coverage including filter-complete instruments info, RPI orderbooks, volatility, ADL alerts, and fee groups.
 - Optional WebSocket V5 client behind `-DBYBIT_ENABLE_WEBSOCKET=ON`.
 - CMake install targets for package consumers, submodules, and `FetchContent`.
 - Small examples for market data, positions, wallet balance, orders, and WebSocket streams.
@@ -84,7 +84,7 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Coin and withdrawal info | `GET /v5/asset/coin/query-info`, `GET /v5/asset/withdraw/*` | `get_coin_info(...)`, `get_withdrawable_amount(...)`, `get_withdrawal_records(...)` |
 | Withdrawal address and lifecycle | `GET/POST /v5/asset/withdraw/*` | `get_withdrawal_address_list(...)`, `create_withdrawal(...)`, `cancel_withdrawal(...)` |
 | Open positions | `GET /v5/position/list` | `get_position_info(...)` |
-| Instrument specs and lot size | `GET /v5/market/instruments-info` | `get_instruments_info(...)` |
+| Instrument specs, xStocks, pre-market filters and lot size | `GET /v5/market/instruments-info` | `get_instruments_info(...)` |
 | Risk tiers | `GET /v5/market/risk-limit` | `get_risk_limit(...)` |
 | Place order | `POST /v5/order/create` | `submit_order(...)` |
 | Pre-check order | `POST /v5/order/pre-check` | `pre_check_order(...)` |

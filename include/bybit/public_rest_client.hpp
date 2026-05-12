@@ -13,6 +13,7 @@ class PublicRestClient {
   PublicRestClient(HttpClient& http, std::string category);
   std::string get_server_time();
   std::string get_instruments_info(int limit = 1000);
+  std::string get_instruments_info(QueryParams filters);
   std::string get_instruments_info(const std::optional<std::string>& symbol, int limit = 1000,
                                    const std::optional<std::string>& cursor = std::nullopt);
   std::string get_tickers(const std::string& symbol = "");

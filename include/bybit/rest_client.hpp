@@ -161,6 +161,9 @@ class RestClient {
   std::string get_position_info(const std::optional<std::string>& settle_coin = std::nullopt,
                                 const std::optional<std::string>& symbol = std::nullopt, int limit = 200);
   std::string get_instruments_info(int limit = 1000);
+  std::string get_instruments_info(QueryParams filters);
+  std::string get_instruments_info(const std::optional<std::string>& symbol, int limit = 1000,
+                                   const std::optional<std::string>& cursor = std::nullopt);
   std::string get_tickers(const std::string& symbol = "");
   std::string get_orderbook(const std::string& symbol, int limit = 50);
   std::string get_kline(const std::string& symbol, const std::string& interval,

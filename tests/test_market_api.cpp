@@ -1,8 +1,16 @@
 #include "bybit/rest_client.hpp"
 
+#include <optional>
+#include <string>
+
 int main() {
   using RestClient = bybit::RestClient;
+  using QueryParams = bybit::QueryParams;
 
+  auto instruments_filters = static_cast<std::string (RestClient::*)(QueryParams)>(&RestClient::get_instruments_info);
+  auto instruments_cursor =
+      static_cast<std::string (RestClient::*)(const std::optional<std::string>&, int,
+                                              const std::optional<std::string>&)>(&RestClient::get_instruments_info);
   auto rpi_orderbook = &RestClient::get_rpi_orderbook;
   auto historical_volatility = &RestClient::get_historical_volatility;
   auto insurance = &RestClient::get_insurance;
@@ -15,6 +23,8 @@ int main() {
   auto announcements = &RestClient::get_announcements;
   auto system_status = &RestClient::get_system_status;
 
+  (void)instruments_filters;
+  (void)instruments_cursor;
   (void)rpi_orderbook;
   (void)historical_volatility;
   (void)insurance;

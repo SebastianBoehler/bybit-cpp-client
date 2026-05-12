@@ -108,6 +108,13 @@ std::string RestClient::get_position_info(const std::optional<std::string>& sett
 std::string RestClient::get_instruments_info(int limit) {
   return public_.get_instruments_info(limit);
 }
+std::string RestClient::get_instruments_info(QueryParams filters) {
+  return public_.get_instruments_info(std::move(filters));
+}
+std::string RestClient::get_instruments_info(const std::optional<std::string>& symbol, int limit,
+                                             const std::optional<std::string>& cursor) {
+  return public_.get_instruments_info(symbol, limit, cursor);
+}
 std::string RestClient::get_tickers(const std::string& symbol) {
   return public_.get_tickers(symbol);
 }
