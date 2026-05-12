@@ -1,6 +1,8 @@
 #include "bybit/http_client.hpp"
 
 #include <algorithm>
+#include <cctype>
+#include <iomanip>
 #include <sstream>
 
 namespace bybit {
@@ -11,6 +13,23 @@ std::string json_escape(const std::string& input) {
   for (char c : input) {
     if (c == '"' || c == '\\') oss << '\\';
     oss << c;
+  }
+  return oss.str();
+}
+
+bool is_unreserved(unsigned char c) {
+  return std::isalnum(c) || c == '-' || c == '.' || c == '_' || c == '~';
+}
+
+std::string percent_encode(const std::string& input) {
+  std::ostringstream oss;
+  oss << std::uppercase << std::hex;
+  for (unsigned char c : input) {
+    if (is_unreserved(c)) {
+      oss << c;
+    } else {
+      oss << '%' << std::setw(2) << std::setfill('0') << static_cast<int>(c);
+    }
   }
   return oss.str();
 }
@@ -33,7 +52,7 @@ std::string canonical_query(const std::vector<std::pair<std::string, std::string
   std::sort(sorted.begin(), sorted.end(), [](const auto& a, const auto& b) { return a.first < b.first; });
   std::ostringstream oss;
   for (size_t i = 0; i < sorted.size(); ++i) {
-    oss << sorted[i].first << "=" << sorted[i].second;
+    oss << percent_encode(sorted[i].first) << "=" << percent_encode(sorted[i].second);
     if (i + 1 < sorted.size()) oss << "&";
   }
   return oss.str();
