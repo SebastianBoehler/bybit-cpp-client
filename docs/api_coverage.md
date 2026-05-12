@@ -194,6 +194,13 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `GET /v5/pre-upgrade/asset/delivery-record` | `get_pre_upgrade_delivery_records(...)` |
 | `GET /v5/pre-upgrade/asset/settlement-record` | `get_pre_upgrade_settlement_records(...)` |
 
+### Affiliate
+
+| Endpoint | Method |
+| --- | --- |
+| `GET /v5/affiliate/aff-user-list` | `get_affiliate_user_list(...)` |
+| `GET /v5/user/aff-customer-info` | `get_affiliate_user_info(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |
@@ -211,7 +218,6 @@ Product areas not in scope yet:
 - Spot Margin normal-account endpoints and remaining niche account-mode operations
 - Spread Trading
 - RFQ Trading
-- Affiliate
 - Crypto Loan and Institutional Loan
 - Broker
 - Finance

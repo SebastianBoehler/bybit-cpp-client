@@ -74,6 +74,10 @@ std::string PrivateRestClient::get_uid_wallet_type(const std::optional<std::stri
   return http_.get("/v5/user/get-member-type", params, true);
 }
 
+std::string PrivateRestClient::get_affiliate_user_list(const QueryParams& filters) {
+  return http_.get("/v5/affiliate/aff-user-list", filters, true);
+}
+
 std::string PrivateRestClient::get_affiliate_user_info(const QueryParams& filters) {
   return http_.get("/v5/user/aff-customer-info", filters, true);
 }

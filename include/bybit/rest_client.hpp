@@ -52,6 +52,7 @@ class RestClient {
   std::string update_sub_api_key(const std::string& json_body);
   std::string delete_sub_api_key(const std::optional<std::string>& api_key = std::nullopt);
   std::string get_uid_wallet_type(const std::optional<std::string>& member_ids = std::nullopt);
+  std::string get_affiliate_user_list(const QueryParams& filters = {});
   std::string get_affiliate_user_info(const QueryParams& filters = {});
   std::string get_spot_margin_vip_data(const QueryParams& filters = {});
   std::string get_spot_margin_currency_data(const std::optional<std::string>& currency = std::nullopt);

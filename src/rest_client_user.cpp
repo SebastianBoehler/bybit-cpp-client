@@ -53,6 +53,10 @@ std::string RestClient::get_uid_wallet_type(const std::optional<std::string>& me
   return private_.get_uid_wallet_type(member_ids);
 }
 
+std::string RestClient::get_affiliate_user_list(const QueryParams& filters) {
+  return private_.get_affiliate_user_list(filters);
+}
+
 std::string RestClient::get_affiliate_user_info(const QueryParams& filters) {
   return private_.get_affiliate_user_info(filters);
 }
