@@ -28,7 +28,6 @@ See [`docs/api_coverage.md`](./docs/api_coverage.md) for the detailed map.
 ## Project Quality
 
 - Add generated API reference docs.
-- Add sanitizer CI jobs.
 - Add clang-format installation to CI and document local setup.
 - Add release checklist automation.
 
