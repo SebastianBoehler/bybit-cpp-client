@@ -1,7 +1,7 @@
-#include "bybit/public_rest_client.hpp"
-
 #include <utility>
 #include <vector>
+
+#include "bybit/public_rest_client.hpp"
 
 namespace bybit {
 
@@ -38,7 +38,8 @@ std::string PublicRestClient::get_order_price_limit(const std::string& symbol,
 
 std::string PublicRestClient::get_adl_alert(const std::optional<std::string>& symbol) {
   QueryParams params;
-  if (symbol) params.emplace_back("symbol", *symbol);
+  if (symbol)
+    params.emplace_back("symbol", *symbol);
   return http_.get("/v5/market/adlAlert", params, false);
 }
 

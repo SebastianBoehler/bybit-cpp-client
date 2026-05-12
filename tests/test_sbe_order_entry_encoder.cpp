@@ -1,10 +1,10 @@
-#include "bybit/sbe_order_entry_encoder.hpp"
-
 #include <cassert>
 #include <cstdint>
 #include <cstring>
 #include <stdexcept>
 #include <string>
+
+#include "bybit/sbe_order_entry_encoder.hpp"
 
 namespace {
 

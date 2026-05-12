@@ -165,7 +165,8 @@ std::string PrivateRestClient::get_sub_deposit_address(const QueryParams& filter
 
 std::string PrivateRestClient::get_coin_info(const std::optional<std::string>& coin) {
   QueryParams params;
-  if (coin) params.emplace_back("coin", *coin);
+  if (coin)
+    params.emplace_back("coin", *coin);
   return http_.get("/v5/asset/coin/query-info", params, true);
 }
 

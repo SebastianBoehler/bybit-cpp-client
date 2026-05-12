@@ -7,7 +7,8 @@
 #include "bybit/rest_client.hpp"
 
 std::string getenv_or(const char* key, const std::string& fallback) {
-  if (const char* v = std::getenv(key)) return std::string(v);
+  if (const char* v = std::getenv(key))
+    return std::string(v);
   return fallback;
 }
 

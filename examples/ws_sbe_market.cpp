@@ -12,7 +12,8 @@ std::vector<std::string> split_csv(const std::string& csv) {
   std::stringstream stream(csv);
   std::string value;
   while (std::getline(stream, value, ',')) {
-    if (!value.empty()) values.push_back(value);
+    if (!value.empty())
+      values.push_back(value);
   }
   return values;
 }
@@ -30,12 +31,9 @@ int main() {
   bybit::WebSocketClient ws{endpoint};
   ws.enable_auto_reconnect(true, 8);
 
-  ws.set_message_handler([](const std::string& message) {
-    std::cout << message << std::endl;
-  });
-  ws.set_binary_message_handler([](const std::string& payload) {
-    std::cout << "binary SBE payload bytes=" << payload.size() << std::endl;
-  });
+  ws.set_message_handler([](const std::string& message) { std::cout << message << std::endl; });
+  ws.set_binary_message_handler(
+      [](const std::string& payload) { std::cout << "binary SBE payload bytes=" << payload.size() << std::endl; });
 
   ws.connect();
   ws.subscribe_sbe_bbo(symbols, "sbe-bbo");

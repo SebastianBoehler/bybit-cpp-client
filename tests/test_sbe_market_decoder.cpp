@@ -36,7 +36,8 @@ std::string header(std::uint16_t block_length, std::uint16_t template_id) {
 int main() {
   {
     auto payload = header(98, 20000);
-    for (std::int64_t value = 1; value <= 12; ++value) put<std::int64_t>(payload, value);
+    for (std::int64_t value = 1; value <= 12; ++value)
+      put<std::int64_t>(payload, value);
     put<std::int8_t>(payload, -2);
     put<std::int8_t>(payload, -3);
     put_string(payload, "BTCUSDT");

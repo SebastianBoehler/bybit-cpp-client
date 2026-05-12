@@ -7,17 +7,18 @@
 
 // Order book streaming demo: subscribes to depth-50 book updates for given symbols.
 int main() {
-  const std::string endpoint = std::getenv("BYBIT_WS_ENDPOINT") ? std::string(std::getenv("BYBIT_WS_ENDPOINT"))
-                                                                : "wss://stream.bybit.com/v5/public/linear";
-  const std::string symbols_env =
-      std::getenv("BYBIT_WS_SYMBOLS") ? std::string(std::getenv("BYBIT_WS_SYMBOLS")) : "BTCUSDT,ETHUSDT";
+  const char* endpoint_env = std::getenv("BYBIT_WS_ENDPOINT");
+  const char* symbols_value = std::getenv("BYBIT_WS_SYMBOLS");
+  const std::string endpoint = endpoint_env ? std::string(endpoint_env) : "wss://stream.bybit.com/v5/public/linear";
+  const std::string symbols_env = symbols_value ? std::string(symbols_value) : "BTCUSDT,ETHUSDT";
 
   std::vector<std::string> symbols;
   {
     std::stringstream ss(symbols_env);
     std::string item;
     while (std::getline(ss, item, ',')) {
-      if (!item.empty()) symbols.push_back(item);
+      if (!item.empty())
+        symbols.push_back(item);
     }
   }
 

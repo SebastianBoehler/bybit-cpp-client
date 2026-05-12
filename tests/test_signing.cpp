@@ -8,7 +8,7 @@ int main() {
   const std::string api_secret = "secret";
   const std::string timestamp = "1700000000000";
   const std::string recv_window = "5000";
-  const std::string payload = "";
+  const std::string payload;
 
   auto signed_req = bybit::Signer::sign_with_timestamp(api_key, api_secret, payload, timestamp, recv_window);
 

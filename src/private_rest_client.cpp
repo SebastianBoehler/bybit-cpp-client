@@ -36,10 +36,12 @@ std::string build_batch_body(const std::string& category, const std::string& rec
     oss << "{";
     for (size_t j = 0; j < kvs.size(); ++j) {
       oss << "\"" << json_escape_local(kvs[j].first) << "\":\"" << json_escape_local(kvs[j].second) << "\"";
-      if (j + 1 < kvs.size()) oss << ",";
+      if (j + 1 < kvs.size())
+        oss << ",";
     }
     oss << "}";
-    if (i + 1 < requests.size()) oss << ",";
+    if (i + 1 < requests.size())
+      oss << ",";
   }
   oss << "],\"recvWindow\":\"" << json_escape_local(recv_window) << "\"}";
   return oss.str();
@@ -60,8 +62,10 @@ std::string PrivateRestClient::get_account_info() {
 std::string PrivateRestClient::get_position_info(const std::optional<std::string>& settle_coin,
                                                  const std::optional<std::string>& symbol, int limit) {
   std::vector<std::pair<std::string, std::string>> params{{"category", category_}, {"limit", std::to_string(limit)}};
-  if (settle_coin) params.emplace_back("settleCoin", *settle_coin);
-  if (symbol) params.emplace_back("symbol", *symbol);
+  if (settle_coin)
+    params.emplace_back("settleCoin", *settle_coin);
+  if (symbol)
+    params.emplace_back("symbol", *symbol);
   return http_.get("/v5/position/list", params, true);
 }
 
@@ -80,11 +84,16 @@ std::string PrivateRestClient::submit_order(const std::string& symbol, const std
                                                            {"orderLinkId", order_link_id},
                                                            {"positionIdx", std::to_string(position_idx)},
                                                            {"recvWindow", http_.recv_window()}};
-  if (!price.empty()) body_kv.emplace_back("price", price);
-  if (!time_in_force.empty()) body_kv.emplace_back("timeInForce", time_in_force);
-  if (reduce_only.has_value()) body_kv.emplace_back("reduceOnly", *reduce_only ? "true" : "false");
-  if (bbo_side_type.has_value()) body_kv.emplace_back("bboSideType", *bbo_side_type);
-  if (bbo_level.has_value()) body_kv.emplace_back("bboLevel", *bbo_level);
+  if (!price.empty())
+    body_kv.emplace_back("price", price);
+  if (!time_in_force.empty())
+    body_kv.emplace_back("timeInForce", time_in_force);
+  if (reduce_only.has_value())
+    body_kv.emplace_back("reduceOnly", *reduce_only ? "true" : "false");
+  if (bbo_side_type.has_value())
+    body_kv.emplace_back("bboSideType", *bbo_side_type);
+  if (bbo_level.has_value())
+    body_kv.emplace_back("bboLevel", *bbo_level);
   return http_.post("/v5/order/create", to_json_object(body_kv), true);
 }
 
@@ -124,13 +133,15 @@ std::string PrivateRestClient::get_fee_rate() {
 
 std::string PrivateRestClient::get_wallet_balance(const std::string& category, const std::optional<std::string>& coin) {
   std::vector<std::pair<std::string, std::string>> params{{"accountType", category}};
-  if (coin) params.emplace_back("coin", *coin);
+  if (coin)
+    params.emplace_back("coin", *coin);
   return http_.get("/v5/account/wallet-balance", params, true);
 }
 
 std::string PrivateRestClient::get_open_orders(const std::optional<std::string>& symbol, int limit) {
   QueryParams params{{"limit", std::to_string(limit)}};
-  if (symbol) params.emplace_back("symbol", *symbol);
+  if (symbol)
+    params.emplace_back("symbol", *symbol);
   return get_realtime_orders(params);
 }
 
@@ -145,14 +156,17 @@ std::string PrivateRestClient::amend_order(const std::string& symbol, const std:
                                            const std::optional<std::string>& price) {
   std::vector<std::pair<std::string, std::string>> body_kv{
       {"category", category_}, {"symbol", symbol}, {"orderId", order_id}, {"recvWindow", http_.recv_window()}};
-  if (qty) body_kv.emplace_back("qty", *qty);
-  if (price) body_kv.emplace_back("price", *price);
+  if (qty)
+    body_kv.emplace_back("qty", *qty);
+  if (price)
+    body_kv.emplace_back("price", *price);
   return http_.post("/v5/order/amend", to_json_object(body_kv), true);
 }
 
 std::string PrivateRestClient::get_transaction_log(int limit, const std::optional<std::string>& cursor) {
   std::vector<std::pair<std::string, std::string>> params{{"accountType", category_}, {"limit", std::to_string(limit)}};
-  if (cursor) params.emplace_back("cursor", *cursor);
+  if (cursor)
+    params.emplace_back("cursor", *cursor);
   return http_.get("/v5/account/transaction-log", params, true);
 }
 
@@ -175,9 +189,12 @@ std::string PrivateRestClient::set_trading_stop(const std::string& symbol, int p
                                                            {"symbol", symbol},
                                                            {"positionIdx", std::to_string(position_idx)},
                                                            {"recvWindow", http_.recv_window()}};
-  if (take_profit) body_kv.emplace_back("takeProfit", *take_profit);
-  if (stop_loss) body_kv.emplace_back("stopLoss", *stop_loss);
-  if (trailing_stop) body_kv.emplace_back("trailingStop", *trailing_stop);
+  if (take_profit)
+    body_kv.emplace_back("takeProfit", *take_profit);
+  if (stop_loss)
+    body_kv.emplace_back("stopLoss", *stop_loss);
+  if (trailing_stop)
+    body_kv.emplace_back("trailingStop", *trailing_stop);
   return http_.post("/v5/position/trading-stop", to_json_object(body_kv), true);
 }
 

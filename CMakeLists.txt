@@ -3,9 +3,74 @@ project(BybitCppClient VERSION 0.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(OpenSSL REQUIRED)
 find_package(CURL REQUIRED)
+
+file(GLOB_RECURSE BYBIT_STYLE_FILES CONFIGURE_DEPENDS
+    include/*.hpp
+    src/*.cpp
+    tests/*.cpp
+    examples/*.cpp
+)
+file(GLOB_RECURSE BYBIT_LINT_FILES CONFIGURE_DEPENDS
+    src/*.cpp
+    tests/*.cpp
+    examples/*.cpp
+)
+
+find_program(CLANG_FORMAT_EXE NAMES clang-format HINTS
+    /opt/homebrew/opt/llvm/bin
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+)
+if(CLANG_FORMAT_EXE)
+    add_custom_target(format
+        COMMAND ${CLANG_FORMAT_EXE} -i ${BYBIT_STYLE_FILES}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMENT "Formatting C++ sources with clang-format"
+    )
+    add_custom_target(format-check
+        COMMAND ${CLANG_FORMAT_EXE} --dry-run --Werror ${BYBIT_STYLE_FILES}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMENT "Checking C++ formatting with clang-format"
+    )
+else()
+    add_custom_target(format
+        COMMAND ${CMAKE_COMMAND} -E echo "clang-format not found; install it to run format"
+    )
+    add_custom_target(format-check
+        COMMAND ${CMAKE_COMMAND} -E false
+        COMMENT "clang-format not found; install it to run format-check"
+    )
+endif()
+
+find_program(CLANG_TIDY_EXE NAMES clang-tidy HINTS /opt/homebrew/opt/llvm/bin)
+if(CLANG_TIDY_EXE)
+    set(BYBIT_CLANG_TIDY_ARGS --quiet -p ${CMAKE_BINARY_DIR})
+    if(APPLE)
+        execute_process(
+            COMMAND xcrun --show-sdk-path
+            OUTPUT_VARIABLE BYBIT_APPLE_SYSROOT
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            ERROR_QUIET
+        )
+        if(BYBIT_APPLE_SYSROOT)
+            list(APPEND BYBIT_CLANG_TIDY_ARGS --extra-arg=-isysroot --extra-arg=${BYBIT_APPLE_SYSROOT})
+        endif()
+        list(APPEND BYBIT_CLANG_TIDY_ARGS --extra-arg=-stdlib=libc++)
+    endif()
+    add_custom_target(lint
+        COMMAND ${CLANG_TIDY_EXE} ${BYBIT_CLANG_TIDY_ARGS} ${BYBIT_LINT_FILES}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMENT "Linting C++ sources with clang-tidy"
+    )
+else()
+    add_custom_target(lint
+        COMMAND ${CMAKE_COMMAND} -E false
+        COMMENT "clang-tidy not found; install it to run lint"
+    )
+endif()
 
 add_library(bybit_client
     src/rest_client.cpp

@@ -1,9 +1,9 @@
-#include "bybit/http_client.hpp"
-
 #include <algorithm>
 #include <cctype>
 #include <iomanip>
 #include <sstream>
+
+#include "bybit/http_client.hpp"
 
 namespace bybit {
 namespace {
@@ -11,7 +11,8 @@ namespace {
 std::string json_escape(const std::string& input) {
   std::ostringstream oss;
   for (char c : input) {
-    if (c == '"' || c == '\\') oss << '\\';
+    if (c == '"' || c == '\\')
+      oss << '\\';
     oss << c;
   }
   return oss.str();
@@ -41,7 +42,8 @@ std::string to_json_object(const std::vector<std::pair<std::string, std::string>
   oss << "{";
   for (size_t i = 0; i < kvs.size(); ++i) {
     oss << "\"" << json_escape(kvs[i].first) << "\":\"" << json_escape(kvs[i].second) << "\"";
-    if (i + 1 < kvs.size()) oss << ",";
+    if (i + 1 < kvs.size())
+      oss << ",";
   }
   oss << "}";
   return oss.str();
@@ -53,7 +55,8 @@ std::string canonical_query(const std::vector<std::pair<std::string, std::string
   std::ostringstream oss;
   for (size_t i = 0; i < sorted.size(); ++i) {
     oss << percent_encode(sorted[i].first) << "=" << percent_encode(sorted[i].second);
-    if (i + 1 < sorted.size()) oss << "&";
+    if (i + 1 < sorted.size())
+      oss << "&";
   }
   return oss.str();
 }

@@ -8,7 +8,8 @@
 #include "bybit/websocket_client.hpp"
 
 std::string getenv_or(const char* key, const std::string& fallback) {
-  if (const char* v = std::getenv(key)) return std::string(v);
+  if (const char* v = std::getenv(key))
+    return std::string(v);
   return fallback;
 }
 
@@ -17,7 +18,8 @@ std::vector<std::string> split_csv(const std::string& csv) {
   std::stringstream ss(csv);
   std::string item;
   while (std::getline(ss, item, ',')) {
-    if (!item.empty()) out.push_back(item);
+    if (!item.empty())
+      out.push_back(item);
   }
   return out;
 }

@@ -1,7 +1,14 @@
 BasedOnStyle: Google
-IndentWidth: 2
+Language: Cpp
+Standard: c++20
 ColumnLimit: 120
-AllowShortFunctionsOnASingleLine: Inline
+IndentWidth: 2
+ContinuationIndentWidth: 4
+AccessModifierOffset: -1
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+BreakBeforeBraces: Attach
 DerivePointerAlignment: false
 PointerAlignment: Left
-SortIncludes: true
+SortIncludes: CaseSensitive

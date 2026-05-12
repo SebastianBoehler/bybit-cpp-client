@@ -11,7 +11,8 @@ namespace {
 
 bool has_param(const QueryParams& params, const std::string& key) {
   for (const auto& param : params) {
-    if (param.first == key) return true;
+    if (param.first == key)
+      return true;
   }
   return false;
 }
@@ -30,21 +31,25 @@ std::string PublicRestClient::get_instruments_info(int limit) {
 }
 
 std::string PublicRestClient::get_instruments_info(QueryParams filters) {
-  if (!has_param(filters, "category")) filters.emplace_back("category", category_);
+  if (!has_param(filters, "category"))
+    filters.emplace_back("category", category_);
   return http_.get("/v5/market/instruments-info", filters, false);
 }
 
 std::string PublicRestClient::get_instruments_info(const std::optional<std::string>& symbol, int limit,
                                                    const std::optional<std::string>& cursor) {
   QueryParams params{{"limit", std::to_string(limit)}};
-  if (symbol) params.emplace_back("symbol", *symbol);
-  if (cursor) params.emplace_back("cursor", *cursor);
+  if (symbol)
+    params.emplace_back("symbol", *symbol);
+  if (cursor)
+    params.emplace_back("cursor", *cursor);
   return get_instruments_info(std::move(params));
 }
 
 std::string PublicRestClient::get_tickers(const std::string& symbol) {
   std::vector<std::pair<std::string, std::string>> params{{"category", category_}};
-  if (!symbol.empty()) params.emplace_back("symbol", symbol);
+  if (!symbol.empty())
+    params.emplace_back("symbol", symbol);
   return http_.get("/v5/market/tickers", params, false);
 }
 
@@ -59,8 +64,10 @@ std::string PublicRestClient::get_kline(const std::string& symbol, const std::st
                                         int limit) {
   std::vector<std::pair<std::string, std::string>> params{
       {"category", category_}, {"symbol", symbol}, {"interval", interval}, {"limit", std::to_string(limit)}};
-  if (start) params.emplace_back("start", *start);
-  if (end) params.emplace_back("end", *end);
+  if (start)
+    params.emplace_back("start", *start);
+  if (end)
+    params.emplace_back("end", *end);
   return http_.get("/v5/market/kline", params, false);
 }
 
@@ -69,8 +76,10 @@ std::string PublicRestClient::get_mark_price_kline(const std::string& symbol, co
                                                    const std::optional<std::string>& end, int limit) {
   std::vector<std::pair<std::string, std::string>> params{
       {"category", category_}, {"symbol", symbol}, {"interval", interval}, {"limit", std::to_string(limit)}};
-  if (start) params.emplace_back("start", *start);
-  if (end) params.emplace_back("end", *end);
+  if (start)
+    params.emplace_back("start", *start);
+  if (end)
+    params.emplace_back("end", *end);
   return http_.get("/v5/market/mark-price-kline", params, false);
 }
 
@@ -79,8 +88,10 @@ std::string PublicRestClient::get_index_price_kline(const std::string& symbol, c
                                                     const std::optional<std::string>& end, int limit) {
   std::vector<std::pair<std::string, std::string>> params{
       {"category", category_}, {"symbol", symbol}, {"interval", interval}, {"limit", std::to_string(limit)}};
-  if (start) params.emplace_back("start", *start);
-  if (end) params.emplace_back("end", *end);
+  if (start)
+    params.emplace_back("start", *start);
+  if (end)
+    params.emplace_back("end", *end);
   return http_.get("/v5/market/index-price-kline", params, false);
 }
 
@@ -89,8 +100,10 @@ std::string PublicRestClient::get_premium_index_price_kline(const std::string& s
                                                             const std::optional<std::string>& end, int limit) {
   std::vector<std::pair<std::string, std::string>> params{
       {"category", category_}, {"symbol", symbol}, {"interval", interval}, {"limit", std::to_string(limit)}};
-  if (start) params.emplace_back("start", *start);
-  if (end) params.emplace_back("end", *end);
+  if (start)
+    params.emplace_back("start", *start);
+  if (end)
+    params.emplace_back("end", *end);
   return http_.get("/v5/market/premium-index-price-kline", params, false);
 }
 
@@ -121,8 +134,10 @@ std::string PublicRestClient::get_long_short_ratio(const std::string& symbol, co
 std::string PublicRestClient::get_risk_limit(const std::optional<std::string>& symbol,
                                              const std::optional<std::string>& cursor) {
   std::vector<std::pair<std::string, std::string>> params{{"category", category_}};
-  if (symbol) params.emplace_back("symbol", *symbol);
-  if (cursor) params.emplace_back("cursor", *cursor);
+  if (symbol)
+    params.emplace_back("symbol", *symbol);
+  if (cursor)
+    params.emplace_back("cursor", *cursor);
   return http_.get("/v5/market/risk-limit", params, false);
 }
 

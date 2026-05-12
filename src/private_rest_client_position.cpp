@@ -40,7 +40,8 @@ std::string build_move_positions_body(const std::string& from_uid, const std::st
                            {"price", leg.price},
                            {"side", leg.side},
                            {"qty", leg.qty}});
-    if (i + 1 < legs.size()) oss << ",";
+    if (i + 1 < legs.size())
+      oss << ",";
   }
   oss << "]}";
   return oss.str();

@@ -12,7 +12,8 @@ namespace {
 
 int env_int(const char* name, int fallback) {
   const char* value = std::getenv(name);
-  if (!value) return fallback;
+  if (!value)
+    return fallback;
   try {
     return std::max(1, std::stoi(value));
   } catch (...) {

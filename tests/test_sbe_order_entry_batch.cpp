@@ -1,9 +1,9 @@
-#include "bybit/sbe_order_entry_encoder.hpp"
-
 #include <cassert>
 #include <cstdint>
 #include <cstring>
 #include <string>
+
+#include "bybit/sbe_order_entry_encoder.hpp"
 
 namespace {
 

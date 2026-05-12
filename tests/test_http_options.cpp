@@ -21,8 +21,7 @@ int main() {
   auto http_warm_up = &bybit::HttpClient::warm_up;
   if (http.options().connect_timeout_ms != 1500 || http.options().request_timeout_ms != 2500 ||
       http.options().dns_cache_timeout_seconds != 120 || http.options().max_connections != 16 ||
-      http.options().share_dns_and_ssl_session_cache ||
-      http.options().tcp_keepalive || http.options().tcp_nodelay ||
+      http.options().share_dns_and_ssl_session_cache || http.options().tcp_keepalive || http.options().tcp_nodelay ||
       http.options().proxy != "http://127.0.0.1:9" || http.options().user_agent != "bybit-cpp-client-test") {
     std::cerr << "HttpOptions were not retained by HttpClient\n";
     return 1;
@@ -31,9 +30,10 @@ int main() {
   bybit::HttpError error{429,
                          "{\"retCode\":10006,\"retMsg\":\"Too many visits!\"}",
                          {{"X-Bapi-Limit-Status", "0"}, {"Content-Type", "application/json"}}};
-  if (error.status_code() != 429 || error.body().find("10006") == std::string::npos ||
-      !error.ret_code() || *error.ret_code() != 10006 || !error.ret_msg() || *error.ret_msg() != "Too many visits!" ||
-      error.headers().size() != 2 || !error.header("x-bapi-limit-status") || *error.header("x-bapi-limit-status") != "0" ||
+  if (error.status_code() != 429 || error.body().find("10006") == std::string::npos || !error.ret_code() ||
+      *error.ret_code() != 10006 || !error.ret_msg() || *error.ret_msg() != "Too many visits!" ||
+      error.headers().size() != 2 || !error.header("x-bapi-limit-status") ||
+      *error.header("x-bapi-limit-status") != "0" ||
       std::string(error.what()).find("HTTP status 429") == std::string::npos) {
     std::cerr << "HttpError did not expose status/body\n";
     return 1;

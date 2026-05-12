@@ -12,7 +12,8 @@ std::string json_string(const std::string& value) {
   std::ostringstream oss;
   oss << "\"";
   for (char c : value) {
-    if (c == '"' || c == '\\') oss << "\\";
+    if (c == '"' || c == '\\')
+      oss << "\\";
     oss << c;
   }
   oss << "\"";
@@ -82,7 +83,8 @@ std::string PrivateRestClient::delete_sub_api_key(const std::optional<std::strin
 
 std::string PrivateRestClient::get_uid_wallet_type(const std::optional<std::string>& member_ids) {
   QueryParams params;
-  if (member_ids) params.emplace_back("memberIds", *member_ids);
+  if (member_ids)
+    params.emplace_back("memberIds", *member_ids);
   return http_.get("/v5/user/get-member-type", params, true);
 }
 

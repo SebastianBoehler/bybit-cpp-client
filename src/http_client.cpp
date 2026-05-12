@@ -19,11 +19,14 @@ size_t write_callback(char* ptr, size_t size, size_t nmemb, void* userdata) {
 size_t header_callback(char* ptr, size_t size, size_t nmemb, void* userdata) {
   auto real_size = size * nmemb;
   std::string line(ptr, real_size);
-  while (!line.empty() && (line.back() == '\r' || line.back() == '\n')) line.pop_back();
+  while (!line.empty() && (line.back() == '\r' || line.back() == '\n'))
+    line.pop_back();
   auto colon = line.find(':');
-  if (colon == std::string::npos) return real_size;
+  if (colon == std::string::npos)
+    return real_size;
   size_t value_start = colon + 1;
-  while (value_start < line.size() && line[value_start] == ' ') ++value_start;
+  while (value_start < line.size() && line[value_start] == ' ')
+    ++value_start;
   auto* headers = static_cast<HttpHeaders*>(userdata);
   headers->emplace_back(line.substr(0, colon), line.substr(value_start));
   return real_size;
@@ -56,14 +59,19 @@ std::mutex& curl_share_mutex() {
   return mutex;
 }
 
-void curl_share_lock(CURL*, curl_lock_data, curl_lock_access, void*) { curl_share_mutex().lock(); }
+void curl_share_lock(CURL*, curl_lock_data, curl_lock_access, void*) {
+  curl_share_mutex().lock();
+}
 
-void curl_share_unlock(CURL*, curl_lock_data, void*) { curl_share_mutex().unlock(); }
+void curl_share_unlock(CURL*, curl_lock_data, void*) {
+  curl_share_mutex().unlock();
+}
 
 CURLSH* shared_curl_cache() {
   static CURLSH* share = [&]() {
     CURLSH* handle = curl_share_init();
-    if (!handle) throw std::runtime_error("Failed to init curl share handle");
+    if (!handle)
+      throw std::runtime_error("Failed to init curl share handle");
     if (curl_share_setopt(handle, CURLSHOPT_LOCKFUNC, curl_share_lock) != CURLSHE_OK ||
         curl_share_setopt(handle, CURLSHOPT_UNLOCKFUNC, curl_share_unlock) != CURLSHE_OK ||
         curl_share_setopt(handle, CURLSHOPT_SHARE, CURL_LOCK_DATA_DNS) != CURLSHE_OK ||
@@ -161,13 +169,15 @@ std::string HttpClient::get(const std::string& path, const std::vector<std::pair
   curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &response);
   curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, header_callback);
   curl_easy_setopt(curl_, CURLOPT_HEADERDATA, &response_headers);
-  if (headers) curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, headers);
+  if (headers)
+    curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, headers);
 
   auto res = curl_easy_perform(curl_);
   long status = 0;
   curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status);
 
-  if (headers) curl_slist_free_all(headers);
+  if (headers)
+    curl_slist_free_all(headers);
 
   if (res != CURLE_OK) {
     throw std::runtime_error(std::string("curl perform failed: ") + curl_easy_strerror(res));

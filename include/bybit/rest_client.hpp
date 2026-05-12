@@ -6,11 +6,11 @@ namespace bybit {
 
 class RestClient {
  public:
-  explicit RestClient(std::string api_key, std::string api_secret, std::string category, std::string base_url = "https://api.bybit.com",
-                      std::string recv_window = "5000");
+  explicit RestClient(std::string api_key, std::string api_secret, std::string category,
+                      std::string base_url = "https://api.bybit.com", std::string recv_window = "5000");
   RestClient(std::string api_key, std::string api_secret, std::string category, HttpOptions options);
-  RestClient(std::string api_key, std::string api_secret, std::string category, std::string base_url, std::string recv_window,
-             HttpOptions options);
+  RestClient(std::string api_key, std::string api_secret, std::string category, std::string base_url,
+             std::string recv_window, HttpOptions options);
   std::string warm_up();
   std::string get_query_api_key();
   std::string get_account_info();
@@ -25,7 +25,8 @@ class RestClient {
   std::string get_coin_greeks(const std::optional<std::string>& base_coin = std::nullopt);
   std::string manual_borrow(const std::string& coin, const std::string& amount);
   std::string manual_repay(const QueryParams& params = {});
-  std::string no_convert_repay(const std::string& coin, const std::optional<std::string>& amount = std::nullopt, const std::optional<std::string>& repayment_type = std::nullopt);
+  std::string no_convert_repay(const std::string& coin, const std::optional<std::string>& amount = std::nullopt,
+                               const std::optional<std::string>& repayment_type = std::nullopt);
   std::string quick_repayment(const std::optional<std::string>& coin = std::nullopt);
   std::string set_spot_hedging(const std::string& set_hedging_mode);
   std::string get_mmp_state(const std::string& base_coin);
@@ -105,7 +106,8 @@ class RestClient {
   std::string get_spot_margin_currency_data(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_state();
   std::string switch_spot_margin_mode(const std::string& spot_margin_mode);
-  std::string set_spot_margin_leverage(const std::string& leverage, const std::optional<std::string>& currency = std::nullopt);
+  std::string set_spot_margin_leverage(const std::string& leverage,
+                                       const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_max_borrowable(const std::string& currency);
   std::string get_spot_margin_position_tiers(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_coin_state(const std::optional<std::string>& currency = std::nullopt);
@@ -117,7 +119,8 @@ class RestClient {
   std::string get_spot_margin_tiered_collateral_ratio(const QueryParams& filters = {});
   std::string get_spot_margin_fixed_borrow_order_quote(const QueryParams& filters);
   std::string create_spot_margin_fixed_borrow(const QueryParams& params);
-  std::string renew_spot_margin_fixed_borrow(const std::string& loan_id, const std::optional<std::string>& qty = std::nullopt);
+  std::string renew_spot_margin_fixed_borrow(const std::string& loan_id,
+                                             const std::optional<std::string>& qty = std::nullopt);
   std::string get_spot_margin_fixed_borrow_order_info(const QueryParams& filters = {});
   std::string get_spot_margin_fixed_borrow_contract_info(const QueryParams& filters = {});
   std::string get_spot_margin_liability(const std::string& currency);
@@ -186,13 +189,17 @@ class RestClient {
   std::string get_tickers(const std::string& symbol = "");
   std::string get_orderbook(const std::string& symbol, int limit = 50);
   std::string get_kline(const std::string& symbol, const std::string& interval,
-                        const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                        const std::optional<std::string>& start = std::nullopt,
+                        const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_mark_price_kline(const std::string& symbol, const std::string& interval,
-                                   const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                                   const std::optional<std::string>& start = std::nullopt,
+                                   const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_index_price_kline(const std::string& symbol, const std::string& interval,
-                                    const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                                    const std::optional<std::string>& start = std::nullopt,
+                                    const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_premium_index_price_kline(const std::string& symbol, const std::string& interval,
-                                            const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                                            const std::optional<std::string>& start = std::nullopt,
+                                            const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_recent_trades(const std::string& symbol, int limit = 50);
   std::string get_funding_history(const std::string& symbol, int limit = 50);
   std::string get_open_interest(const std::string& symbol, const std::string& interval, int limit = 50);
@@ -207,12 +214,15 @@ class RestClient {
   std::string get_spread_recent_trades(const std::string& symbol, int limit = 500);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx,
-                           const std::string& price = "", const std::string& time_in_force = "GTC", const std::optional<bool>& reduce_only = std::nullopt,
-                           const std::optional<std::string>& bbo_side_type = std::nullopt, const std::optional<std::string>& bbo_level = std::nullopt);
+                           const std::string& price = "", const std::string& time_in_force = "GTC",
+                           const std::optional<bool>& reduce_only = std::nullopt,
+                           const std::optional<std::string>& bbo_side_type = std::nullopt,
+                           const std::optional<std::string>& bbo_level = std::nullopt);
   std::string batch_submit_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests);
   std::string batch_cancel_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests);
   std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);
-  std::string set_leverage(const std::string& symbol, const std::string& buy_leverage, const std::string& sell_leverage);
+  std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
+                           const std::string& sell_leverage);
   std::string pre_check_order(const QueryParams& order_params);
   std::string get_order_history(const QueryParams& filters = {});
   std::string get_historic_orders(const std::string& order_id);
@@ -244,19 +254,8 @@ class RestClient {
   std::string get_rfq_trade_history(const QueryParams& filters = {});
   std::string get_rfq_public_trades(const QueryParams& filters = {});
 #include "bybit/rest_client_crypto_loan_methods.hpp"
-  std::string get_institutional_loan_product_info(const QueryParams& filters = {}, bool authenticated = false);
-  std::string get_institutional_loan_margin_coin_info(const QueryParams& filters = {}, bool authenticated = false);
-  std::string get_institutional_loan_orders(const QueryParams& filters = {});
-  std::string get_institutional_loan_repayment_orders(const QueryParams& filters = {});
-  std::string get_institutional_loan_ltv();
-  std::string bind_or_unbind_institutional_loan_uid(const std::string& json_body);
-  std::string repay_institutional_loan(const std::string& json_body);
-  std::string get_pre_upgrade_order_history(const QueryParams& filters = {});
-  std::string get_pre_upgrade_trade_history(const QueryParams& filters = {});
-  std::string get_pre_upgrade_closed_pnl(const QueryParams& filters = {});
-  std::string get_pre_upgrade_transaction_log(const QueryParams& filters = {});
-  std::string get_pre_upgrade_delivery_records(const QueryParams& filters = {});
-  std::string get_pre_upgrade_settlement_records(const QueryParams& filters = {});
+#include "bybit/rest_client_institutional_loan_methods.hpp"
+#include "bybit/rest_client_pre_upgrade_methods.hpp"
   std::string get_fee_rate();
   std::string get_borrow_quota(const std::string& symbol, const std::string& side);
   // category is provided per-call to avoid forcing a single accountType for all operations.
@@ -267,21 +266,28 @@ class RestClient {
   std::string cancel_all_orders(const QueryParams& filters = {});
   std::string set_disconnect_cancel_all(int time_window, const std::optional<std::string>& product = std::nullopt);
   std::string get_dcp_info();
-  std::string amend_order(const std::string& symbol, const std::string& order_id, const std::optional<std::string>& qty = std::nullopt,
+  std::string amend_order(const std::string& symbol, const std::string& order_id,
+                          const std::optional<std::string>& qty = std::nullopt,
                           const std::optional<std::string>& price = std::nullopt);
   std::string get_transaction_log(int limit = 50, const std::optional<std::string>& cursor = std::nullopt);
-  std::string move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol, const std::string& qty, int position_idx = 1);
-  std::string move_positions(const std::string& from_uid, const std::string& to_uid, const std::vector<MovePositionLeg>& legs);
+  std::string move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol,
+                            const std::string& qty, int position_idx = 1);
+  std::string move_positions(const std::string& from_uid, const std::string& to_uid,
+                             const std::vector<MovePositionLeg>& legs);
   std::string get_move_position_history(const QueryParams& filters = {});
-  std::string set_auto_add_margin(const std::string& symbol, int auto_add_margin, const std::optional<int>& position_idx = std::nullopt);
+  std::string set_auto_add_margin(const std::string& symbol, int auto_add_margin,
+                                  const std::optional<int>& position_idx = std::nullopt);
   std::string confirm_pending_mmr(const std::string& symbol);
-  std::string set_trading_stop(const std::string& symbol, int position_idx, const std::optional<std::string>& take_profit = std::nullopt,
-                               const std::optional<std::string>& stop_loss = std::nullopt, const std::optional<std::string>& trailing_stop = std::nullopt);
+  std::string set_trading_stop(const std::string& symbol, int position_idx,
+                               const std::optional<std::string>& take_profit = std::nullopt,
+                               const std::optional<std::string>& stop_loss = std::nullopt,
+                               const std::optional<std::string>& trailing_stop = std::nullopt);
   std::string set_risk_limit(const std::string& symbol, const std::string& risk_id, int position_idx = 1);
   std::string add_margin(const std::string& symbol, const std::string& margin, int position_idx = 1);
   std::string switch_position_mode(const std::string& mode, int position_idx = 1);
   std::string switch_margin_mode(const std::string& symbol, const std::string& mode, int leverage);
   std::string cancel_all(const std::string& symbol);
+
  private:
   HttpClient http_;
   PublicRestClient public_;

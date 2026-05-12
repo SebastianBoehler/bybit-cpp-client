@@ -12,7 +12,8 @@ std::string PrivateRestClient::get_spot_margin_vip_data(const QueryParams& filte
 
 std::string PrivateRestClient::get_spot_margin_currency_data(const std::optional<std::string>& currency) {
   QueryParams params;
-  if (currency) params.emplace_back("currency", *currency);
+  if (currency)
+    params.emplace_back("currency", *currency);
   return http_.get("/v5/spot-margin-trade/currency-data", params, true);
 }
 
@@ -27,7 +28,8 @@ std::string PrivateRestClient::switch_spot_margin_mode(const std::string& spot_m
 std::string PrivateRestClient::set_spot_margin_leverage(const std::string& leverage,
                                                         const std::optional<std::string>& currency) {
   QueryParams params{{"leverage", leverage}};
-  if (currency) params.emplace_back("currency", *currency);
+  if (currency)
+    params.emplace_back("currency", *currency);
   return http_.post("/v5/spot-margin-trade/set-leverage", to_json_object(params), true);
 }
 
@@ -37,13 +39,15 @@ std::string PrivateRestClient::get_spot_margin_max_borrowable(const std::string&
 
 std::string PrivateRestClient::get_spot_margin_position_tiers(const std::optional<std::string>& currency) {
   QueryParams params;
-  if (currency) params.emplace_back("currency", *currency);
+  if (currency)
+    params.emplace_back("currency", *currency);
   return http_.get("/v5/spot-margin-trade/position-tiers", params, true);
 }
 
 std::string PrivateRestClient::get_spot_margin_coin_state(const std::optional<std::string>& currency) {
   QueryParams params;
-  if (currency) params.emplace_back("currency", *currency);
+  if (currency)
+    params.emplace_back("currency", *currency);
   return http_.get("/v5/spot-margin-trade/coinstate", params, true);
 }
 
@@ -54,13 +58,15 @@ std::string PrivateRestClient::get_spot_margin_repayment_available_amount(const 
 std::string PrivateRestClient::set_spot_margin_auto_repay_mode(const std::string& auto_repay_mode,
                                                                const std::optional<std::string>& currency) {
   QueryParams params{{"autoRepayMode", auto_repay_mode}};
-  if (currency) params.emplace_back("currency", *currency);
+  if (currency)
+    params.emplace_back("currency", *currency);
   return http_.post("/v5/spot-margin-trade/set-auto-repay-mode", to_json_object(params), true);
 }
 
 std::string PrivateRestClient::get_spot_margin_auto_repay_mode(const std::optional<std::string>& currency) {
   QueryParams params;
-  if (currency) params.emplace_back("currency", *currency);
+  if (currency)
+    params.emplace_back("currency", *currency);
   return http_.get("/v5/spot-margin-trade/get-auto-repay-mode", params, true);
 }
 
@@ -83,7 +89,8 @@ std::string PrivateRestClient::create_spot_margin_fixed_borrow(const QueryParams
 std::string PrivateRestClient::renew_spot_margin_fixed_borrow(const std::string& loan_id,
                                                               const std::optional<std::string>& qty) {
   QueryParams params{{"loanId", loan_id}};
-  if (qty) params.emplace_back("qty", *qty);
+  if (qty)
+    params.emplace_back("qty", *qty);
   return http_.post("/v5/spot-margin-trade/fixedborrow-renew", to_json_object(params), true);
 }
 
@@ -123,10 +130,10 @@ std::string PrivateRestClient::borrow_spot_cross_margin(const std::string& coin,
   return http_.post("/v5/spot-cross-margin-trade/loan", to_json_object({{"coin", coin}, {"qty", qty}}), true);
 }
 
-std::string PrivateRestClient::repay_spot_cross_margin(const std::string& coin,
-                                                       const std::optional<std::string>& qty) {
+std::string PrivateRestClient::repay_spot_cross_margin(const std::string& coin, const std::optional<std::string>& qty) {
   QueryParams params{{"coin", coin}};
-  if (qty) params.emplace_back("qty", *qty);
+  if (qty)
+    params.emplace_back("qty", *qty);
   return http_.post("/v5/spot-cross-margin-trade/repay", to_json_object(params), true);
 }
 

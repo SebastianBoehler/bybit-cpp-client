@@ -1,11 +1,11 @@
-#include "bybit/http_client.hpp"
-
-#include <cctype>
 #include <algorithm>
+#include <cctype>
 #include <optional>
 #include <sstream>
 #include <string>
 #include <utility>
+
+#include "bybit/http_client.hpp"
 
 namespace bybit {
 namespace {
@@ -24,21 +24,28 @@ std::string lower(std::string value) {
 std::optional<size_t> value_start(const std::string& body, const std::string& key) {
   const std::string quoted_key = "\"" + key + "\"";
   size_t pos = body.find(quoted_key);
-  if (pos == std::string::npos) return std::nullopt;
+  if (pos == std::string::npos)
+    return std::nullopt;
   pos = body.find(':', pos + quoted_key.size());
-  if (pos == std::string::npos) return std::nullopt;
+  if (pos == std::string::npos)
+    return std::nullopt;
   ++pos;
-  while (pos < body.size() && std::isspace(static_cast<unsigned char>(body[pos]))) ++pos;
+  while (pos < body.size() && std::isspace(static_cast<unsigned char>(body[pos])))
+    ++pos;
   return pos;
 }
 
 std::optional<long> json_long(const std::string& body, const std::string& key) {
   auto start = value_start(body, key);
-  if (!start || *start >= body.size()) return std::nullopt;
+  if (!start || *start >= body.size())
+    return std::nullopt;
   size_t end = *start;
-  if (body[end] == '-') ++end;
-  while (end < body.size() && std::isdigit(static_cast<unsigned char>(body[end]))) ++end;
-  if (end == *start || (body[*start] == '-' && end == *start + 1)) return std::nullopt;
+  if (body[end] == '-')
+    ++end;
+  while (end < body.size() && std::isdigit(static_cast<unsigned char>(body[end])))
+    ++end;
+  if (end == *start || (body[*start] == '-' && end == *start + 1))
+    return std::nullopt;
   try {
     return std::stol(body.substr(*start, end - *start));
   } catch (...) {
@@ -48,14 +55,18 @@ std::optional<long> json_long(const std::string& body, const std::string& key) {
 
 std::optional<std::string> json_string(const std::string& body, const std::string& key) {
   auto start = value_start(body, key);
-  if (!start || *start >= body.size() || body[*start] != '"') return std::nullopt;
+  if (!start || *start >= body.size() || body[*start] != '"')
+    return std::nullopt;
   std::string value;
   for (size_t i = *start + 1; i < body.size(); ++i) {
-    if (body[i] == '"') return value;
+    if (body[i] == '"')
+      return value;
     if (body[i] == '\\' && i + 1 < body.size()) {
       ++i;
-      if (body[i] == 'n') value.push_back('\n');
-      else value.push_back(body[i]);
+      if (body[i] == 'n')
+        value.push_back('\n');
+      else
+        value.push_back(body[i]);
     } else {
       value.push_back(body[i]);
     }
@@ -76,7 +87,8 @@ HttpError::HttpError(long status_code, std::string body, HttpHeaders headers)
 std::optional<std::string> HttpError::header(const std::string& name) const {
   const std::string wanted = lower(name);
   for (const auto& header : headers_) {
-    if (lower(header.first) == wanted) return header.second;
+    if (lower(header.first) == wanted)
+      return header.second;
   }
   return std::nullopt;
 }

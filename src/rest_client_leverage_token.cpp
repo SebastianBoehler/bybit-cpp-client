@@ -1,7 +1,7 @@
-#include "bybit/rest_client.hpp"
-
 #include <optional>
 #include <string>
+
+#include "bybit/rest_client.hpp"
 
 namespace bybit {
 

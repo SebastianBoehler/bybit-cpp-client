@@ -43,7 +43,8 @@ void put_enum(std::string& out, T value) {
 }
 
 void put_fixed_string(std::string& out, const std::string& value, std::size_t length) {
-  if (value.size() > length) throw std::invalid_argument("SBE fixed string is too long");
+  if (value.size() > length)
+    throw std::invalid_argument("SBE fixed string is too long");
   out.append(value);
   out.append(length - value.size(), '\0');
 }
@@ -69,8 +70,10 @@ void put_decimal(std::string& out, const Decimal64& value) {
 
 template <typename T>
 std::uint16_t checked_group_size(const std::vector<T>& items) {
-  if (items.empty()) throw std::invalid_argument("SBE batch request requires at least one order");
-  if (items.size() > 0xffff) throw std::invalid_argument("SBE batch request has too many orders");
+  if (items.empty())
+    throw std::invalid_argument("SBE batch request requires at least one order");
+  if (items.size() > 0xffff)
+    throw std::invalid_argument("SBE batch request has too many orders");
   return static_cast<std::uint16_t>(items.size());
 }
 
@@ -192,7 +195,8 @@ std::string encode_batch_create_order_request(const BatchCreateOrderRequest& req
   put_header(out, kBatchOrderBlock, kBatchCreateOrderTemplate);
   put_batch_header(out, request.header, request.category);
   put_group_header(out, kBatchCreateOrderItemBlock, count);
-  for (const auto& item : request.orders) put_batch_create_item(out, item);
+  for (const auto& item : request.orders)
+    put_batch_create_item(out, item);
   return out;
 }
 
@@ -203,7 +207,8 @@ std::string encode_batch_replace_order_request(const BatchReplaceOrderRequest& r
   put_header(out, kBatchOrderBlock, kBatchReplaceOrderTemplate);
   put_batch_header(out, request.header, request.category);
   put_group_header(out, kBatchReplaceOrderItemBlock, count);
-  for (const auto& item : request.orders) put_batch_replace_item(out, item);
+  for (const auto& item : request.orders)
+    put_batch_replace_item(out, item);
   return out;
 }
 
@@ -214,7 +219,8 @@ std::string encode_batch_cancel_order_request(const BatchCancelOrderRequest& req
   put_header(out, kBatchOrderBlock, kBatchCancelOrderTemplate);
   put_batch_header(out, request.header, request.category);
   put_group_header(out, kBatchCancelOrderItemBlock, count);
-  for (const auto& item : request.orders) put_batch_cancel_item(out, item);
+  for (const auto& item : request.orders)
+    put_batch_cancel_item(out, item);
   return out;
 }
 

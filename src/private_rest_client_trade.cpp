@@ -28,7 +28,8 @@ std::string json_string(const std::string& value) {
   std::ostringstream oss;
   oss << "\"";
   for (char c : value) {
-    if (c == '"' || c == '\\') oss << "\\";
+    if (c == '"' || c == '\\')
+      oss << "\\";
     oss << c;
   }
   oss << "\"";

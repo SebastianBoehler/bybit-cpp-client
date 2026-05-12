@@ -1,8 +1,8 @@
-#include "bybit/sbe_order_entry_encoder.hpp"
-
 #include <cstring>
 #include <stdexcept>
 #include <type_traits>
+
+#include "bybit/sbe_order_entry_encoder.hpp"
 
 namespace bybit::sbe {
 namespace {
@@ -53,15 +53,19 @@ class Reader {
   }
 
   void seek(std::size_t pos) {
-    if (pos > payload_.size()) throw std::runtime_error("truncated SBE order entry payload");
+    if (pos > payload_.size())
+      throw std::runtime_error("truncated SBE order entry payload");
     pos_ = pos;
   }
 
-  std::size_t pos() const { return pos_; }
+  std::size_t pos() const {
+    return pos_;
+  }
 
  private:
   void require(std::size_t length) const {
-    if (payload_.size() - pos_ < length) throw std::runtime_error("truncated SBE order entry payload");
+    if (payload_.size() - pos_ < length)
+      throw std::runtime_error("truncated SBE order entry payload");
   }
 
   std::string_view payload_;
@@ -69,23 +73,24 @@ class Reader {
 };
 
 OrderEntryMessageHeader read_message_header(Reader& reader) {
-  return {reader.read_le<std::uint16_t>(),
-          reader.read_le<std::uint16_t>(),
-          reader.read_le<std::uint16_t>(),
+  return {reader.read_le<std::uint16_t>(), reader.read_le<std::uint16_t>(), reader.read_le<std::uint16_t>(),
           reader.read_le<std::uint16_t>()};
 }
 
 void require_schema(const OrderEntryMessageHeader& header) {
-  if (header.schema_id != kOrderEntrySchema) throw std::runtime_error("unexpected SBE order entry schema");
+  if (header.schema_id != kOrderEntrySchema)
+    throw std::runtime_error("unexpected SBE order entry schema");
 }
 
 void require_template(const OrderEntryMessageHeader& header, std::uint16_t template_id) {
   require_schema(header);
-  if (header.template_id != template_id) throw std::runtime_error("unexpected SBE order entry template");
+  if (header.template_id != template_id)
+    throw std::runtime_error("unexpected SBE order entry template");
 }
 
 void require_block(const OrderEntryMessageHeader& header, std::uint16_t min_block_length) {
-  if (header.block_length < min_block_length) throw std::runtime_error("unexpected SBE order entry block length");
+  if (header.block_length < min_block_length)
+    throw std::runtime_error("unexpected SBE order entry block length");
 }
 
 ApiResponseHeader read_response_header(Reader& reader) {
@@ -106,7 +111,8 @@ bool is_batch_response(std::uint16_t template_id) {
 }
 
 BatchOrderResponseItem read_batch_item(Reader& reader, bool has_created_at, std::uint16_t block_length) {
-  if (block_length < kBatchResponseItemBlock) throw std::runtime_error("unexpected SBE batch item block length");
+  if (block_length < kBatchResponseItemBlock)
+    throw std::runtime_error("unexpected SBE batch item block length");
   const auto item_end = reader.pos() + block_length;
   BatchOrderResponseItem item;
   item.code = reader.read_le<std::int32_t>();
@@ -116,7 +122,8 @@ BatchOrderResponseItem read_batch_item(Reader& reader, bool has_created_at, std:
   item.order_link_id = reader.read_fixed_string(kString64);
   reader.seek(item_end);
   item.msg = reader.read_var_string8();
-  if (has_created_at) item.created_at = reader.read_var_string8();
+  if (has_created_at)
+    item.created_at = reader.read_var_string8();
   return item;
 }
 
@@ -180,7 +187,8 @@ BatchOrderResponse decode_batch_order_response(std::string_view payload) {
   Reader reader(payload);
   auto header = read_message_header(reader);
   require_schema(header);
-  if (!is_batch_response(header.template_id)) throw std::runtime_error("unexpected SBE batch response template");
+  if (!is_batch_response(header.template_id))
+    throw std::runtime_error("unexpected SBE batch response template");
   require_block(header, kBatchResponseBlock);
 
   BatchOrderResponse response;

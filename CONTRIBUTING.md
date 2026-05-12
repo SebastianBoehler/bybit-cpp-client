@@ -38,6 +38,15 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ```
 
+Format and lint before opening a PR:
+
+```bash
+cmake --build build --target format
+cmake --build build --target format-check
+cmake -S . -B build-lint -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=clang++
+cmake --build build-lint --target lint
+```
+
 Build with optional WebSocket support when touching stream code:
 
 ```bash

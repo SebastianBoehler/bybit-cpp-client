@@ -29,12 +29,22 @@ struct HttpOptions {
 class HttpError : public std::runtime_error {
  public:
   HttpError(long status_code, std::string body, HttpHeaders headers = {});
-  long status_code() const { return status_code_; }
-  const std::string& body() const { return body_; }
-  const HttpHeaders& headers() const { return headers_; }
+  long status_code() const {
+    return status_code_;
+  }
+  const std::string& body() const {
+    return body_;
+  }
+  const HttpHeaders& headers() const {
+    return headers_;
+  }
   std::optional<std::string> header(const std::string& name) const;
-  const std::optional<long>& ret_code() const { return ret_code_; }
-  const std::optional<std::string>& ret_msg() const { return ret_msg_; }
+  const std::optional<long>& ret_code() const {
+    return ret_code_;
+  }
+  const std::optional<std::string>& ret_msg() const {
+    return ret_msg_;
+  }
 
  private:
   long status_code_;
@@ -70,11 +80,21 @@ class HttpClient {
   std::string post_query(const std::string& path, const std::vector<std::pair<std::string, std::string>>& params,
                          bool is_private) const;
 
-  const std::string& base_url() const { return base_url_; }
-  const std::string& recv_window() const { return recv_window_; }
-  const std::string& api_key() const { return api_key_; }
-  const std::string& api_secret() const { return api_secret_; }
-  const HttpOptions& options() const { return options_; }
+  const std::string& base_url() const {
+    return base_url_;
+  }
+  const std::string& recv_window() const {
+    return recv_window_;
+  }
+  const std::string& api_key() const {
+    return api_key_;
+  }
+  const std::string& api_secret() const {
+    return api_secret_;
+  }
+  const HttpOptions& options() const {
+    return options_;
+  }
 
  private:
   std::string api_key_;

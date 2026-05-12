@@ -14,11 +14,15 @@ namespace bybit {
 
 namespace {
 struct EvpMacDeleter {
-  void operator()(EVP_MAC* mac) const { EVP_MAC_free(mac); }
+  void operator()(EVP_MAC* mac) const {
+    EVP_MAC_free(mac);
+  }
 };
 
 struct EvpMacCtxDeleter {
-  void operator()(EVP_MAC_CTX* ctx) const { EVP_MAC_CTX_free(ctx); }
+  void operator()(EVP_MAC_CTX* ctx) const {
+    EVP_MAC_CTX_free(ctx);
+  }
 };
 }  // namespace
 

@@ -3,13 +3,11 @@
 
 namespace bybit {
 
-std::string PrivateRestClient::get_institutional_loan_product_info(const QueryParams& filters,
-                                                                   bool authenticated) {
+std::string PrivateRestClient::get_institutional_loan_product_info(const QueryParams& filters, bool authenticated) {
   return http_.get("/v5/ins-loan/product-infos", filters, authenticated);
 }
 
-std::string PrivateRestClient::get_institutional_loan_margin_coin_info(const QueryParams& filters,
-                                                                       bool authenticated) {
+std::string PrivateRestClient::get_institutional_loan_margin_coin_info(const QueryParams& filters, bool authenticated) {
   return http_.get("/v5/ins-loan/ensure-tokens-convert", filters, authenticated);
 }
 

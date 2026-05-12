@@ -17,8 +17,7 @@ RestClient::RestClient(std::string api_key, std::string api_secret, std::string 
 
 RestClient::RestClient(std::string api_key, std::string api_secret, std::string category, std::string base_url,
                        std::string recv_window, HttpOptions options)
-    : http_(std::move(api_key), std::move(api_secret), std::move(base_url), std::move(recv_window),
-            std::move(options)),
+    : http_(std::move(api_key), std::move(api_secret), std::move(base_url), std::move(recv_window), std::move(options)),
       public_(http_, category),
       private_(http_, category) {}
 

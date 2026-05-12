@@ -43,7 +43,8 @@ void WebSocketClient::connect() {
   throw std::runtime_error("WebSocket support disabled at build time. Rebuild with BYBIT_ENABLE_WEBSOCKET=ON.");
 #else
   ws_.setOnMessageCallback([this](const ix::WebSocketMessagePtr& msg) {
-    if (!msg) return;
+    if (!msg)
+      return;
     switch (msg->type) {
       case ix::WebSocketMessageType::Open: {
         std::scoped_lock lock(state_mutex_);
@@ -116,7 +117,8 @@ void WebSocketClient::subscribe(const std::vector<std::string>& topics, const st
   remember_topics(topics);
   std::ostringstream oss;
   oss << "{\"op\":\"subscribe\",\"args\":" << serialize_args(topics);
-  if (!req_id.empty()) oss << ",\"req_id\":\"" << req_id << "\"";
+  if (!req_id.empty())
+    oss << ",\"req_id\":\"" << req_id << "\"";
   oss << "}";
   send_raw(oss.str());
 }
@@ -125,7 +127,8 @@ void WebSocketClient::unsubscribe(const std::vector<std::string>& topics, const 
   forget_topics(topics);
   std::ostringstream oss;
   oss << "{\"op\":\"unsubscribe\",\"args\":" << serialize_args(topics);
-  if (!req_id.empty()) oss << ",\"req_id\":\"" << req_id << "\"";
+  if (!req_id.empty())
+    oss << ",\"req_id\":\"" << req_id << "\"";
   oss << "}";
   send_raw(oss.str());
 }
@@ -133,7 +136,8 @@ void WebSocketClient::unsubscribe(const std::vector<std::string>& topics, const 
 void WebSocketClient::ping(const std::string& req_id) {
   std::ostringstream oss;
   oss << "{\"op\":\"ping\"";
-  if (!req_id.empty()) oss << ",\"req_id\":\"" << req_id << "\"";
+  if (!req_id.empty())
+    oss << ",\"req_id\":\"" << req_id << "\"";
   oss << "}";
   send_raw(oss.str());
 }
@@ -209,12 +213,11 @@ void WebSocketClient::resubscribe_all() {
 }
 
 void WebSocketClient::schedule_reconnect() {
-#ifndef BYBIT_ENABLE_WEBSOCKET
-  return;
-#else
+#ifdef BYBIT_ENABLE_WEBSOCKET
   stop_ping_timer();
   std::scoped_lock lock(state_mutex_);
-  if (!auto_reconnect_) return;
+  if (!auto_reconnect_)
+    return;
   if (reconnect_attempts_ >= max_retries_) {
     return;
   }
@@ -234,16 +237,16 @@ void WebSocketClient::schedule_reconnect() {
 }
 
 void WebSocketClient::start_ping_timer() {
-#ifndef BYBIT_ENABLE_WEBSOCKET
-  return;
-#else
-  if (ping_running_) return;
+#ifdef BYBIT_ENABLE_WEBSOCKET
+  if (ping_running_)
+    return;
   stop_ping_ = false;
   ping_running_ = true;
   std::thread([this]() {
     while (!stop_ping_) {
       std::this_thread::sleep_for(std::chrono::seconds(20));
-      if (stop_ping_) break;
+      if (stop_ping_)
+        break;
       try {
         send_raw(R"({"op":"ping"})");
       } catch (...) {

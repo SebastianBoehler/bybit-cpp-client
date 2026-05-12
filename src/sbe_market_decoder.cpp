@@ -24,7 +24,8 @@ class Reader {
   template <typename T>
   T read() {
     static_assert(std::is_integral_v<T>);
-    if (pos_ + sizeof(T) > data_.size()) throw std::runtime_error("truncated SBE payload");
+    if (pos_ + sizeof(T) > data_.size())
+      throw std::runtime_error("truncated SBE payload");
     using U = std::make_unsigned_t<T>;
     U value = 0;
     for (std::size_t i = 0; i < sizeof(T); ++i) {
@@ -42,18 +43,22 @@ class Reader {
 
   std::string read_var_string8() {
     const auto length = read<std::uint8_t>();
-    if (pos_ + length > data_.size()) throw std::runtime_error("truncated SBE varString8");
+    if (pos_ + length > data_.size())
+      throw std::runtime_error("truncated SBE varString8");
     std::string value{data_.substr(pos_, length)};
     pos_ += length;
     return value;
   }
 
   void skip_to(std::size_t pos) {
-    if (pos > data_.size()) throw std::runtime_error("truncated SBE block");
+    if (pos > data_.size())
+      throw std::runtime_error("truncated SBE block");
     pos_ = pos;
   }
 
-  std::size_t pos() const { return pos_; }
+  std::size_t pos() const {
+    return pos_;
+  }
 
  private:
   std::string_view data_;
@@ -70,13 +75,15 @@ MessageHeader read_header(Reader& reader) {
 }
 
 void require_block(const MessageHeader& header, std::size_t bytes) {
-  if (header.block_length < bytes) throw std::runtime_error("unexpected SBE block length");
+  if (header.block_length < bytes)
+    throw std::runtime_error("unexpected SBE block length");
 }
 
 std::vector<BookLevel> read_book_levels(Reader& reader) {
   const auto block_length = reader.read<std::uint16_t>();
   const auto count = reader.read<std::uint16_t>();
-  if (block_length < kBookLevelKnownBlock) throw std::runtime_error("unexpected SBE book level block length");
+  if (block_length < kBookLevelKnownBlock)
+    throw std::runtime_error("unexpected SBE book level block length");
   std::vector<BookLevel> levels;
   levels.reserve(count);
   for (std::uint16_t i = 0; i < count; ++i) {
@@ -141,7 +148,8 @@ PublicTradeEvent read_public_trade(Reader& reader, const MessageHeader& header) 
   reader.skip_to(kHeaderBytes + header.block_length);
   const auto block_length = reader.read<std::uint16_t>();
   const auto count = reader.read<std::uint16_t>();
-  if (block_length < kTradeItemKnownBlock) throw std::runtime_error("unexpected SBE trade item block length");
+  if (block_length < kTradeItemKnownBlock)
+    throw std::runtime_error("unexpected SBE trade item block length");
   event.trade_items.reserve(count);
   for (std::uint16_t i = 0; i < count; ++i) {
     const auto entry_start = reader.pos();

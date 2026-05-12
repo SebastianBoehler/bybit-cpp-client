@@ -1,6 +1,6 @@
-#include "bybit/rest_client.hpp"
-
 #include <utility>
+
+#include "bybit/rest_client.hpp"
 
 namespace bybit {
 
@@ -28,8 +28,7 @@ std::string RestClient::get_index_price_components(const std::string& index_name
   return public_.get_index_price_components(index_name);
 }
 
-std::string RestClient::get_order_price_limit(const std::string& symbol,
-                                              const std::optional<std::string>& category) {
+std::string RestClient::get_order_price_limit(const std::string& symbol, const std::optional<std::string>& category) {
   return public_.get_order_price_limit(symbol, category);
 }
 
