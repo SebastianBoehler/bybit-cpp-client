@@ -268,9 +268,11 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 
 ### Bybit Card
 
-| Endpoint | Method |
-| --- | --- |
-| `POST /v5/card/transaction/query-asset-records` | `get_card_transaction_records(...)` |
+| Area | Endpoints | Representative methods |
+| --- | --- | --- |
+| Transaction records | `POST /v5/card/transaction/query-asset-records` | `get_card_transaction_records(...)` |
+| Reward points | `POST /v5/card/reward/points/*` | `get_card_point_balance()`, `get_card_point_records(...)`, `get_card_tier_info()` |
+| Reward mall and cashback | `POST /v5/card/reward/mall/item/list`, `POST /v5/card/reward/point/cashback/detail` | `get_card_mall_items(...)`, `get_card_cashback_detail(...)` |
 
 ## Partially Covered or Needs Review
 

@@ -106,6 +106,11 @@ class PrivateRestClient {
   std::string issue_broker_voucher(const std::string& json_body);
   std::string get_broker_issued_voucher(const std::string& json_body);
   std::string get_card_transaction_records(const QueryParams& filters = {});
+  std::string get_card_point_balance();
+  std::string get_card_point_records(const QueryParams& filters = {});
+  std::string get_card_tier_info();
+  std::string get_card_mall_items(const QueryParams& filters = {});
+  std::string get_card_cashback_detail(const std::string& biz_txn_id);
   std::string get_spot_margin_vip_data(const QueryParams& filters = {});
   std::string get_spot_margin_currency_data(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_state();
