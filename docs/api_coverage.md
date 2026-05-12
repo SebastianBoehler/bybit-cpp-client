@@ -274,6 +274,13 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | Reward points | `POST /v5/card/reward/points/*` | `get_card_point_balance()`, `get_card_point_records(...)`, `get_card_tier_info()` |
 | Reward mall and cashback | `POST /v5/card/reward/mall/item/list`, `POST /v5/card/reward/point/cashback/detail` | `get_card_mall_items(...)`, `get_card_cashback_detail(...)` |
 
+### Earn
+
+| Area | Endpoints | Representative methods |
+| --- | --- | --- |
+| Core Earn | `GET /v5/earn/product`, `POST /v5/earn/place-order`, `GET /v5/earn/order` | `get_earn_product_info(...)`, `place_earn_order(...)`, `get_earn_order_history(...)` |
+| Positions and yield | `GET /v5/earn/position`, `GET /v5/earn/yield`, `GET /v5/earn/hourly-yield` | `get_earn_position(...)`, `get_earn_yield_history(...)`, `get_earn_hourly_yield_history(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |
@@ -287,9 +294,4 @@ High-value REST gaps:
 
 - remaining Asset endpoints for broker-specific transfer controls
 
-Product areas not in scope yet:
-- Spot Margin normal-account endpoints and remaining niche account-mode operations
-- Crypto Loan legacy endpoints
-- Finance
-- Web3
-- SBE
+Product areas not in scope yet: Spot Margin normal-account endpoints and niche account-mode operations, Crypto Loan legacy endpoints, Advanced Earn, Web3, and SBE.

@@ -41,6 +41,7 @@ class PublicRestClient {
   std::string get_long_short_ratio(const std::string& symbol, const std::string& period, int limit = 50);
   std::string get_risk_limit(const std::optional<std::string>& symbol = std::nullopt,
                              const std::optional<std::string>& cursor = std::nullopt);
+  std::string get_earn_product_info(const QueryParams& filters);
   std::string get_spread_instruments(const QueryParams& filters = {});
   std::string get_spread_orderbook(const std::string& symbol, int limit = 1);
   std::string get_spread_tickers(const std::string& symbol);
@@ -111,6 +112,11 @@ class PrivateRestClient {
   std::string get_card_tier_info();
   std::string get_card_mall_items(const QueryParams& filters = {});
   std::string get_card_cashback_detail(const std::string& biz_txn_id);
+  std::string place_earn_order(const std::string& json_body);
+  std::string get_earn_order_history(const QueryParams& filters);
+  std::string get_earn_position(const QueryParams& filters);
+  std::string get_earn_yield_history(const QueryParams& filters);
+  std::string get_earn_hourly_yield_history(const QueryParams& filters);
   std::string get_spot_margin_vip_data(const QueryParams& filters = {});
   std::string get_spot_margin_currency_data(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_state();

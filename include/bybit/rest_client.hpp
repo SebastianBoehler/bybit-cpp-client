@@ -69,6 +69,12 @@ class RestClient {
   std::string get_card_tier_info();
   std::string get_card_mall_items(const QueryParams& filters = {});
   std::string get_card_cashback_detail(const std::string& biz_txn_id);
+  std::string get_earn_product_info(const QueryParams& filters);
+  std::string place_earn_order(const std::string& json_body);
+  std::string get_earn_order_history(const QueryParams& filters);
+  std::string get_earn_position(const QueryParams& filters);
+  std::string get_earn_yield_history(const QueryParams& filters);
+  std::string get_earn_hourly_yield_history(const QueryParams& filters);
   std::string get_spot_margin_vip_data(const QueryParams& filters = {});
   std::string get_spot_margin_currency_data(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_state();
