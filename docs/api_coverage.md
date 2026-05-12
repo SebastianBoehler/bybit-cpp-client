@@ -64,6 +64,7 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | Endpoint | Method |
 | --- | --- |
 | `GET /v5/user/query-api` | `get_query_api_key()` |
+| `POST /v5/user/create-demo-member` | `create_demo_account()` |
 | `GET /v5/user/query-sub-members` | `get_sub_uid_list()` |
 | `POST /v5/user/create-sub-member` | `create_sub_uid(...)` |
 | `POST /v5/user/del-submember` | `delete_sub_uid(...)` |
@@ -77,6 +78,8 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `GET /v5/user/get-member-type` | `get_uid_wallet_type(...)` |
 | `GET /v5/user/aff-customer-info` | `get_affiliate_user_info(...)` |
 | `GET /v5/account/info` | `get_account_info()` |
+| `POST /v5/account/upgrade-to-uta` | `upgrade_to_unified_account()` |
+| `POST /v5/account/demo-apply-money` | `request_demo_trading_funds(...)` |
 | `GET /v5/account/instruments-info` | `get_account_instruments_info(...)` |
 | `GET /v5/account/wallet-balance` | `get_wallet_balance(...)` |
 | `GET /v5/account/withdrawal` | `get_transferable_amount(...)` |
@@ -194,7 +197,7 @@ High-value REST gaps:
 - remaining Asset endpoints for broker-specific transfer controls
 
 Product areas not in scope yet:
-- Account upgrade, demo-funds, portfolio margin info, Spot Margin normal-account endpoints, and remaining niche account-mode operations
+- Spot Margin normal-account endpoints and remaining niche account-mode operations
 - Spread Trading
 - RFQ Trading
 - Affiliate

@@ -28,6 +28,12 @@ std::string RestClient::get_query_api_key() {
 std::string RestClient::get_account_info() {
   return private_.get_account_info();
 }
+std::string RestClient::upgrade_to_unified_account() {
+  return private_.upgrade_to_unified_account();
+}
+std::string RestClient::request_demo_trading_funds(const std::string& json_body) {
+  return private_.request_demo_trading_funds(json_body);
+}
 std::string RestClient::get_account_instruments_info(const QueryParams& filters) {
   return private_.get_account_instruments_info(filters);
 }

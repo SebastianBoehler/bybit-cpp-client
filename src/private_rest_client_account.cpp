@@ -45,6 +45,14 @@ std::string build_price_limit_body(const std::string& category, bool modify_enab
 
 }  // namespace
 
+std::string PrivateRestClient::upgrade_to_unified_account() {
+  return http_.post("/v5/account/upgrade-to-uta", "{}", true);
+}
+
+std::string PrivateRestClient::request_demo_trading_funds(const std::string& json_body) {
+  return http_.post("/v5/account/demo-apply-money", json_body, true);
+}
+
 std::string PrivateRestClient::get_account_instruments_info(const QueryParams& filters) {
   return http_.get("/v5/account/instruments-info", filters, true);
 }

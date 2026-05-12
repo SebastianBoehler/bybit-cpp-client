@@ -25,6 +25,10 @@ std::string PrivateRestClient::get_sub_uid_list() {
   return http_.get("/v5/user/query-sub-members", {}, true);
 }
 
+std::string PrivateRestClient::create_demo_account() {
+  return http_.post("/v5/user/create-demo-member", "{}", true);
+}
+
 std::string PrivateRestClient::create_sub_uid(const std::string& json_body) {
   return http_.post("/v5/user/create-sub-member", json_body, true);
 }

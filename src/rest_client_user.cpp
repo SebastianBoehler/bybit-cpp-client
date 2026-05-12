@@ -9,6 +9,10 @@ std::string RestClient::get_sub_uid_list() {
   return private_.get_sub_uid_list();
 }
 
+std::string RestClient::create_demo_account() {
+  return private_.create_demo_account();
+}
+
 std::string RestClient::create_sub_uid(const std::string& json_body) {
   return private_.create_sub_uid(json_body);
 }

@@ -53,6 +53,8 @@ class PrivateRestClient {
 
   std::string get_query_api_key();
   std::string get_account_info();
+  std::string upgrade_to_unified_account();
+  std::string request_demo_trading_funds(const std::string& json_body);
   std::string get_account_instruments_info(const QueryParams& filters = {});
   std::string get_transferable_amount(const std::string& coin_name);
   std::string get_collateral_info(const std::optional<std::string>& currency = std::nullopt);
@@ -77,6 +79,7 @@ class PrivateRestClient {
   std::string get_pay_info(const std::optional<std::string>& coin = std::nullopt);
   std::string get_trade_info_for_analysis(const QueryParams& filters);
   std::string get_sub_uid_list();
+  std::string create_demo_account();
   std::string create_sub_uid(const std::string& json_body);
   std::string delete_sub_uid(const std::string& sub_member_id);
   std::string freeze_sub_uid(int subuid, int frozen);
