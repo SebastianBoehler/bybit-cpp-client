@@ -247,6 +247,18 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | Flexible loans | `GET/POST /v5/crypto-loan-flexible/*` | `borrow_flexible_crypto_loan(...)`, `repay_flexible_crypto_loan(...)`, `get_flexible_crypto_loans(...)` |
 | Fixed loans | `GET/POST /v5/crypto-loan-fixed/*` | `borrow_fixed_crypto_loan(...)`, `supply_fixed_crypto_loan(...)`, `get_fixed_crypto_loan_borrow_contract_info(...)` |
 
+### Institutional Loan
+
+| Endpoint | Method |
+| --- | --- |
+| `GET /v5/ins-loan/product-infos` | `get_institutional_loan_product_info(...)` |
+| `GET /v5/ins-loan/ensure-tokens-convert` | `get_institutional_loan_margin_coin_info(...)` |
+| `GET /v5/ins-loan/loan-order` | `get_institutional_loan_orders(...)` |
+| `GET /v5/ins-loan/repaid-history` | `get_institutional_loan_repayment_orders(...)` |
+| `GET /v5/ins-loan/ltv-convert` | `get_institutional_loan_ltv()` |
+| `POST /v5/ins-loan/association-uid` | `bind_or_unbind_institutional_loan_uid(...)` |
+| `POST /v5/ins-loan/repay-loan` | `repay_institutional_loan(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |
@@ -262,7 +274,7 @@ High-value REST gaps:
 
 Product areas not in scope yet:
 - Spot Margin normal-account endpoints and remaining niche account-mode operations
-- Crypto Loan legacy endpoints and Institutional Loan
+- Crypto Loan legacy endpoints
 - Broker
 - Finance
 - Bybit Card
