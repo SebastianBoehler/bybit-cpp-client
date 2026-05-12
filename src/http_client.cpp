@@ -58,6 +58,23 @@ void ensure_curl_global() {
   }
 }
 
+void apply_options(CURL* curl, const HttpOptions& options) {
+  curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT_MS, options.connect_timeout_ms);
+  curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, options.request_timeout_ms);
+  curl_easy_setopt(curl, CURLOPT_DNS_CACHE_TIMEOUT, options.dns_cache_timeout_seconds);
+  curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, options.tcp_keepalive ? 1L : 0L);
+  if (options.tcp_keepalive) {
+    curl_easy_setopt(curl, CURLOPT_TCP_KEEPIDLE, options.tcp_keepidle_seconds);
+    curl_easy_setopt(curl, CURLOPT_TCP_KEEPINTVL, options.tcp_keepintvl_seconds);
+  }
+  if (!options.proxy.empty()) {
+    curl_easy_setopt(curl, CURLOPT_PROXY, options.proxy.c_str());
+  }
+  if (!options.user_agent.empty()) {
+    curl_easy_setopt(curl, CURLOPT_USERAGENT, options.user_agent.c_str());
+  }
+}
+
 }  // namespace
 
 std::string to_json_object(const std::vector<std::pair<std::string, std::string>>& kvs) {
@@ -82,19 +99,20 @@ std::string canonical_query(const std::vector<std::pair<std::string, std::string
   return oss.str();
 }
 
-HttpClient::HttpClient(std::string api_key, std::string api_secret, std::string base_url, std::string recv_window)
+HttpClient::HttpClient(std::string api_key, std::string api_secret, std::string base_url, std::string recv_window,
+                       HttpOptions options)
     : api_key_(std::move(api_key)),
       api_secret_(std::move(api_secret)),
       base_url_(std::move(base_url)),
       recv_window_(std::move(recv_window)),
+      options_(std::move(options)),
       curl_(nullptr) {
   ensure_curl_global();
   curl_ = curl_easy_init();
   if (!curl_) {
     throw std::runtime_error("Failed to init curl easy handle");
   }
-  curl_easy_setopt(curl_, CURLOPT_TCP_KEEPALIVE, 1L);
-  curl_easy_setopt(curl_, CURLOPT_DNS_CACHE_TIMEOUT, 300L);
+  apply_options(curl_, options_);
 }
 
 HttpClient::~HttpClient() {
@@ -130,8 +148,7 @@ std::string HttpClient::get(const std::string& path, const std::vector<std::pair
   }
 
   curl_easy_reset(curl_);
-  curl_easy_setopt(curl_, CURLOPT_TCP_KEEPALIVE, 1L);
-  curl_easy_setopt(curl_, CURLOPT_DNS_CACHE_TIMEOUT, 300L);
+  apply_options(curl_, options_);
   curl_easy_setopt(curl_, CURLOPT_URL, url.c_str());
   curl_easy_setopt(curl_, CURLOPT_HTTPGET, 1L);
   curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, write_callback);
@@ -172,8 +189,7 @@ std::string HttpClient::post(const std::string& path, const std::string& body, b
   }
 
   curl_easy_reset(curl_);
-  curl_easy_setopt(curl_, CURLOPT_TCP_KEEPALIVE, 1L);
-  curl_easy_setopt(curl_, CURLOPT_DNS_CACHE_TIMEOUT, 300L);
+  apply_options(curl_, options_);
   curl_easy_setopt(curl_, CURLOPT_URL, url.c_str());
   curl_easy_setopt(curl_, CURLOPT_POST, 1L);
   curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, body.c_str());

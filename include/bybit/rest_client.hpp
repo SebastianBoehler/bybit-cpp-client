@@ -99,6 +99,9 @@ class RestClient {
  public:
   explicit RestClient(std::string api_key, std::string api_secret, std::string category,
                       std::string base_url = "https://api.bybit.com", std::string recv_window = "5000");
+  RestClient(std::string api_key, std::string api_secret, std::string category, HttpOptions options);
+  RestClient(std::string api_key, std::string api_secret, std::string category, std::string base_url,
+             std::string recv_window, HttpOptions options);
 
   std::string get_query_api_key();
   std::string get_account_info();

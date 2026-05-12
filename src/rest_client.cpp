@@ -11,6 +11,17 @@ RestClient::RestClient(std::string api_key, std::string api_secret, std::string 
       public_(http_, category),
       private_(http_, category) {}
 
+RestClient::RestClient(std::string api_key, std::string api_secret, std::string category, HttpOptions options)
+    : RestClient(std::move(api_key), std::move(api_secret), std::move(category), "https://api.bybit.com", "5000",
+                 std::move(options)) {}
+
+RestClient::RestClient(std::string api_key, std::string api_secret, std::string category, std::string base_url,
+                       std::string recv_window, HttpOptions options)
+    : http_(std::move(api_key), std::move(api_secret), std::move(base_url), std::move(recv_window),
+            std::move(options)),
+      public_(http_, category),
+      private_(http_, category) {}
+
 std::string RestClient::get_query_api_key() {
   return private_.get_query_api_key();
 }

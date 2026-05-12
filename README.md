@@ -121,6 +121,19 @@ int main() {
 }
 ```
 
+Configure transport behavior when latency budgets or infrastructure require it:
+
+```cpp
+bybit::HttpOptions options;
+options.connect_timeout_ms = 1000;
+options.request_timeout_ms = 3000;
+options.dns_cache_timeout_seconds = 600;
+options.tcp_keepalive = true;
+options.user_agent = "my-trading-service/1.0";
+
+bybit::RestClient client{"YOUR_KEY", "YOUR_SECRET", "linear", options};
+```
+
 ## Minimal WebSocket Usage
 
 ```cpp

@@ -9,10 +9,22 @@
 
 namespace bybit {
 
+struct HttpOptions {
+  long connect_timeout_ms = 10000;
+  long request_timeout_ms = 30000;
+  long dns_cache_timeout_seconds = 300;
+  bool tcp_keepalive = true;
+  long tcp_keepidle_seconds = 60;
+  long tcp_keepintvl_seconds = 30;
+  std::string proxy;
+  std::string user_agent = "bybit-cpp-client/0.1.0";
+};
+
 // Lightweight HTTP helper shared by public/private clients.
 class HttpClient {
  public:
-  HttpClient(std::string api_key, std::string api_secret, std::string base_url, std::string recv_window);
+  HttpClient(std::string api_key, std::string api_secret, std::string base_url, std::string recv_window,
+             HttpOptions options = {});
   ~HttpClient();
 
   HttpClient(const HttpClient&) = delete;
@@ -31,12 +43,14 @@ class HttpClient {
   const std::string& recv_window() const { return recv_window_; }
   const std::string& api_key() const { return api_key_; }
   const std::string& api_secret() const { return api_secret_; }
+  const HttpOptions& options() const { return options_; }
 
  private:
   std::string api_key_;
   std::string api_secret_;
   std::string base_url_;
   std::string recv_window_;
+  HttpOptions options_;
   mutable std::mutex curl_mutex_;
   CURL* curl_;
 };
