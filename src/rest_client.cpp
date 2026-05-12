@@ -120,6 +120,9 @@ std::string RestClient::get_trade_history(const QueryParams& filters) {
 std::string RestClient::get_closed_pnl(const QueryParams& filters) {
   return private_.get_closed_pnl(filters);
 }
+std::string RestClient::get_closed_options_positions(const QueryParams& filters) {
+  return private_.get_closed_options_positions(filters);
+}
 std::string RestClient::get_fee_rate() {
   return private_.get_fee_rate();
 }
@@ -164,6 +167,13 @@ std::string RestClient::move_positions(const std::string& from_uid, const std::s
 }
 std::string RestClient::get_move_position_history(const QueryParams& filters) {
   return private_.get_move_position_history(filters);
+}
+std::string RestClient::set_auto_add_margin(const std::string& symbol, int auto_add_margin,
+                                            const std::optional<int>& position_idx) {
+  return private_.set_auto_add_margin(symbol, auto_add_margin, position_idx);
+}
+std::string RestClient::confirm_pending_mmr(const std::string& symbol) {
+  return private_.confirm_pending_mmr(symbol);
 }
 std::string RestClient::set_trading_stop(const std::string& symbol, int position_idx,
                                          const std::optional<std::string>& take_profit,

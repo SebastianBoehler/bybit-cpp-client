@@ -75,6 +75,7 @@ class PrivateRestClient {
   std::string get_historic_orders(const std::string& order_id);
   std::string get_trade_history(const QueryParams& filters = {});
   std::string get_closed_pnl(const QueryParams& filters = {});
+  std::string get_closed_options_positions(const QueryParams& filters = {});
   std::string get_fee_rate();
   std::string get_borrow_quota(const std::string& symbol, const std::string& side);
   // category is provided per-call to avoid forcing a single accountType for all operations.
@@ -94,6 +95,9 @@ class PrivateRestClient {
   std::string move_positions(const std::string& from_uid, const std::string& to_uid,
                              const std::vector<MovePositionLeg>& legs);
   std::string get_move_position_history(const QueryParams& filters = {});
+  std::string set_auto_add_margin(const std::string& symbol, int auto_add_margin,
+                                  const std::optional<int>& position_idx = std::nullopt);
+  std::string confirm_pending_mmr(const std::string& symbol);
   std::string set_trading_stop(const std::string& symbol, int position_idx,
                                const std::optional<std::string>& take_profit = std::nullopt,
                                const std::optional<std::string>& stop_loss = std::nullopt,
@@ -160,6 +164,7 @@ class RestClient {
   std::string get_historic_orders(const std::string& order_id);
   std::string get_trade_history(const QueryParams& filters = {});
   std::string get_closed_pnl(const QueryParams& filters = {});
+  std::string get_closed_options_positions(const QueryParams& filters = {});
   std::string get_fee_rate();
   std::string get_borrow_quota(const std::string& symbol, const std::string& side);
   // category is provided per-call to avoid forcing a single accountType for all operations.
@@ -179,6 +184,9 @@ class RestClient {
   std::string move_positions(const std::string& from_uid, const std::string& to_uid,
                              const std::vector<MovePositionLeg>& legs);
   std::string get_move_position_history(const QueryParams& filters = {});
+  std::string set_auto_add_margin(const std::string& symbol, int auto_add_margin,
+                                  const std::optional<int>& position_idx = std::nullopt);
+  std::string confirm_pending_mmr(const std::string& symbol);
   std::string set_trading_stop(const std::string& symbol, int position_idx,
                                const std::optional<std::string>& take_profit = std::nullopt,
                                const std::optional<std::string>& stop_loss = std::nullopt,

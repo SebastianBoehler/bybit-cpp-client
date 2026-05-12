@@ -51,8 +51,11 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `POST /v5/position/switch-mode` | `switch_position_mode(...)` |
 | `POST /v5/position/trading-stop` | `set_trading_stop(...)` |
 | `POST /v5/position/set-risk-limit` | `set_risk_limit(...)` |
+| `POST /v5/position/set-auto-add-margin` | `set_auto_add_margin(...)` |
 | `POST /v5/position/add-margin` | `add_margin(...)` |
 | `GET /v5/position/closed-pnl` | `get_closed_pnl(...)` |
+| `GET /v5/position/get-closed-positions` | `get_closed_options_positions(...)` |
+| `POST /v5/position/confirm-pending-mmr` | `confirm_pending_mmr(...)` |
 | `POST /v5/position/move-positions` | `move_positions(...)` |
 | `GET /v5/position/move-history` | `get_move_position_history(...)` |
 
@@ -79,8 +82,6 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 
 High-value REST gaps:
 
-- `POST /v5/position/set-auto-add-margin`
-- `POST /v5/position/confirm-pending-mmr`
 - broader Account endpoints such as collateral, borrow history, coin greeks, MMP, and repayment
 - Asset transfer, deposit, and withdrawal endpoints
 

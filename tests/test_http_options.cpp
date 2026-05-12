@@ -34,5 +34,11 @@ int main() {
     return 1;
   } catch (const std::invalid_argument&) {
   }
+  try {
+    client.set_auto_add_margin("BTCUSDT", 2);
+    std::cerr << "set_auto_add_margin accepted an invalid flag\n";
+    return 1;
+  } catch (const std::invalid_argument&) {
+  }
   return 0;
 }

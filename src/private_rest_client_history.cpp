@@ -40,6 +40,10 @@ std::string PrivateRestClient::get_closed_pnl(const QueryParams& filters) {
   return http_.get("/v5/position/closed-pnl", with_category(category_, filters), true);
 }
 
+std::string PrivateRestClient::get_closed_options_positions(const QueryParams& filters) {
+  return http_.get("/v5/position/get-closed-positions", with_category("option", filters), true);
+}
+
 std::string PrivateRestClient::get_move_position_history(const QueryParams& filters) {
   return http_.get("/v5/position/move-history", with_category(category_, filters), true);
 }

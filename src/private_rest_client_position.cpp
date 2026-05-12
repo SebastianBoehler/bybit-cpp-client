@@ -53,4 +53,22 @@ std::string PrivateRestClient::move_positions(const std::string& from_uid, const
   return http_.post("/v5/position/move-positions", build_move_positions_body(from_uid, to_uid, legs), true);
 }
 
+std::string PrivateRestClient::set_auto_add_margin(const std::string& symbol, int auto_add_margin,
+                                                   const std::optional<int>& position_idx) {
+  if (auto_add_margin != 0 && auto_add_margin != 1) {
+    throw std::invalid_argument("set_auto_add_margin auto_add_margin must be 0 or 1");
+  }
+
+  QueryParams body_kv{{"category", category_}, {"symbol", symbol}, {"autoAddMargin", std::to_string(auto_add_margin)}};
+  if (position_idx) {
+    body_kv.emplace_back("positionIdx", std::to_string(*position_idx));
+  }
+  return http_.post("/v5/position/set-auto-add-margin", to_json_object(body_kv), true);
+}
+
+std::string PrivateRestClient::confirm_pending_mmr(const std::string& symbol) {
+  return http_.post("/v5/position/confirm-pending-mmr", to_json_object({{"category", category_}, {"symbol", symbol}}),
+                    true);
+}
+
 }  // namespace bybit
