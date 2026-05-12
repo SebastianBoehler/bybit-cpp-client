@@ -122,6 +122,10 @@ HttpClient::~HttpClient() {
   }
 }
 
+std::string HttpClient::warm_up() const {
+  return get("/v5/market/time", {}, false);
+}
+
 std::string HttpClient::get(const std::string& path, const std::vector<std::pair<std::string, std::string>>& params,
                             bool is_private) const {
   std::vector<std::pair<std::string, std::string>> final_params = params;

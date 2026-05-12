@@ -22,6 +22,10 @@ RestClient::RestClient(std::string api_key, std::string api_secret, std::string 
       public_(http_, category),
       private_(http_, category) {}
 
+std::string RestClient::warm_up() {
+  return http_.warm_up();
+}
+
 std::string RestClient::get_query_api_key() {
   return private_.get_query_api_key();
 }

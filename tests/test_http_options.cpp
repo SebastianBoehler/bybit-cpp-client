@@ -18,6 +18,7 @@ int main() {
   options.user_agent = "bybit-cpp-client-test";
 
   bybit::HttpClient http{"key", "secret", "https://api.bybit.com", "5000", options};
+  auto http_warm_up = &bybit::HttpClient::warm_up;
   if (http.options().connect_timeout_ms != 1500 || http.options().request_timeout_ms != 2500 ||
       http.options().dns_cache_timeout_seconds != 120 || http.options().max_connections != 16 ||
       http.options().share_dns_and_ssl_session_cache ||
@@ -26,6 +27,7 @@ int main() {
     std::cerr << "HttpOptions were not retained by HttpClient\n";
     return 1;
   }
+  (void)http_warm_up;
   bybit::HttpError error{429,
                          "{\"retCode\":10006,\"retMsg\":\"Too many visits!\"}",
                          {{"X-Bapi-Limit-Status", "0"}, {"Content-Type", "application/json"}}};
@@ -43,6 +45,8 @@ int main() {
   }
 
   bybit::RestClient client{"key", "secret", "linear", options};
+  auto rest_warm_up = &bybit::RestClient::warm_up;
+  (void)rest_warm_up;
   try {
     client.move_positions("from", "to", {});
     std::cerr << "move_positions accepted an empty leg list\n";

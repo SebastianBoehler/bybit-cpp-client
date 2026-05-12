@@ -188,7 +188,7 @@ int main() {
 }
 ```
 
-Configure transport behavior when latency budgets or infrastructure require it:
+Configure transport behavior and warm the retained HTTP connection before latency-sensitive flows:
 
 ```cpp
 bybit::HttpOptions options;
@@ -199,8 +199,8 @@ options.max_connections = 16;
 options.tcp_keepalive = true;
 options.tcp_nodelay = true;
 options.user_agent = "my-trading-service/1.0";
-
 bybit::RestClient client{"YOUR_KEY", "YOUR_SECRET", "linear", options};
+client.warm_up();
 ```
 
 ## Minimal WebSocket Usage

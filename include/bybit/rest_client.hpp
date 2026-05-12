@@ -11,6 +11,7 @@ class RestClient {
   RestClient(std::string api_key, std::string api_secret, std::string category, HttpOptions options);
   RestClient(std::string api_key, std::string api_secret, std::string category, std::string base_url, std::string recv_window,
              HttpOptions options);
+  std::string warm_up();
   std::string get_query_api_key();
   std::string get_account_info();
   std::string upgrade_to_unified_account();

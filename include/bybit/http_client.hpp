@@ -56,6 +56,9 @@ class HttpClient {
   HttpClient(HttpClient&&) = delete;
   HttpClient& operator=(HttpClient&&) = delete;
 
+  // Prime DNS/TLS/connection state with a cheap public Bybit request.
+  std::string warm_up() const;
+
   // GET with optional signing.
   std::string get(const std::string& path, const std::vector<std::pair<std::string, std::string>>& params,
                   bool is_private) const;
