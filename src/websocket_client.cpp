@@ -33,6 +33,11 @@ void WebSocketClient::set_message_handler(MessageHandler handler) {
   handler_ = std::move(handler);
 }
 
+void WebSocketClient::set_binary_message_handler(BinaryMessageHandler handler) {
+  std::scoped_lock lock(handler_mutex_);
+  binary_handler_ = std::move(handler);
+}
+
 void WebSocketClient::connect() {
 #ifndef BYBIT_ENABLE_WEBSOCKET
   throw std::runtime_error("WebSocket support disabled at build time. Rebuild with BYBIT_ENABLE_WEBSOCKET=ON.");
@@ -58,7 +63,11 @@ void WebSocketClient::connect() {
         break;
       case ix::WebSocketMessageType::Message: {
         std::scoped_lock lock(handler_mutex_);
-        if (handler_) handler_(msg->str);
+        if (msg->binary && binary_handler_) {
+          binary_handler_(msg->str);
+        } else if (handler_) {
+          handler_(msg->str);
+        }
         break;
       }
       default:
@@ -127,42 +136,6 @@ void WebSocketClient::ping(const std::string& req_id) {
   if (!req_id.empty()) oss << ",\"req_id\":\"" << req_id << "\"";
   oss << "}";
   send_raw(oss.str());
-}
-
-void WebSocketClient::subscribe_tickers(const std::vector<std::string>& symbols, const std::string& req_id) {
-  subscribe(make_topics("tickers.", symbols), req_id);
-}
-
-void WebSocketClient::subscribe_orderbook(const std::vector<std::string>& symbols, int depth,
-                                          const std::string& req_id) {
-  subscribe(make_topics("orderbook." + std::to_string(depth) + ".", symbols), req_id);
-}
-
-void WebSocketClient::subscribe_kline(const std::vector<std::string>& symbols, const std::string& interval,
-                                      const std::string& req_id) {
-  subscribe(make_topics("kline." + interval + ".", symbols), req_id);
-}
-
-void WebSocketClient::subscribe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id) {
-  subscribe(make_topics("publicTrade.", symbols), req_id);
-}
-
-void WebSocketClient::unsubscribe_tickers(const std::vector<std::string>& symbols, const std::string& req_id) {
-  unsubscribe(make_topics("tickers.", symbols), req_id);
-}
-
-void WebSocketClient::unsubscribe_orderbook(const std::vector<std::string>& symbols, int depth,
-                                            const std::string& req_id) {
-  unsubscribe(make_topics("orderbook." + std::to_string(depth) + ".", symbols), req_id);
-}
-
-void WebSocketClient::unsubscribe_kline(const std::vector<std::string>& symbols, const std::string& interval,
-                                        const std::string& req_id) {
-  unsubscribe(make_topics("kline." + interval + ".", symbols), req_id);
-}
-
-void WebSocketClient::unsubscribe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id) {
-  unsubscribe(make_topics("publicTrade.", symbols), req_id);
 }
 
 void WebSocketClient::enable_auto_reconnect(bool enabled, int max_retries) {

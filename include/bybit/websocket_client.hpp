@@ -22,12 +22,14 @@ namespace bybit {
 class WebSocketClient {
  public:
   using MessageHandler = std::function<void(const std::string&)>;
+  using BinaryMessageHandler = std::function<void(const std::string&)>;
 
   WebSocketClient(std::string url, std::string api_key = "", std::string api_secret = "",
                   std::string recv_window = "5000");
 
   // Register a callback invoked on text messages.
   void set_message_handler(MessageHandler handler);
+  void set_binary_message_handler(BinaryMessageHandler handler);
 
   // Start the connection (non-blocking). On open, auth is sent automatically when api_key/api_secret are set.
   void connect();
@@ -50,12 +52,18 @@ class WebSocketClient {
   void subscribe_kline(const std::vector<std::string>& symbols, const std::string& interval,
                        const std::string& req_id = "");
   void subscribe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id = "");
+  void subscribe_sbe_bbo(const std::vector<std::string>& symbols, const std::string& req_id = "");
+  void subscribe_sbe_orderbook_50(const std::vector<std::string>& symbols, const std::string& req_id = "");
+  void subscribe_sbe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id = "");
 
   void unsubscribe_tickers(const std::vector<std::string>& symbols, const std::string& req_id = "");
   void unsubscribe_orderbook(const std::vector<std::string>& symbols, int depth = 1, const std::string& req_id = "");
   void unsubscribe_kline(const std::vector<std::string>& symbols, const std::string& interval,
                          const std::string& req_id = "");
   void unsubscribe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id = "");
+  void unsubscribe_sbe_bbo(const std::vector<std::string>& symbols, const std::string& req_id = "");
+  void unsubscribe_sbe_orderbook_50(const std::vector<std::string>& symbols, const std::string& req_id = "");
+  void unsubscribe_sbe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id = "");
 
   // Auto reconnect/resubscribe support.
   void enable_auto_reconnect(bool enabled = true, int max_retries = 5);
@@ -82,6 +90,7 @@ class WebSocketClient {
   std::string api_secret_;
   std::string recv_window_;
   MessageHandler handler_;
+  BinaryMessageHandler binary_handler_;
   mutable std::mutex handler_mutex_;
   mutable std::mutex state_mutex_;
   bool auto_reconnect_{false};

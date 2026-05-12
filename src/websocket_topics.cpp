@@ -25,4 +25,68 @@ std::string WebSocketClient::serialize_args(const std::vector<std::string>& topi
   return "[" + args + "]";
 }
 
+void WebSocketClient::subscribe_tickers(const std::vector<std::string>& symbols, const std::string& req_id) {
+  subscribe(make_topics("tickers.", symbols), req_id);
+}
+
+void WebSocketClient::subscribe_orderbook(const std::vector<std::string>& symbols, int depth,
+                                          const std::string& req_id) {
+  subscribe(make_topics("orderbook." + std::to_string(depth) + ".", symbols), req_id);
+}
+
+void WebSocketClient::subscribe_kline(const std::vector<std::string>& symbols, const std::string& interval,
+                                      const std::string& req_id) {
+  subscribe(make_topics("kline." + interval + ".", symbols), req_id);
+}
+
+void WebSocketClient::subscribe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id) {
+  subscribe(make_topics("publicTrade.", symbols), req_id);
+}
+
+void WebSocketClient::subscribe_sbe_bbo(const std::vector<std::string>& symbols, const std::string& req_id) {
+  subscribe(make_topics("ob.rpi.1.sbe.", symbols), req_id);
+}
+
+void WebSocketClient::subscribe_sbe_orderbook_50(const std::vector<std::string>& symbols,
+                                                 const std::string& req_id) {
+  subscribe(make_topics("ob.50.sbe.", symbols), req_id);
+}
+
+void WebSocketClient::subscribe_sbe_public_trades(const std::vector<std::string>& symbols,
+                                                  const std::string& req_id) {
+  subscribe(make_topics("publicTrade.sbe.", symbols), req_id);
+}
+
+void WebSocketClient::unsubscribe_tickers(const std::vector<std::string>& symbols, const std::string& req_id) {
+  unsubscribe(make_topics("tickers.", symbols), req_id);
+}
+
+void WebSocketClient::unsubscribe_orderbook(const std::vector<std::string>& symbols, int depth,
+                                            const std::string& req_id) {
+  unsubscribe(make_topics("orderbook." + std::to_string(depth) + ".", symbols), req_id);
+}
+
+void WebSocketClient::unsubscribe_kline(const std::vector<std::string>& symbols, const std::string& interval,
+                                        const std::string& req_id) {
+  unsubscribe(make_topics("kline." + interval + ".", symbols), req_id);
+}
+
+void WebSocketClient::unsubscribe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id) {
+  unsubscribe(make_topics("publicTrade.", symbols), req_id);
+}
+
+void WebSocketClient::unsubscribe_sbe_bbo(const std::vector<std::string>& symbols, const std::string& req_id) {
+  unsubscribe(make_topics("ob.rpi.1.sbe.", symbols), req_id);
+}
+
+void WebSocketClient::unsubscribe_sbe_orderbook_50(const std::vector<std::string>& symbols,
+                                                   const std::string& req_id) {
+  unsubscribe(make_topics("ob.50.sbe.", symbols), req_id);
+}
+
+void WebSocketClient::unsubscribe_sbe_public_trades(const std::vector<std::string>& symbols,
+                                                    const std::string& req_id) {
+  unsubscribe(make_topics("publicTrade.sbe.", symbols), req_id);
+}
+
 }  // namespace bybit
