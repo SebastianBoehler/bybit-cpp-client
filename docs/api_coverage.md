@@ -93,6 +93,27 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `GET /v5/account/pay-info` | `get_pay_info(...)` |
 | `GET /v5/account/trade-info-for-analysis` | `get_trade_info_for_analysis(...)` |
 
+### Asset
+
+| Endpoint | Method |
+| --- | --- |
+| `GET /v5/asset/transfer/query-asset-info` | `get_asset_info(...)` |
+| `GET /v5/asset/transfer/query-account-coins-balance` | `get_all_coin_balances(...)` |
+| `GET /v5/asset/transfer/query-account-coin-balance` | `get_single_coin_balance(...)` |
+| `GET /v5/asset/transfer/query-transfer-coin-list` | `get_transferable_coins(...)` |
+| `POST /v5/asset/transfer/inter-transfer` | `create_internal_transfer(...)` |
+| `GET /v5/asset/transfer/query-inter-transfer-list` | `get_internal_transfer_records(...)` |
+| `POST /v5/asset/transfer/universal-transfer` | `create_universal_transfer(...)` |
+| `GET /v5/asset/transfer/query-universal-transfer-list` | `get_universal_transfer_records(...)` |
+| `GET /v5/asset/deposit/query-record` | `get_deposit_records(...)` |
+| `GET /v5/asset/deposit/query-internal-record` | `get_internal_deposit_records(...)` |
+| `GET /v5/asset/deposit/query-address` | `get_master_deposit_address(...)` |
+| `GET /v5/asset/deposit/query-sub-member-address` | `get_sub_deposit_address(...)` |
+| `GET /v5/asset/coin/query-info` | `get_coin_info(...)` |
+| `GET /v5/asset/withdraw/withdrawable-amount` | `get_withdrawable_amount(...)` |
+| `GET /v5/asset/withdraw/query-record` | `get_withdrawal_records(...)` |
+| `POST /v5/asset/withdraw/create` | `create_withdrawal(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |
@@ -104,12 +125,11 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 
 High-value REST gaps:
 
-- Asset transfer, deposit, and withdrawal endpoints
+- remaining Asset endpoints for exchange/convert, asset overview, funding history, total members assets, VASP lists, withdrawal address lists, deposit account settings, and withdrawal cancellation
 
 Product areas not in scope yet:
 
 - Spot Margin Trade
-- Asset
 - full User and subaccount management
 - Account upgrade, demo-funds, portfolio margin info, liability info, fixed-rate borrow, and remaining niche account-mode operations
 - Spread Trading

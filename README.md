@@ -53,6 +53,11 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Limit price behaviour | `POST /v5/account/set-limit-px-action` | `set_price_limit_behaviour(...)` |
 | Option asset and pay info | `GET /v5/account/option-asset-info`, `GET /v5/account/pay-info` | `get_option_asset_info()`, `get_pay_info(...)` |
 | Spot trade analysis | `GET /v5/account/trade-info-for-analysis` | `get_trade_info_for_analysis(...)` |
+| Asset balances | `GET /v5/asset/transfer/query-*balance` | `get_all_coin_balances(...)`, `get_single_coin_balance(...)` |
+| Asset transfers | `POST /v5/asset/transfer/*transfer` | `create_internal_transfer(...)`, `create_universal_transfer(...)` |
+| Deposit records and addresses | `GET /v5/asset/deposit/*` | `get_deposit_records(...)`, `get_master_deposit_address(...)` |
+| Coin and withdrawal info | `GET /v5/asset/coin/query-info`, `GET /v5/asset/withdraw/*` | `get_coin_info(...)`, `get_withdrawable_amount(...)`, `get_withdrawal_records(...)` |
+| Create withdrawal | `POST /v5/asset/withdraw/create` | `create_withdrawal(...)` |
 | Open positions | `GET /v5/position/list` | `get_position_info(...)` |
 | Instrument specs and lot size | `GET /v5/market/instruments-info` | `get_instruments_info(...)` |
 | Risk tiers | `GET /v5/market/risk-limit` | `get_risk_limit(...)` |
@@ -82,8 +87,9 @@ Recent Bybit changes to keep in mind:
 - `Get API Key Information` includes `FiatBitPay` while the older `FiatBybitPay` field remains during transition.
 - `Place Order` supports BBO order parameters `bboSideType` and `bboLevel`; this client already exposes optional parameters for them.
 - Manual borrow/repay, Delta Neutral mode, pay info, option asset info, and spot trade analysis are active Account endpoints and are now wrapped.
+- Asset endpoints now cover core balances, transfers, deposit records, deposit addresses, coin metadata, withdrawable amount, withdrawal records, and withdrawal creation.
 
-This client covers the core trading wrapper surface plus high-value Account, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as Asset, User management, Spot Margin Trade, Spread Trading, RFQ, Crypto Loan, Broker, Finance, Bybit Card, Web3, or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
+This client covers the core trading wrapper surface plus high-value Account, Asset, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as User management, Spot Margin Trade, Spread Trading, RFQ, Crypto Loan, Broker, Finance, Bybit Card, Web3, or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
 
 Because responses are returned as raw JSON, additive response fields usually do not require a client release. Breaking request-contract changes should be tracked in issues and covered by tests before release.
 
@@ -245,6 +251,8 @@ Please read [`CONTRIBUTING.md`](./CONTRIBUTING.md), [`CODE_OF_CONDUCT.md`](./COD
 ## Security
 
 This project handles exchange API keys and signed trading requests. Never commit secrets, `.env` files, logs containing headers, account exports, or raw private WebSocket payloads.
+
+Withdrawal creation is exposed as `create_withdrawal(json_body)` so callers can pass Bybit's exact typed JSON, including integer fields and nested travel-rule objects. Use whitelisted addresses, idempotent `requestId` values, and environment-specific keys with the minimum required permissions.
 
 If you find a vulnerability or credential exposure, follow [`SECURITY.md`](./SECURITY.md) and report it privately first.
 

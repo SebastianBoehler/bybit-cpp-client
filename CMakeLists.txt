@@ -9,10 +9,12 @@ find_package(CURL REQUIRED)
 
 add_library(bybit_client
     src/rest_client.cpp
+    src/rest_client_asset.cpp
     src/http_client.cpp
     src/public_rest_client.cpp
     src/private_rest_client.cpp
     src/private_rest_client_account.cpp
+    src/private_rest_client_asset.cpp
     src/private_rest_client_history.cpp
     src/private_rest_client_position.cpp
     src/private_rest_client_trade.cpp

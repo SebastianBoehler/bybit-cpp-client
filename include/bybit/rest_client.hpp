@@ -85,6 +85,22 @@ class PrivateRestClient {
   std::string get_option_asset_info();
   std::string get_pay_info(const std::optional<std::string>& coin = std::nullopt);
   std::string get_trade_info_for_analysis(const QueryParams& filters);
+  std::string get_asset_info(const QueryParams& filters);
+  std::string get_all_coin_balances(const QueryParams& filters);
+  std::string get_single_coin_balance(const QueryParams& filters);
+  std::string get_transferable_coins(const QueryParams& filters);
+  std::string create_internal_transfer(const QueryParams& params);
+  std::string get_internal_transfer_records(const QueryParams& filters = {});
+  std::string create_universal_transfer(const QueryParams& params);
+  std::string get_universal_transfer_records(const QueryParams& filters = {});
+  std::string get_deposit_records(const QueryParams& filters = {});
+  std::string get_internal_deposit_records(const QueryParams& filters = {});
+  std::string get_master_deposit_address(const QueryParams& filters);
+  std::string get_sub_deposit_address(const QueryParams& filters);
+  std::string get_coin_info(const std::optional<std::string>& coin = std::nullopt);
+  std::string get_withdrawable_amount(const QueryParams& filters);
+  std::string get_withdrawal_records(const QueryParams& filters = {});
+  std::string create_withdrawal(const std::string& json_body);
   std::string get_position_info(const std::optional<std::string>& settle_coin = std::nullopt,
                                 const std::optional<std::string>& symbol = std::nullopt, int limit = 200);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
@@ -175,6 +191,22 @@ class RestClient {
   std::string get_option_asset_info();
   std::string get_pay_info(const std::optional<std::string>& coin = std::nullopt);
   std::string get_trade_info_for_analysis(const QueryParams& filters);
+  std::string get_asset_info(const QueryParams& filters);
+  std::string get_all_coin_balances(const QueryParams& filters);
+  std::string get_single_coin_balance(const QueryParams& filters);
+  std::string get_transferable_coins(const QueryParams& filters);
+  std::string create_internal_transfer(const QueryParams& params);
+  std::string get_internal_transfer_records(const QueryParams& filters = {});
+  std::string create_universal_transfer(const QueryParams& params);
+  std::string get_universal_transfer_records(const QueryParams& filters = {});
+  std::string get_deposit_records(const QueryParams& filters = {});
+  std::string get_internal_deposit_records(const QueryParams& filters = {});
+  std::string get_master_deposit_address(const QueryParams& filters);
+  std::string get_sub_deposit_address(const QueryParams& filters);
+  std::string get_coin_info(const std::optional<std::string>& coin = std::nullopt);
+  std::string get_withdrawable_amount(const QueryParams& filters);
+  std::string get_withdrawal_records(const QueryParams& filters = {});
+  std::string create_withdrawal(const std::string& json_body);
   std::string get_position_info(const std::optional<std::string>& settle_coin = std::nullopt,
                                 const std::optional<std::string>& symbol = std::nullopt, int limit = 200);
   std::string get_instruments_info(int limit = 1000);
