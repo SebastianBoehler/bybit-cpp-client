@@ -126,6 +126,19 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `GET /v5/asset/withdraw/query-record` | `get_withdrawal_records(...)` |
 | `POST /v5/asset/withdraw/create` | `create_withdrawal(...)` |
 
+### Spot Margin Trade
+
+| Endpoint | Method |
+| --- | --- |
+| `GET /v5/spot-margin-trade/data` | `get_spot_margin_vip_data(...)` |
+| `GET /v5/spot-margin-trade/state` | `get_spot_margin_state()` |
+| `POST /v5/spot-margin-trade/switch-mode` | `switch_spot_margin_mode(...)` |
+| `POST /v5/spot-margin-trade/set-leverage` | `set_spot_margin_leverage(...)` |
+| `GET /v5/spot-margin-trade/repayment-available-amount` | `get_spot_margin_repayment_available_amount(...)` |
+| `GET /v5/spot-margin-trade/get-auto-repay-mode` | `get_spot_margin_auto_repay_mode(...)` |
+| `GET /v5/spot-margin-trade/interest-rate-history` | `get_spot_margin_interest_rate_history(...)` |
+| `GET /v5/spot-margin-trade/collateral` | `get_spot_margin_tiered_collateral_ratio(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |
@@ -140,9 +153,7 @@ High-value REST gaps:
 - remaining Asset endpoints for exchange/convert, asset overview, funding history, total members assets, VASP lists, withdrawal address lists, deposit account settings, and withdrawal cancellation
 
 Product areas not in scope yet:
-
-- Spot Margin Trade
-- Account upgrade, demo-funds, portfolio margin info, liability info, fixed-rate borrow, and remaining niche account-mode operations
+- Account upgrade, demo-funds, portfolio margin info, Spot Margin fixed-rate borrow/liability endpoints, and remaining niche account-mode operations
 - Spread Trading
 - RFQ Trading
 - Affiliate
