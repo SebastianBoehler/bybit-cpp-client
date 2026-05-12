@@ -21,6 +21,7 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | `GET /v5/market/open-interest` | `get_open_interest(...)` |
 | `GET /v5/market/account-ratio` | `get_long_short_ratio(...)` |
 | `GET /v5/market/risk-limit` | `get_risk_limit(...)` |
+| Additional `GET /v5/market/*` data | `get_rpi_orderbook(...)`, `get_insurance(...)`, `get_adl_alert(...)`, `get_fee_group_info(...)` |
 
 ### Trade
 
@@ -296,5 +297,4 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | WebSocket | Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, but this coverage file tracks REST first. |
 
 ## Not Yet Covered
-
 High-value REST gap: remaining Asset endpoints for broker-specific transfer controls. Product areas not in scope yet: Spot Margin normal-account endpoints and niche account-mode operations, Crypto Loan legacy endpoints, and SBE.

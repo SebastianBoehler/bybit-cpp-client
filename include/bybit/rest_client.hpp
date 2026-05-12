@@ -174,6 +174,7 @@ class RestClient {
   std::string get_server_time();
   std::string get_risk_limit(const std::optional<std::string>& symbol = std::nullopt,
                              const std::optional<std::string>& cursor = std::nullopt);
+#include "bybit/rest_client_market_methods.hpp"
   std::string get_spread_instruments(const QueryParams& filters = {});
   std::string get_spread_orderbook(const std::string& symbol, int limit = 1);
   std::string get_spread_tickers(const std::string& symbol);

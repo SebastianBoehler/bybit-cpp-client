@@ -24,6 +24,7 @@ The library does not ship mock data, hidden fallbacks, or trading opinions. It s
 - REST V5 facade with public/private client separation.
 - HMAC-SHA256 request signing through OpenSSL and HTTP transport through libcurl.
 - Persistent libcurl easy handle per client for connection reuse, TLS session reuse, and per-handle DNS caching.
+- Broad public market coverage including RPI orderbooks, volatility, insurance, delivery prices, ADL alerts, and fee groups.
 - Optional WebSocket V5 client behind `-DBYBIT_ENABLE_WEBSOCKET=ON`.
 - CMake install targets for package consumers, submodules, and `FetchContent`.
 - Small examples for market data, positions, wallet balance, orders, and WebSocket streams.
@@ -36,6 +37,7 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Capability | Bybit endpoint | Client method |
 | --- | --- | --- |
 | Server time | `GET /v5/market/time` | `get_server_time()` |
+| Advanced market data | `GET /v5/market/*` | `get_rpi_orderbook(...)`, `get_adl_alert(...)`, `get_fee_group_info(...)` |
 | API key validation | `GET /v5/user/query-api` | `get_query_api_key()` |
 | Subaccounts | `GET/POST /v5/user/*sub*` | `get_sub_uid_list()`, `create_sub_uid(...)`, `freeze_sub_uid(...)`, `delete_sub_uid(...)` |
 | API key management | `POST /v5/user/*api` | `create_sub_api_key(...)`, `update_master_api_key(...)`, `update_sub_api_key(...)` |

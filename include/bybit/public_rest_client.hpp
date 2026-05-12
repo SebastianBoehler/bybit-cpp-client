@@ -35,6 +35,15 @@ class PublicRestClient {
   std::string get_long_short_ratio(const std::string& symbol, const std::string& period, int limit = 50);
   std::string get_risk_limit(const std::optional<std::string>& symbol = std::nullopt,
                              const std::optional<std::string>& cursor = std::nullopt);
+  std::string get_rpi_orderbook(const std::string& symbol, int limit = 50);
+  std::string get_historical_volatility(const QueryParams& filters);
+  std::string get_insurance(const QueryParams& filters = {});
+  std::string get_delivery_price(const QueryParams& filters);
+  std::string get_new_delivery_price(const QueryParams& filters);
+  std::string get_index_price_components(const std::string& index_name);
+  std::string get_order_price_limit(const std::string& symbol, const std::optional<std::string>& category = std::nullopt);
+  std::string get_adl_alert(const std::optional<std::string>& symbol = std::nullopt);
+  std::string get_fee_group_info(const QueryParams& filters);
   std::string get_earn_product_info(const QueryParams& filters);
   std::string get_advanced_earn_product_info(const QueryParams& filters);
   std::string get_advanced_earn_product_quote(const QueryParams& filters);
