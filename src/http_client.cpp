@@ -214,4 +214,57 @@ std::string HttpClient::post(const std::string& path, const std::string& body, b
   return response;
 }
 
+std::string HttpClient::post_query(const std::string& path,
+                                   const std::vector<std::pair<std::string, std::string>>& params,
+                                   bool is_private) const {
+  std::vector<std::pair<std::string, std::string>> final_params = params;
+  if (is_private) {
+    final_params.emplace_back("recvWindow", recv_window_);
+  }
+
+  std::string query = canonical_query(final_params);
+  std::string url = join_url(base_url_, path);
+  if (!query.empty()) {
+    url += "?" + query;
+  }
+
+  std::string response;
+  std::lock_guard<std::mutex> lock(curl_mutex_);
+
+  struct curl_slist* headers = nullptr;
+  headers = curl_slist_append(headers, "Content-Type: application/json");
+  if (is_private) {
+    auto signed_req = Signer::sign(api_key_, api_secret_, query, recv_window_);
+    headers = curl_slist_append(headers, ("X-BAPI-API-KEY: " + api_key_).c_str());
+    headers = curl_slist_append(headers, ("X-BAPI-TIMESTAMP: " + signed_req.timestamp).c_str());
+    headers = curl_slist_append(headers, ("X-BAPI-RECV-WINDOW: " + signed_req.recv_window).c_str());
+    headers = curl_slist_append(headers, ("X-BAPI-SIGN: " + signed_req.signature).c_str());
+  }
+
+  curl_easy_reset(curl_);
+  apply_options(curl_, options_);
+  curl_easy_setopt(curl_, CURLOPT_URL, url.c_str());
+  curl_easy_setopt(curl_, CURLOPT_POST, 1L);
+  curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, "");
+  curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, write_callback);
+  curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &response);
+  curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, headers);
+
+  auto res = curl_easy_perform(curl_);
+  long status = 0;
+  curl_easy_getinfo(curl_, CURLINFO_RESPONSE_CODE, &status);
+
+  curl_slist_free_all(headers);
+
+  if (res != CURLE_OK) {
+    throw std::runtime_error(std::string("curl perform failed: ") + curl_easy_strerror(res));
+  }
+  if (status >= 400) {
+    std::ostringstream oss;
+    oss << "HTTP status " << status << " body: " << response;
+    throw std::runtime_error(oss.str());
+  }
+  return response;
+}
+
 }  // namespace bybit

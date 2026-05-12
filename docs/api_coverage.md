@@ -266,6 +266,12 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | Account and deposits | `GET /v5/broker/earnings-info`, `GET /v5/broker/account-info`, `GET /v5/broker/asset/query-sub-member-deposit-record` | `get_broker_earnings(...)`, `get_broker_account_info()`, `get_broker_sub_deposit_records(...)` |
 | Rate limits and rewards | `GET/POST /v5/broker/apilimit/*`, `POST /v5/broker/award/*` | `set_broker_rate_limit(...)`, `get_broker_rate_limits(...)`, `issue_broker_voucher(...)` |
 
+### Bybit Card
+
+| Endpoint | Method |
+| --- | --- |
+| `POST /v5/card/transaction/query-asset-records` | `get_card_transaction_records(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |
@@ -283,6 +289,5 @@ Product areas not in scope yet:
 - Spot Margin normal-account endpoints and remaining niche account-mode operations
 - Crypto Loan legacy endpoints
 - Finance
-- Bybit Card
 - Web3
 - SBE

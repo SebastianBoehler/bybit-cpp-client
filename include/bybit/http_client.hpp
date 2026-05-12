@@ -39,6 +39,10 @@ class HttpClient {
   // POST with optional signing; body must be JSON.
   std::string post(const std::string& path, const std::string& body, bool is_private) const;
 
+  // POST with query parameters and an empty JSON body.
+  std::string post_query(const std::string& path, const std::vector<std::pair<std::string, std::string>>& params,
+                         bool is_private) const;
+
   const std::string& base_url() const { return base_url_; }
   const std::string& recv_window() const { return recv_window_; }
   const std::string& api_key() const { return api_key_; }

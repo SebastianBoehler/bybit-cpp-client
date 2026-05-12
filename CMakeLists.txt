@@ -11,6 +11,7 @@ add_library(bybit_client
     src/rest_client.cpp
     src/rest_client_asset.cpp
     src/rest_client_broker.cpp
+    src/rest_client_card.cpp
     src/rest_client_crypto_loan.cpp
     src/rest_client_institutional_loan.cpp
     src/rest_client_pre_upgrade.cpp
@@ -24,6 +25,7 @@ add_library(bybit_client
     src/private_rest_client_account.cpp
     src/private_rest_client_asset.cpp
     src/private_rest_client_broker.cpp
+    src/private_rest_client_card.cpp
     src/private_rest_client_crypto_loan.cpp
     src/private_rest_client_institutional_loan.cpp
     src/private_rest_client_spot_margin.cpp
@@ -146,6 +148,9 @@ if(BYBIT_BUILD_TESTS)
         add_executable(bybit_broker_api_test tests/test_broker_api.cpp)
         target_link_libraries(bybit_broker_api_test PRIVATE bybit_client)
         add_test(NAME bybit_broker_api_test COMMAND bybit_broker_api_test)
+        add_executable(bybit_card_api_test tests/test_card_api.cpp)
+        target_link_libraries(bybit_card_api_test PRIVATE bybit_client)
+        add_test(NAME bybit_card_api_test COMMAND bybit_card_api_test)
         add_executable(bybit_crypto_loan_api_test tests/test_crypto_loan_api.cpp)
         target_link_libraries(bybit_crypto_loan_api_test PRIVATE bybit_client)
         add_test(NAME bybit_crypto_loan_api_test COMMAND bybit_crypto_loan_api_test)
