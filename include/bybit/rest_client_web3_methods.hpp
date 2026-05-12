@@ -1,0 +1,10 @@
+  std::string get_web3_trade_quote(const std::string& json_body);
+  std::string execute_web3_purchase(const std::string& json_body);
+  std::string execute_web3_redeem(const std::string& json_body);
+  std::string get_web3_payment_token_list(const std::string& json_body);
+  std::string get_web3_order_list(const std::string& json_body);
+  std::string get_web3_business_token_list(const std::string& json_body);
+  std::string get_web3_token_price_list(const std::string& json_body);
+  std::string get_web3_token_details(const std::string& json_body);
+  std::string get_web3_asset_list(const std::string& json_body);
+  std::string get_web3_asset_detail(const std::string& json_body);

@@ -39,6 +39,7 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | `POST /v5/order/amend-batch` | `batch_amend_orders(...)` |
 | `POST /v5/order/cancel-batch` | `batch_cancel_orders(...)` |
 | `GET /v5/order/spot-borrow-check` | `get_borrow_quota(...)` |
+| `GET/POST /v5/strategy/*` | `create_strategy_order(...)`, `get_strategy_list(...)`, `get_strategy_order_list(...)`, `stop_strategy(...)` |
 
 ### Position
 
@@ -296,5 +297,4 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 
 ## Not Yet Covered
 
-High-value REST gap: remaining Asset endpoints for broker-specific transfer controls.
-Product areas not in scope yet: Spot Margin normal-account endpoints and niche account-mode operations, Crypto Loan legacy endpoints, and SBE.
+High-value REST gap: remaining Asset endpoints for broker-specific transfer controls. Product areas not in scope yet: Spot Margin normal-account endpoints and niche account-mode operations, Crypto Loan legacy endpoints, and SBE.

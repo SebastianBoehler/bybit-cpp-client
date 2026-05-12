@@ -86,16 +86,7 @@ class PrivateRestClient {
   std::string get_advanced_earn_liquidity_mining_order_history(const QueryParams& filters);
   std::string get_advanced_earn_liquidity_mining_yield_records(const QueryParams& filters);
   std::string get_advanced_earn_liquidity_mining_liquidation_records(const QueryParams& filters);
-  std::string get_web3_trade_quote(const std::string& json_body);
-  std::string execute_web3_purchase(const std::string& json_body);
-  std::string execute_web3_redeem(const std::string& json_body);
-  std::string get_web3_payment_token_list(const std::string& json_body);
-  std::string get_web3_order_list(const std::string& json_body);
-  std::string get_web3_business_token_list(const std::string& json_body);
-  std::string get_web3_token_price_list(const std::string& json_body);
-  std::string get_web3_token_details(const std::string& json_body);
-  std::string get_web3_asset_list(const std::string& json_body);
-  std::string get_web3_asset_detail(const std::string& json_body);
+#include "bybit/private_rest_client_web3_methods.hpp"
   std::string get_spot_margin_vip_data(const QueryParams& filters = {});
   std::string get_spot_margin_currency_data(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_state();
@@ -181,6 +172,7 @@ class PrivateRestClient {
   std::string get_order_history(const QueryParams& filters = {});
   std::string get_historic_orders(const std::string& order_id);
   std::string get_trade_history(const QueryParams& filters = {});
+#include "bybit/private_rest_client_strategy_methods.hpp"
   std::string get_closed_pnl(const QueryParams& filters = {});
   std::string get_closed_options_positions(const QueryParams& filters = {});
   std::string create_spread_order(const std::string& json_body);

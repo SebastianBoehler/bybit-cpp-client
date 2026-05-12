@@ -20,6 +20,7 @@ add_library(bybit_client
     src/rest_client_rfq.cpp
     src/rest_client_spot_margin.cpp
     src/rest_client_spread.cpp
+    src/rest_client_strategy.cpp
     src/rest_client_user.cpp
     src/rest_client_web3.cpp
     src/http_client.cpp
@@ -37,6 +38,7 @@ add_library(bybit_client
     src/private_rest_client_institutional_loan.cpp
     src/private_rest_client_spot_margin.cpp
     src/private_rest_client_spread.cpp
+    src/private_rest_client_strategy.cpp
     src/private_rest_client_user.cpp
     src/private_rest_client_history.cpp
     src/private_rest_client_position.cpp
@@ -183,6 +185,9 @@ if(BYBIT_BUILD_TESTS)
         add_executable(bybit_spread_api_test tests/test_spread_api.cpp)
         target_link_libraries(bybit_spread_api_test PRIVATE bybit_client)
         add_test(NAME bybit_spread_api_test COMMAND bybit_spread_api_test)
+        add_executable(bybit_strategy_api_test tests/test_strategy_api.cpp)
+        target_link_libraries(bybit_strategy_api_test PRIVATE bybit_client)
+        add_test(NAME bybit_strategy_api_test COMMAND bybit_strategy_api_test)
         add_executable(bybit_web3_api_test tests/test_web3_api.cpp)
         target_link_libraries(bybit_web3_api_test PRIVATE bybit_client)
         add_test(NAME bybit_web3_api_test COMMAND bybit_web3_api_test)
