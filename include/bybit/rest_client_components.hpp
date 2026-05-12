@@ -173,6 +173,12 @@ class PrivateRestClient {
   std::string get_trade_history(const QueryParams& filters = {});
   std::string get_closed_pnl(const QueryParams& filters = {});
   std::string get_closed_options_positions(const QueryParams& filters = {});
+  std::string get_pre_upgrade_order_history(const QueryParams& filters = {});
+  std::string get_pre_upgrade_trade_history(const QueryParams& filters = {});
+  std::string get_pre_upgrade_closed_pnl(const QueryParams& filters = {});
+  std::string get_pre_upgrade_transaction_log(const QueryParams& filters = {});
+  std::string get_pre_upgrade_delivery_records(const QueryParams& filters = {});
+  std::string get_pre_upgrade_settlement_records(const QueryParams& filters = {});
   std::string get_fee_rate();
   std::string get_borrow_quota(const std::string& symbol, const std::string& side);
   std::string get_wallet_balance(const std::string& category, const std::optional<std::string>& coin = std::nullopt);

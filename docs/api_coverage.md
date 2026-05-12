@@ -183,6 +183,17 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `GET /v5/spot-margin-trade/fixedborrow-contract-info` | `get_spot_margin_fixed_borrow_contract_info(...)` |
 | `GET /v5/spot-margin-trade/liability` | `get_spot_margin_liability(...)` |
 
+### Pre-upgrade
+
+| Endpoint | Method |
+| --- | --- |
+| `GET /v5/pre-upgrade/order/history` | `get_pre_upgrade_order_history(...)` |
+| `GET /v5/pre-upgrade/execution/list` | `get_pre_upgrade_trade_history(...)` |
+| `GET /v5/pre-upgrade/position/closed-pnl` | `get_pre_upgrade_closed_pnl(...)` |
+| `GET /v5/pre-upgrade/account/transaction-log` | `get_pre_upgrade_transaction_log(...)` |
+| `GET /v5/pre-upgrade/asset/delivery-record` | `get_pre_upgrade_delivery_records(...)` |
+| `GET /v5/pre-upgrade/asset/settlement-record` | `get_pre_upgrade_settlement_records(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |

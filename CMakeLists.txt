@@ -10,6 +10,7 @@ find_package(CURL REQUIRED)
 add_library(bybit_client
     src/rest_client.cpp
     src/rest_client_asset.cpp
+    src/rest_client_pre_upgrade.cpp
     src/rest_client_spot_margin.cpp
     src/rest_client_user.cpp
     src/http_client.cpp
@@ -129,6 +130,9 @@ if(BYBIT_BUILD_TESTS)
         add_executable(bybit_account_api_test tests/test_account_api.cpp)
         target_link_libraries(bybit_account_api_test PRIVATE bybit_client)
         add_test(NAME bybit_account_api_test COMMAND bybit_account_api_test)
+        add_executable(bybit_pre_upgrade_api_test tests/test_pre_upgrade_api.cpp)
+        target_link_libraries(bybit_pre_upgrade_api_test PRIVATE bybit_client)
+        add_test(NAME bybit_pre_upgrade_api_test COMMAND bybit_pre_upgrade_api_test)
         add_executable(bybit_spot_margin_api_test tests/test_spot_margin_api.cpp)
         target_link_libraries(bybit_spot_margin_api_test PRIVATE bybit_client)
         add_test(NAME bybit_spot_margin_api_test COMMAND bybit_spot_margin_api_test)

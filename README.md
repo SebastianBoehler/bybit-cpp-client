@@ -85,6 +85,7 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Execution history | `GET /v5/execution/list` | `get_trade_history(...)` |
 | Closed PnL | `GET /v5/position/closed-pnl` | `get_closed_pnl(...)` |
 | Closed option positions | `GET /v5/position/get-closed-positions` | `get_closed_options_positions(...)` |
+| Pre-upgrade history | `GET /v5/pre-upgrade/*` | `get_pre_upgrade_order_history(...)`, `get_pre_upgrade_trade_history(...)`, `get_pre_upgrade_closed_pnl(...)` |
 | Move positions | `POST /v5/position/move-positions` | `move_positions(...)` |
 | Move position history | `GET /v5/position/move-history` | `get_move_position_history(...)` |
 | Auto add margin | `POST /v5/position/set-auto-add-margin` | `set_auto_add_margin(...)` |
