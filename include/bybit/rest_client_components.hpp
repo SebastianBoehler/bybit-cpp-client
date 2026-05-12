@@ -89,13 +89,25 @@ class PrivateRestClient {
   std::string get_uid_wallet_type(const std::optional<std::string>& member_ids = std::nullopt);
   std::string get_affiliate_user_info(const QueryParams& filters = {});
   std::string get_spot_margin_vip_data(const QueryParams& filters = {});
+  std::string get_spot_margin_currency_data(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_state();
   std::string switch_spot_margin_mode(const std::string& spot_margin_mode);
   std::string set_spot_margin_leverage(const std::string& leverage, const std::optional<std::string>& currency = std::nullopt);
+  std::string get_spot_margin_max_borrowable(const std::string& currency);
+  std::string get_spot_margin_position_tiers(const std::optional<std::string>& currency = std::nullopt);
+  std::string get_spot_margin_coin_state(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_repayment_available_amount(const std::string& currency);
+  std::string set_spot_margin_auto_repay_mode(const std::string& auto_repay_mode,
+                                              const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_auto_repay_mode(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_interest_rate_history(const QueryParams& filters);
   std::string get_spot_margin_tiered_collateral_ratio(const QueryParams& filters = {});
+  std::string get_spot_margin_fixed_borrow_order_quote(const QueryParams& filters);
+  std::string create_spot_margin_fixed_borrow(const QueryParams& params);
+  std::string renew_spot_margin_fixed_borrow(const std::string& loan_id, const std::optional<std::string>& qty = std::nullopt);
+  std::string get_spot_margin_fixed_borrow_order_info(const QueryParams& filters = {});
+  std::string get_spot_margin_fixed_borrow_contract_info(const QueryParams& filters = {});
+  std::string get_spot_margin_liability(const std::string& currency);
   std::string get_asset_info(const QueryParams& filters);
   std::string get_asset_overview(const QueryParams& filters = {});
   std::string get_portfolio_margin_info(const QueryParams& filters = {});

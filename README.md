@@ -41,8 +41,9 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | API key management | `POST /v5/user/*api` | `create_sub_api_key(...)`, `update_master_api_key(...)`, `update_sub_api_key(...)` |
 | User wallet and affiliate info | `GET /v5/user/get-member-type`, `GET /v5/user/aff-customer-info` | `get_uid_wallet_type(...)`, `get_affiliate_user_info(...)` |
 | Spot margin state and leverage | `GET/POST /v5/spot-margin-trade/*` | `get_spot_margin_state()`, `switch_spot_margin_mode(...)`, `set_spot_margin_leverage(...)` |
-| Spot margin rates and collateral | `GET /v5/spot-margin-trade/data`, `GET /v5/spot-margin-trade/collateral` | `get_spot_margin_vip_data(...)`, `get_spot_margin_tiered_collateral_ratio(...)` |
-| Spot margin repayment data | `GET /v5/spot-margin-trade/repayment-available-amount` | `get_spot_margin_repayment_available_amount(...)` |
+| Spot margin rates and collateral | `GET /v5/spot-margin-trade/data`, `GET /v5/spot-margin-trade/collateral`, `GET /v5/spot-margin-trade/currency-data` | `get_spot_margin_vip_data(...)`, `get_spot_margin_tiered_collateral_ratio(...)`, `get_spot_margin_currency_data(...)` |
+| Spot margin borrow and liability | `GET/POST /v5/spot-margin-trade/*borrow*`, `GET /v5/spot-margin-trade/liability` | `get_spot_margin_fixed_borrow_order_quote(...)`, `create_spot_margin_fixed_borrow(...)`, `get_spot_margin_liability(...)` |
+| Spot margin repayment data | `GET/POST /v5/spot-margin-trade/*repay*`, `GET /v5/spot-margin-trade/repayment-available-amount` | `get_spot_margin_repayment_available_amount(...)`, `set_spot_margin_auto_repay_mode(...)` |
 | Account margin mode | `GET /v5/account/info` | `get_account_info()` |
 | Account instruments | `GET /v5/account/instruments-info` | `get_account_instruments_info(...)` |
 | Transferable amount | `GET /v5/account/withdrawal` | `get_transferable_amount(...)` |
@@ -98,7 +99,7 @@ Recent Bybit changes to keep in mind:
 - Manual borrow/repay, Delta Neutral mode, pay info, option asset info, and spot trade analysis are active Account endpoints and are now wrapped.
 - Asset endpoints now cover core balances, portfolio overview, transfers, funding/delivery/settlement history, exchange records, convert coin lists, deposit records/settings, deposit addresses, coin metadata, withdrawable amount, withdrawal addresses, withdrawal records, withdrawal creation, and cancellation.
 - User endpoints now cover sub UID management, sub API key management, master API key mutation/deletion, UID wallet type, and affiliate user info.
-- Spot Margin Trade now covers UTA margin state, leverage, public VIP data, historical rates, tiered collateral ratio, repayment-available amount, and auto-repay mode.
+- Spot Margin Trade now covers UTA margin state, leverage, public VIP data, currency data, historical rates, tiered collateral ratio, position tiers, coin state, max borrowable amount, repayment controls, fixed-rate borrow lifecycle, and liability info.
 
 This client covers the core trading wrapper surface plus high-value Account, Asset, User, Spot Margin Trade, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as Spread Trading, RFQ, Crypto Loan, Broker, Finance, Bybit Card, Web3, or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
 
