@@ -16,6 +16,7 @@ add_library(bybit_client
     src/rest_client_crypto_loan.cpp
     src/rest_client_earn.cpp
     src/rest_client_institutional_loan.cpp
+    src/rest_client_leverage_token.cpp
     src/rest_client_market.cpp
     src/rest_client_pre_upgrade.cpp
     src/rest_client_rfq.cpp
@@ -29,6 +30,7 @@ add_library(bybit_client
     src/public_rest_client_advanced_earn.cpp
     src/public_rest_client_earn.cpp
     src/public_rest_client_market.cpp
+    src/public_rest_client_leverage_token.cpp
     src/private_rest_client.cpp
     src/private_rest_client_advanced_earn.cpp
     src/private_rest_client_account.cpp
@@ -38,6 +40,7 @@ add_library(bybit_client
     src/private_rest_client_crypto_loan.cpp
     src/private_rest_client_earn.cpp
     src/private_rest_client_institutional_loan.cpp
+    src/private_rest_client_leverage_token.cpp
     src/private_rest_client_spot_margin.cpp
     src/private_rest_client_spread.cpp
     src/private_rest_client_strategy.cpp
@@ -203,5 +206,8 @@ if(BYBIT_BUILD_TESTS)
         add_executable(bybit_asset_api_test tests/test_asset_api.cpp)
         target_link_libraries(bybit_asset_api_test PRIVATE bybit_client)
         add_test(NAME bybit_asset_api_test COMMAND bybit_asset_api_test)
+        add_executable(bybit_leverage_token_api_test tests/test_leverage_token_api.cpp)
+        target_link_libraries(bybit_leverage_token_api_test PRIVATE bybit_client)
+        add_test(NAME bybit_leverage_token_api_test COMMAND bybit_leverage_token_api_test)
     endif()
 endif()

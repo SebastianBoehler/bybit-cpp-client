@@ -275,6 +275,9 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | Reward points | `POST /v5/card/reward/points/*` | `get_card_point_balance()`, `get_card_point_records(...)`, `get_card_tier_info()` |
 | Reward mall and cashback | `POST /v5/card/reward/mall/item/list`, `POST /v5/card/reward/point/cashback/detail` | `get_card_mall_items(...)`, `get_card_cashback_detail(...)` |
 
+### Leveraged Tokens
+Covered via `get_leverage_token_info(...)`, `get_leverage_token_market(...)`, `purchase_leverage_token(...)`, `redeem_leverage_token(...)`, and `get_leverage_token_order_records(...)`.
+
 ### Earn
 
 | Area | Endpoints | Representative methods |
@@ -291,10 +294,7 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | `POST /v5/alpha/trade/*` | `get_web3_trade_quote(...)`, `execute_web3_purchase(...)`, `get_web3_order_list(...)` |
 
 ## Partially Covered or Needs Review
-| Area | Status |
-| --- | --- |
-| Legacy Move Position | `move_position(...)` is retained for compatibility with the old singular path. Prefer `move_positions(...)` for the current Bybit V5 endpoint. |
-| WebSocket | Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, but this coverage file tracks REST first. |
+Legacy `move_position(...)` is retained for compatibility with the old singular path; prefer `move_positions(...)`. Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, but this coverage file tracks REST first.
 
 ## Not Yet Covered
 Known gaps: Spot Margin normal-account endpoints and niche account-mode operations, and SBE market data.

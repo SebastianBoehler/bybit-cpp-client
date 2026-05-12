@@ -47,6 +47,8 @@ class PublicRestClient {
   std::string get_fee_group_info(const QueryParams& filters);
   std::string get_announcements(const std::string& locale, QueryParams filters = {});
   std::string get_system_status(const QueryParams& filters = {});
+  std::string get_leverage_token_info(const QueryParams& filters = {});
+  std::string get_leverage_token_market(const std::string& lt_coin);
   std::string get_earn_product_info(const QueryParams& filters);
   std::string get_advanced_earn_product_info(const QueryParams& filters);
   std::string get_advanced_earn_product_quote(const QueryParams& filters);

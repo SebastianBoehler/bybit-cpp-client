@@ -70,6 +70,13 @@ class RestClient {
   std::string get_card_tier_info();
   std::string get_card_mall_items(const QueryParams& filters = {});
   std::string get_card_cashback_detail(const std::string& biz_txn_id);
+  std::string get_leverage_token_info(const QueryParams& filters = {});
+  std::string get_leverage_token_market(const std::string& lt_coin);
+  std::string purchase_leverage_token(const std::string& lt_coin, const std::string& amount,
+                                      const std::optional<std::string>& serial_no = std::nullopt);
+  std::string redeem_leverage_token(const std::string& lt_coin, const std::string& quantity,
+                                    const std::optional<std::string>& serial_no = std::nullopt);
+  std::string get_leverage_token_order_records(const QueryParams& filters = {});
   std::string get_earn_product_info(const QueryParams& filters);
   std::string place_earn_order(const std::string& json_body);
   std::string get_earn_order_history(const QueryParams& filters);
