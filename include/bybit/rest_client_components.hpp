@@ -97,6 +97,15 @@ class PrivateRestClient {
   std::string get_spot_margin_interest_rate_history(const QueryParams& filters);
   std::string get_spot_margin_tiered_collateral_ratio(const QueryParams& filters = {});
   std::string get_asset_info(const QueryParams& filters);
+  std::string get_asset_overview(const QueryParams& filters = {});
+  std::string get_portfolio_margin_info(const QueryParams& filters = {});
+  std::string get_total_members_assets(const QueryParams& filters = {});
+  std::string get_funding_account_history(const QueryParams& filters = {});
+  std::string get_delivery_records(const QueryParams& filters = {});
+  std::string get_settlement_records(const QueryParams& filters = {});
+  std::string get_coin_exchange_records(const QueryParams& filters = {});
+  std::string get_convert_coin_list(const QueryParams& filters);
+  std::string get_asset_sub_uids();
   std::string get_all_coin_balances(const QueryParams& filters);
   std::string get_single_coin_balance(const QueryParams& filters);
   std::string get_transferable_coins(const QueryParams& filters);
@@ -105,13 +114,18 @@ class PrivateRestClient {
   std::string create_universal_transfer(const QueryParams& params);
   std::string get_universal_transfer_records(const QueryParams& filters = {});
   std::string get_deposit_records(const QueryParams& filters = {});
+  std::string get_sub_deposit_records(const QueryParams& filters);
   std::string get_internal_deposit_records(const QueryParams& filters = {});
+  std::string get_allowed_deposit_coin_info(const QueryParams& filters = {});
+  std::string set_deposit_account(const std::string& account_type);
   std::string get_master_deposit_address(const QueryParams& filters);
   std::string get_sub_deposit_address(const QueryParams& filters);
   std::string get_coin_info(const std::optional<std::string>& coin = std::nullopt);
   std::string get_withdrawable_amount(const QueryParams& filters);
+  std::string get_withdrawal_address_list(const QueryParams& filters = {});
   std::string get_withdrawal_records(const QueryParams& filters = {});
   std::string create_withdrawal(const std::string& json_body);
+  std::string cancel_withdrawal(const std::string& withdraw_id);
   std::string get_position_info(const std::optional<std::string>& settle_coin = std::nullopt,
                                 const std::optional<std::string>& symbol = std::nullopt, int limit = 200);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,

@@ -9,6 +9,42 @@ std::string RestClient::get_asset_info(const QueryParams& filters) {
   return private_.get_asset_info(filters);
 }
 
+std::string RestClient::get_asset_overview(const QueryParams& filters) {
+  return private_.get_asset_overview(filters);
+}
+
+std::string RestClient::get_portfolio_margin_info(const QueryParams& filters) {
+  return private_.get_portfolio_margin_info(filters);
+}
+
+std::string RestClient::get_total_members_assets(const QueryParams& filters) {
+  return private_.get_total_members_assets(filters);
+}
+
+std::string RestClient::get_funding_account_history(const QueryParams& filters) {
+  return private_.get_funding_account_history(filters);
+}
+
+std::string RestClient::get_delivery_records(const QueryParams& filters) {
+  return private_.get_delivery_records(filters);
+}
+
+std::string RestClient::get_settlement_records(const QueryParams& filters) {
+  return private_.get_settlement_records(filters);
+}
+
+std::string RestClient::get_coin_exchange_records(const QueryParams& filters) {
+  return private_.get_coin_exchange_records(filters);
+}
+
+std::string RestClient::get_convert_coin_list(const QueryParams& filters) {
+  return private_.get_convert_coin_list(filters);
+}
+
+std::string RestClient::get_asset_sub_uids() {
+  return private_.get_asset_sub_uids();
+}
+
 std::string RestClient::get_all_coin_balances(const QueryParams& filters) {
   return private_.get_all_coin_balances(filters);
 }
@@ -41,8 +77,20 @@ std::string RestClient::get_deposit_records(const QueryParams& filters) {
   return private_.get_deposit_records(filters);
 }
 
+std::string RestClient::get_sub_deposit_records(const QueryParams& filters) {
+  return private_.get_sub_deposit_records(filters);
+}
+
 std::string RestClient::get_internal_deposit_records(const QueryParams& filters) {
   return private_.get_internal_deposit_records(filters);
+}
+
+std::string RestClient::get_allowed_deposit_coin_info(const QueryParams& filters) {
+  return private_.get_allowed_deposit_coin_info(filters);
+}
+
+std::string RestClient::set_deposit_account(const std::string& account_type) {
+  return private_.set_deposit_account(account_type);
 }
 
 std::string RestClient::get_master_deposit_address(const QueryParams& filters) {
@@ -61,12 +109,20 @@ std::string RestClient::get_withdrawable_amount(const QueryParams& filters) {
   return private_.get_withdrawable_amount(filters);
 }
 
+std::string RestClient::get_withdrawal_address_list(const QueryParams& filters) {
+  return private_.get_withdrawal_address_list(filters);
+}
+
 std::string RestClient::get_withdrawal_records(const QueryParams& filters) {
   return private_.get_withdrawal_records(filters);
 }
 
 std::string RestClient::create_withdrawal(const std::string& json_body) {
   return private_.create_withdrawal(json_body);
+}
+
+std::string RestClient::cancel_withdrawal(const std::string& withdraw_id) {
+  return private_.cancel_withdrawal(withdraw_id);
 }
 
 }  // namespace bybit

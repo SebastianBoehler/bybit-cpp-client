@@ -60,10 +60,13 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Option asset and pay info | `GET /v5/account/option-asset-info`, `GET /v5/account/pay-info` | `get_option_asset_info()`, `get_pay_info(...)` |
 | Spot trade analysis | `GET /v5/account/trade-info-for-analysis` | `get_trade_info_for_analysis(...)` |
 | Asset balances | `GET /v5/asset/transfer/query-*balance` | `get_all_coin_balances(...)`, `get_single_coin_balance(...)` |
+| Asset portfolio overview | `GET /v5/asset/asset-overview`, `GET /v5/asset/portfolio-margin` | `get_asset_overview(...)`, `get_portfolio_margin_info(...)` |
 | Asset transfers | `POST /v5/asset/transfer/*transfer` | `create_internal_transfer(...)`, `create_universal_transfer(...)` |
-| Deposit records and addresses | `GET /v5/asset/deposit/*` | `get_deposit_records(...)`, `get_master_deposit_address(...)` |
+| Asset history | `GET /v5/asset/fundinghistory`, `GET /v5/asset/delivery-record`, `GET /v5/asset/settlement-record` | `get_funding_account_history(...)`, `get_delivery_records(...)`, `get_settlement_records(...)` |
+| Asset conversion | `GET /v5/asset/exchange/*` | `get_coin_exchange_records(...)`, `get_convert_coin_list(...)` |
+| Deposit records and settings | `GET/POST /v5/asset/deposit/*` | `get_deposit_records(...)`, `get_sub_deposit_records(...)`, `set_deposit_account(...)` |
 | Coin and withdrawal info | `GET /v5/asset/coin/query-info`, `GET /v5/asset/withdraw/*` | `get_coin_info(...)`, `get_withdrawable_amount(...)`, `get_withdrawal_records(...)` |
-| Create withdrawal | `POST /v5/asset/withdraw/create` | `create_withdrawal(...)` |
+| Withdrawal address and lifecycle | `GET/POST /v5/asset/withdraw/*` | `get_withdrawal_address_list(...)`, `create_withdrawal(...)`, `cancel_withdrawal(...)` |
 | Open positions | `GET /v5/position/list` | `get_position_info(...)` |
 | Instrument specs and lot size | `GET /v5/market/instruments-info` | `get_instruments_info(...)` |
 | Risk tiers | `GET /v5/market/risk-limit` | `get_risk_limit(...)` |
@@ -93,7 +96,7 @@ Recent Bybit changes to keep in mind:
 - `Get API Key Information` includes `FiatBitPay` while the older `FiatBybitPay` field remains during transition.
 - `Place Order` supports BBO order parameters `bboSideType` and `bboLevel`; this client already exposes optional parameters for them.
 - Manual borrow/repay, Delta Neutral mode, pay info, option asset info, and spot trade analysis are active Account endpoints and are now wrapped.
-- Asset endpoints now cover core balances, transfers, deposit records, deposit addresses, coin metadata, withdrawable amount, withdrawal records, and withdrawal creation.
+- Asset endpoints now cover core balances, portfolio overview, transfers, funding/delivery/settlement history, exchange records, convert coin lists, deposit records/settings, deposit addresses, coin metadata, withdrawable amount, withdrawal addresses, withdrawal records, withdrawal creation, and cancellation.
 - User endpoints now cover sub UID management, sub API key management, master API key mutation/deletion, UID wallet type, and affiliate user info.
 - Spot Margin Trade now covers UTA margin state, leverage, public VIP data, historical rates, tiered collateral ratio, repayment-available amount, and auto-repay mode.
 

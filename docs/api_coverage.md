@@ -110,6 +110,15 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | Endpoint | Method |
 | --- | --- |
 | `GET /v5/asset/transfer/query-asset-info` | `get_asset_info(...)` |
+| `GET /v5/asset/asset-overview` | `get_asset_overview(...)` |
+| `GET /v5/asset/portfolio-margin` | `get_portfolio_margin_info(...)` |
+| `GET /v5/asset/total-members-assets` | `get_total_members_assets(...)` |
+| `GET /v5/asset/fundinghistory` | `get_funding_account_history(...)` |
+| `GET /v5/asset/delivery-record` | `get_delivery_records(...)` |
+| `GET /v5/asset/settlement-record` | `get_settlement_records(...)` |
+| `GET /v5/asset/exchange/order-record` | `get_coin_exchange_records(...)` |
+| `GET /v5/asset/exchange/query-coin-list` | `get_convert_coin_list(...)` |
+| `GET /v5/asset/transfer/query-sub-member-list` | `get_asset_sub_uids()` |
 | `GET /v5/asset/transfer/query-account-coins-balance` | `get_all_coin_balances(...)` |
 | `GET /v5/asset/transfer/query-account-coin-balance` | `get_single_coin_balance(...)` |
 | `GET /v5/asset/transfer/query-transfer-coin-list` | `get_transferable_coins(...)` |
@@ -118,13 +127,18 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `POST /v5/asset/transfer/universal-transfer` | `create_universal_transfer(...)` |
 | `GET /v5/asset/transfer/query-universal-transfer-list` | `get_universal_transfer_records(...)` |
 | `GET /v5/asset/deposit/query-record` | `get_deposit_records(...)` |
+| `GET /v5/asset/deposit/query-sub-member-record` | `get_sub_deposit_records(...)` |
 | `GET /v5/asset/deposit/query-internal-record` | `get_internal_deposit_records(...)` |
+| `GET /v5/asset/deposit/query-allowed-list` | `get_allowed_deposit_coin_info(...)` |
+| `POST /v5/asset/deposit/deposit-to-account` | `set_deposit_account(...)` |
 | `GET /v5/asset/deposit/query-address` | `get_master_deposit_address(...)` |
 | `GET /v5/asset/deposit/query-sub-member-address` | `get_sub_deposit_address(...)` |
 | `GET /v5/asset/coin/query-info` | `get_coin_info(...)` |
 | `GET /v5/asset/withdraw/withdrawable-amount` | `get_withdrawable_amount(...)` |
+| `GET /v5/asset/withdraw/query-address` | `get_withdrawal_address_list(...)` |
 | `GET /v5/asset/withdraw/query-record` | `get_withdrawal_records(...)` |
 | `POST /v5/asset/withdraw/create` | `create_withdrawal(...)` |
+| `POST /v5/asset/withdraw/cancel` | `cancel_withdrawal(...)` |
 
 ### Spot Margin Trade
 
@@ -150,7 +164,7 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 
 High-value REST gaps:
 
-- remaining Asset endpoints for exchange/convert, asset overview, funding history, total members assets, VASP lists, withdrawal address lists, deposit account settings, and withdrawal cancellation
+- remaining Asset endpoints for VASP lists, full convert execution flows, small-balance convert, fiat-convert, and broker-specific transfer controls
 
 Product areas not in scope yet:
 - Account upgrade, demo-funds, portfolio margin info, Spot Margin fixed-rate borrow/liability endpoints, and remaining niche account-mode operations
