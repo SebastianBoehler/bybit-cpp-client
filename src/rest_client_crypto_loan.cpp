@@ -114,4 +114,48 @@ std::string RestClient::get_fixed_crypto_loan_repayment_history(const QueryParam
   return private_.get_fixed_crypto_loan_repayment_history(filters);
 }
 
+std::string RestClient::get_legacy_crypto_loan_borrowable_coins(const QueryParams& filters) {
+  return private_.get_legacy_crypto_loan_borrowable_coins(filters);
+}
+
+std::string RestClient::get_legacy_crypto_loan_collateral_coins(const QueryParams& filters) {
+  return private_.get_legacy_crypto_loan_collateral_coins(filters);
+}
+
+std::string RestClient::get_legacy_crypto_loan_account_limits(const QueryParams& filters) {
+  return private_.get_legacy_crypto_loan_account_limits(filters);
+}
+
+std::string RestClient::borrow_legacy_crypto_loan(const std::string& json_body) {
+  return private_.borrow_legacy_crypto_loan(json_body);
+}
+
+std::string RestClient::repay_legacy_crypto_loan(const std::string& json_body) {
+  return private_.repay_legacy_crypto_loan(json_body);
+}
+
+std::string RestClient::get_legacy_crypto_loan_unpaid_loans(const QueryParams& filters) {
+  return private_.get_legacy_crypto_loan_unpaid_loans(filters);
+}
+
+std::string RestClient::get_legacy_crypto_loan_repayment_history(const QueryParams& filters) {
+  return private_.get_legacy_crypto_loan_repayment_history(filters);
+}
+
+std::string RestClient::get_legacy_crypto_loan_completed_history(const QueryParams& filters) {
+  return private_.get_legacy_crypto_loan_completed_history(filters);
+}
+
+std::string RestClient::get_legacy_crypto_loan_max_collateral_reduction(const QueryParams& filters) {
+  return private_.get_legacy_crypto_loan_max_collateral_reduction(filters);
+}
+
+std::string RestClient::adjust_legacy_crypto_loan_collateral(const std::string& json_body) {
+  return private_.adjust_legacy_crypto_loan_collateral(json_body);
+}
+
+std::string RestClient::get_legacy_crypto_loan_ltv_adjustment_history(const QueryParams& filters) {
+  return private_.get_legacy_crypto_loan_ltv_adjustment_history(filters);
+}
+
 }  // namespace bybit

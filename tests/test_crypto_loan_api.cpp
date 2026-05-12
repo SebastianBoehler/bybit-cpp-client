@@ -31,6 +31,17 @@ int main() {
   auto fixed_repay = &RestClient::repay_fixed_crypto_loan;
   auto fixed_collateral_repay = &RestClient::repay_fixed_crypto_loan_with_collateral;
   auto fixed_repay_history = &RestClient::get_fixed_crypto_loan_repayment_history;
+  auto legacy_borrowable = &RestClient::get_legacy_crypto_loan_borrowable_coins;
+  auto legacy_collateral = &RestClient::get_legacy_crypto_loan_collateral_coins;
+  auto legacy_limits = &RestClient::get_legacy_crypto_loan_account_limits;
+  auto legacy_borrow = &RestClient::borrow_legacy_crypto_loan;
+  auto legacy_repay = &RestClient::repay_legacy_crypto_loan;
+  auto legacy_unpaid = &RestClient::get_legacy_crypto_loan_unpaid_loans;
+  auto legacy_repay_history = &RestClient::get_legacy_crypto_loan_repayment_history;
+  auto legacy_completed = &RestClient::get_legacy_crypto_loan_completed_history;
+  auto legacy_max_reduction = &RestClient::get_legacy_crypto_loan_max_collateral_reduction;
+  auto legacy_adjust = &RestClient::adjust_legacy_crypto_loan_collateral;
+  auto legacy_adjust_history = &RestClient::get_legacy_crypto_loan_ltv_adjustment_history;
 
   (void)borrowable;
   (void)collateral;
@@ -60,6 +71,17 @@ int main() {
   (void)fixed_repay;
   (void)fixed_collateral_repay;
   (void)fixed_repay_history;
+  (void)legacy_borrowable;
+  (void)legacy_collateral;
+  (void)legacy_limits;
+  (void)legacy_borrow;
+  (void)legacy_repay;
+  (void)legacy_unpaid;
+  (void)legacy_repay_history;
+  (void)legacy_completed;
+  (void)legacy_max_reduction;
+  (void)legacy_adjust;
+  (void)legacy_adjust_history;
 
   return 0;
 }

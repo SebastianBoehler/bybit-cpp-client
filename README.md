@@ -54,7 +54,7 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Earn / Advanced Earn | `GET/POST /v5/earn/*` | `get_earn_product_info(...)`, `get_advanced_earn_product_quote(...)`, `add_advanced_earn_liquidity_mining_liquidity(...)` |
 | Strategy orders | `GET/POST /v5/strategy/*` | `create_strategy_order(...)`, `get_strategy_list(...)`, `stop_strategy(...)` |
 | Web3 Alpha | `POST /v5/alpha/trade/*` | `get_web3_trade_quote(...)`, `execute_web3_purchase(...)`, `get_web3_order_list(...)` |
-| Crypto Loan (New) | `GET/POST /v5/crypto-loan-*` | `get_crypto_loan_position()`, `borrow_flexible_crypto_loan(...)`, `borrow_fixed_crypto_loan(...)` |
+| Crypto Loan | `GET/POST /v5/crypto-loan-*` | `get_crypto_loan_position()`, `borrow_fixed_crypto_loan(...)`, `borrow_legacy_crypto_loan(...)` |
 | Institutional Loan | `GET/POST /v5/ins-loan/*` | `get_institutional_loan_ltv()`, `get_institutional_loan_orders(...)`, `repay_institutional_loan(...)` |
 | Account margin mode | `GET /v5/account/info` | `get_account_info()` |
 | Account upgrade and demo trading | `POST /v5/account/upgrade-to-uta`, `POST /v5/account/demo-apply-money`, `POST /v5/user/create-demo-member` | `upgrade_to_unified_account()`, `request_demo_trading_funds(...)`, `create_demo_account()` |
@@ -117,7 +117,7 @@ Recent Bybit changes to keep in mind:
 - User endpoints now cover sub UID management, sub API key management, master API key mutation/deletion, UID wallet type, and affiliate user info.
 - Demo trading support now covers demo-account creation and demo-funds requests; use `https://api-demo.bybit.com` for demo-account-key calls.
 - Spot Margin Trade now covers UTA margin state, leverage, public VIP data, currency data, historical rates, tiered collateral ratio, position tiers, coin state, max borrowable amount, repayment controls, fixed-rate borrow lifecycle, and liability info.
-- Crypto Loan (New) now covers common loan data, collateral adjustment, flexible loans, fixed borrow/supply orders, contract info, renewals, and repayment history.
+- Crypto Loan now covers new common/flexible/fixed loan APIs plus legacy borrow, repay, unpaid/completed loans, repayment history, collateral limits, and LTV adjustment history.
 - Institutional Loan now covers product data, margin coin data, loan and repayment orders, LTV, UID association, and manual repayment.
 - Exchange Broker now covers earnings, account info, subaccount deposits, rate-limit setup, and reward vouchers.
 - Bybit Card now covers transaction records plus reward points, tiers, mall items, and cashback details.
@@ -125,7 +125,7 @@ Recent Bybit changes to keep in mind:
 - Strategy orders now cover TWAP, chase, and iceberg create/list/order-list/stop endpoints.
 - Web3 Alpha now covers quote, purchase, redeem, token metadata, payment-token, order, asset-list, and asset-detail endpoints.
 
-This client covers the core trading wrapper surface plus high-value Account, Asset, User, Affiliate, Exchange Broker, Bybit Card, Earn, Advanced Earn, Strategy, Web3 Alpha, Spread Trading, RFQ Trading, Crypto Loan (New), Institutional Loan, Spot Margin Trade, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as legacy Crypto Loan or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
+This client covers the core trading wrapper surface plus high-value Account, Asset, User, Affiliate, Exchange Broker, Bybit Card, Earn, Advanced Earn, Strategy, Web3 Alpha, Spread Trading, RFQ Trading, Crypto Loan, Institutional Loan, Spot Margin Trade, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
 
 Because responses are returned as raw JSON, additive response fields usually do not require a client release. Breaking request-contract changes should be tracked in issues and covered by tests before release.
 

@@ -239,14 +239,14 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | `GET /v5/rfq/trade-list` | `get_rfq_trade_history(...)` |
 | `GET /v5/rfq/public-trades` | `get_rfq_public_trades(...)` |
 
-### Crypto Loan (New)
+### Crypto Loan
 
 | Area | Endpoints | Representative methods |
 | --- | --- | --- |
 | Common data | `GET /v5/crypto-loan-common/loanable-data`, `GET /v5/crypto-loan-common/collateral-data` | `get_crypto_loan_borrowable_coins(...)`, `get_crypto_loan_collateral_coins(...)` |
 | Collateral and position | `GET/POST /v5/crypto-loan-common/*` | `adjust_crypto_loan_collateral(...)`, `get_crypto_loan_position()`, `get_crypto_loan_max_loan_amount(...)` |
 | Flexible loans | `GET/POST /v5/crypto-loan-flexible/*` | `borrow_flexible_crypto_loan(...)`, `repay_flexible_crypto_loan(...)`, `get_flexible_crypto_loans(...)` |
-| Fixed loans | `GET/POST /v5/crypto-loan-fixed/*` | `borrow_fixed_crypto_loan(...)`, `supply_fixed_crypto_loan(...)`, `get_fixed_crypto_loan_borrow_contract_info(...)` |
+| Fixed and legacy loans | `GET/POST /v5/crypto-loan-fixed/*`, `GET/POST /v5/crypto-loan/*` | `borrow_fixed_crypto_loan(...)`, `borrow_legacy_crypto_loan(...)`, `get_legacy_crypto_loan_unpaid_loans(...)` |
 
 ### Institutional Loan
 
@@ -297,4 +297,4 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | WebSocket | Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, but this coverage file tracks REST first. |
 
 ## Not Yet Covered
-Known gaps: Spot Margin normal-account endpoints and niche account-mode operations, legacy Crypto Loan endpoints, and SBE market data.
+Known gaps: Spot Margin normal-account endpoints and niche account-mode operations, and SBE market data.
