@@ -217,9 +217,7 @@ std::string PrivateRestClient::switch_margin_mode(const std::string& symbol, con
 }
 
 std::string PrivateRestClient::cancel_all(const std::string& symbol) {
-  std::vector<std::pair<std::string, std::string>> body_kv{
-      {"category", category_}, {"symbol", symbol}, {"recvWindow", http_.recv_window()}};
-  return http_.post("/v5/order/cancel-all", to_json_object(body_kv), true);
+  return cancel_all_orders({{"symbol", symbol}});
 }
 
 }  // namespace bybit

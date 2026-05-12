@@ -28,5 +28,11 @@ int main() {
     return 1;
   } catch (const std::invalid_argument&) {
   }
+  try {
+    client.set_disconnect_cancel_all(2);
+    std::cerr << "set_disconnect_cancel_all accepted a too-small time window\n";
+    return 1;
+  } catch (const std::invalid_argument&) {
+  }
   return 0;
 }

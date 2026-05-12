@@ -29,10 +29,12 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | Endpoint | Method |
 | --- | --- |
 | `POST /v5/order/create` | `submit_order(...)` |
+| `POST /v5/order/pre-check` | `pre_check_order(...)` |
 | `POST /v5/order/amend` | `amend_order(...)` |
 | `POST /v5/order/cancel` | `cancel_order(...)` |
 | `GET /v5/order/realtime` | `get_open_orders(...)`, `get_realtime_orders(...)` |
-| `POST /v5/order/cancel-all` | `cancel_all(...)` |
+| `POST /v5/order/cancel-all` | `cancel_all(...)`, `cancel_all_orders(...)` |
+| `POST /v5/order/disconnected-cancel-all` | `set_disconnect_cancel_all(...)` |
 | `GET /v5/order/history` | `get_historic_orders(...)`, `get_order_history(...)` |
 | `GET /v5/execution/list` | `get_trade_history(...)` |
 | `POST /v5/order/create-batch` | `batch_submit_orders(...)` |
@@ -63,6 +65,7 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `GET /v5/account/wallet-balance` | `get_wallet_balance(...)` |
 | `GET /v5/account/transaction-log` | `get_transaction_log(...)` |
 | `GET /v5/account/fee-rate` | `get_fee_rate()` |
+| `GET /v5/account/query-dcp-info` | `get_dcp_info()` |
 | `POST /v5/account/set-margin-mode` | `switch_margin_mode(...)` |
 
 ## Partially Covered or Needs Review
@@ -76,8 +79,6 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 
 High-value REST gaps:
 
-- `POST /v5/order/pre-check`
-- `POST /v5/order/disconnected-cancel-all`
 - `POST /v5/position/set-auto-add-margin`
 - `POST /v5/position/confirm-pending-mmr`
 - broader Account endpoints such as collateral, borrow history, coin greeks, MMP, and repayment

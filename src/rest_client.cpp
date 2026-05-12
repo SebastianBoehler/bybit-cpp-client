@@ -105,6 +105,9 @@ std::string RestClient::set_leverage(const std::string& symbol, const std::strin
                                      const std::string& sell_leverage) {
   return private_.set_leverage(symbol, buy_leverage, sell_leverage);
 }
+std::string RestClient::pre_check_order(const QueryParams& order_params) {
+  return private_.pre_check_order(order_params);
+}
 std::string RestClient::get_order_history(const QueryParams& filters) {
   return private_.get_order_history(filters);
 }
@@ -134,6 +137,15 @@ std::string RestClient::get_realtime_orders(const QueryParams& filters) {
 }
 std::string RestClient::cancel_order(const std::string& symbol, const std::string& order_id) {
   return private_.cancel_order(symbol, order_id);
+}
+std::string RestClient::cancel_all_orders(const QueryParams& filters) {
+  return private_.cancel_all_orders(filters);
+}
+std::string RestClient::set_disconnect_cancel_all(int time_window, const std::optional<std::string>& product) {
+  return private_.set_disconnect_cancel_all(time_window, product);
+}
+std::string RestClient::get_dcp_info() {
+  return private_.get_dcp_info();
 }
 std::string RestClient::amend_order(const std::string& symbol, const std::string& order_id,
                                     const std::optional<std::string>& qty, const std::optional<std::string>& price) {

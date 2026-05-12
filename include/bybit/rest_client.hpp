@@ -70,6 +70,7 @@ class PrivateRestClient {
   std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
                            const std::string& sell_leverage);
+  std::string pre_check_order(const QueryParams& order_params);
   std::string get_order_history(const QueryParams& filters = {});
   std::string get_historic_orders(const std::string& order_id);
   std::string get_trade_history(const QueryParams& filters = {});
@@ -81,6 +82,9 @@ class PrivateRestClient {
   std::string get_open_orders(const std::optional<std::string>& symbol = std::nullopt, int limit = 50);
   std::string get_realtime_orders(const QueryParams& filters = {});
   std::string cancel_order(const std::string& symbol, const std::string& order_id);
+  std::string cancel_all_orders(const QueryParams& filters = {});
+  std::string set_disconnect_cancel_all(int time_window, const std::optional<std::string>& product = std::nullopt);
+  std::string get_dcp_info();
   std::string amend_order(const std::string& symbol, const std::string& order_id,
                           const std::optional<std::string>& qty = std::nullopt,
                           const std::optional<std::string>& price = std::nullopt);
@@ -151,6 +155,7 @@ class RestClient {
   std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
                            const std::string& sell_leverage);
+  std::string pre_check_order(const QueryParams& order_params);
   std::string get_order_history(const QueryParams& filters = {});
   std::string get_historic_orders(const std::string& order_id);
   std::string get_trade_history(const QueryParams& filters = {});
@@ -162,6 +167,9 @@ class RestClient {
   std::string get_open_orders(const std::optional<std::string>& symbol = std::nullopt, int limit = 50);
   std::string get_realtime_orders(const QueryParams& filters = {});
   std::string cancel_order(const std::string& symbol, const std::string& order_id);
+  std::string cancel_all_orders(const QueryParams& filters = {});
+  std::string set_disconnect_cancel_all(int time_window, const std::optional<std::string>& product = std::nullopt);
+  std::string get_dcp_info();
   std::string amend_order(const std::string& symbol, const std::string& order_id,
                           const std::optional<std::string>& qty = std::nullopt,
                           const std::optional<std::string>& price = std::nullopt);

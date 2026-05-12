@@ -42,7 +42,11 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Instrument specs and lot size | `GET /v5/market/instruments-info` | `get_instruments_info(...)` |
 | Risk tiers | `GET /v5/market/risk-limit` | `get_risk_limit(...)` |
 | Place order | `POST /v5/order/create` | `submit_order(...)` |
+| Pre-check order | `POST /v5/order/pre-check` | `pre_check_order(...)` |
 | Open and recent closed orders | `GET /v5/order/realtime` | `get_open_orders(...)`, `get_realtime_orders(...)` |
+| Cancel all orders | `POST /v5/order/cancel-all` | `cancel_all(...)`, `cancel_all_orders(...)` |
+| Disconnect cancel all | `POST /v5/order/disconnected-cancel-all` | `set_disconnect_cancel_all(...)` |
+| DCP info | `GET /v5/account/query-dcp-info` | `get_dcp_info()` |
 | Set leverage | `POST /v5/position/set-leverage` | `set_leverage(...)` |
 | Order history | `GET /v5/order/history` | `get_historic_orders(...)` |
 | Filtered order history | `GET /v5/order/history` | `get_order_history(...)` |
