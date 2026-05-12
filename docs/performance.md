@@ -40,9 +40,9 @@ bybit::RestClient client{"KEY", "SECRET", "linear", options};
 - Use separate `RestClient` instances if you need parallel HTTP requests.
 - Prefer one client per API key, base URL, and category.
 - Keep `recvWindow` tight for trading systems, but large enough for your network conditions.
+- Run `latency_benchmark` to compare fresh-client requests with a reused public REST client.
 
 ## Planned Work
 
 - Add explicit multi-handle support for concurrent request pipelines where it is worth the extra API surface.
-- Add benchmark examples for cold versus warm request latency.
 - Add testnet integration tests that can be enabled explicitly with credentials.

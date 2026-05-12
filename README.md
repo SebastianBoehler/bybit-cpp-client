@@ -233,6 +233,7 @@ int main() {
 | `examples/position_info.cpp` | Position query |
 | `examples/wallet_balance.cpp` | Wallet balance query |
 | `examples/limit_order.cpp` | Order placement example |
+| `examples/latency_benchmark.cpp` | Cold versus warm public REST latency |
 | `examples/ws_market_data.cpp` | Public WebSocket market stream |
 | `examples/ws_orderbook.cpp` | Public WebSocket orderbook stream |
 | `examples/ws_private_positions.cpp` | Private WebSocket position stream |

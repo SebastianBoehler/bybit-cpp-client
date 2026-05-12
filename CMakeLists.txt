@@ -107,6 +107,8 @@ add_executable(position_info examples/position_info.cpp)
 target_link_libraries(position_info PRIVATE bybit_client)
 add_executable(wallet_balance examples/wallet_balance.cpp)
 target_link_libraries(wallet_balance PRIVATE bybit_client)
+add_executable(latency_benchmark examples/latency_benchmark.cpp)
+target_link_libraries(latency_benchmark PRIVATE bybit_client)
 
 # Enable as FetchContent/git submodule consumer
 include(GNUInstallDirs)
