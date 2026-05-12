@@ -195,9 +195,7 @@ std::string HttpClient::get(const std::string& path, const std::vector<std::pair
     throw std::runtime_error(std::string("curl perform failed: ") + curl_easy_strerror(res));
   }
   if (status >= 400) {
-    std::ostringstream oss;
-    oss << "HTTP status " << status << " body: " << response;
-    throw std::runtime_error(oss.str());
+    throw HttpError(status, response);
   }
   return response;
 }
@@ -237,9 +235,7 @@ std::string HttpClient::post(const std::string& path, const std::string& body, b
     throw std::runtime_error(std::string("curl perform failed: ") + curl_easy_strerror(res));
   }
   if (status >= 400) {
-    std::ostringstream oss;
-    oss << "HTTP status " << status << " body: " << response;
-    throw std::runtime_error(oss.str());
+    throw HttpError(status, response);
   }
   return response;
 }
@@ -290,9 +286,7 @@ std::string HttpClient::post_query(const std::string& path,
     throw std::runtime_error(std::string("curl perform failed: ") + curl_easy_strerror(res));
   }
   if (status >= 400) {
-    std::ostringstream oss;
-    oss << "HTTP status " << status << " body: " << response;
-    throw std::runtime_error(oss.str());
+    throw HttpError(status, response);
   }
   return response;
 }

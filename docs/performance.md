@@ -45,5 +45,5 @@ bybit::RestClient client{"KEY", "SECRET", "linear", options};
 
 - Add explicit multi-handle support for concurrent request pipelines where it is worth the extra API surface.
 - Add benchmark examples for cold versus warm request latency.
-- Add richer error types with HTTP status, Bybit `retCode`, and response body access.
+- Parse Bybit `retCode`/`retMsg` into optional structured fields on `HttpError`.
 - Add testnet integration tests that can be enabled explicitly with credentials.

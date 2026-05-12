@@ -50,6 +50,7 @@ add_library(bybit_client
     src/signing.cpp
     src/websocket_client.cpp
     src/websocket_topics.cpp
+    src/http_error.cpp
 )
 
 target_include_directories(bybit_client

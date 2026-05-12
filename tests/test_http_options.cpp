@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdexcept>
+#include <string>
 
 #include "bybit/http_client.hpp"
 #include "bybit/rest_client.hpp"
@@ -23,6 +24,12 @@ int main() {
       http.options().tcp_keepalive || http.options().tcp_nodelay ||
       http.options().proxy != "http://127.0.0.1:9" || http.options().user_agent != "bybit-cpp-client-test") {
     std::cerr << "HttpOptions were not retained by HttpClient\n";
+    return 1;
+  }
+  bybit::HttpError error{429, "{\"retCode\":10006}"};
+  if (error.status_code() != 429 || error.body().find("10006") == std::string::npos ||
+      std::string(error.what()).find("HTTP status 429") == std::string::npos) {
+    std::cerr << "HttpError did not expose status/body\n";
     return 1;
   }
 

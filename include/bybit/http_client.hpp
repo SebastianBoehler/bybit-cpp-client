@@ -4,6 +4,7 @@
 
 #include <mutex>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -21,6 +22,17 @@ struct HttpOptions {
   long tcp_keepintvl_seconds = 30;
   std::string proxy;
   std::string user_agent = "bybit-cpp-client/0.1.0";
+};
+
+class HttpError : public std::runtime_error {
+ public:
+  HttpError(long status_code, std::string body);
+  long status_code() const { return status_code_; }
+  const std::string& body() const { return body_; }
+
+ private:
+  long status_code_;
+  std::string body_;
 };
 
 // Lightweight HTTP helper shared by public/private clients.
