@@ -25,7 +25,7 @@ The library does not ship mock data, hidden fallbacks, or trading opinions. It s
 - HMAC-SHA256 request signing through OpenSSL and HTTP transport through libcurl.
 - Persistent libcurl handles plus shared DNS/TLS-session caching for lower request setup cost.
 - Broad public market coverage including filter-complete instruments info, RPI orderbooks, volatility, ADL alerts, and fee groups.
-- Optional WebSocket V5 client behind `-DBYBIT_ENABLE_WEBSOCKET=ON`, including SBE market topic helpers.
+- Optional WebSocket V5 client behind `-DBYBIT_ENABLE_WEBSOCKET=ON`, including SBE market topic helpers and market-data decoders.
 - CMake install targets for package consumers, submodules, and `FetchContent`.
 - Small examples for market data, positions, wallet balance, orders, and WebSocket streams.
 - Focused tests for public REST calls and signing behavior.
@@ -45,7 +45,7 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Affiliate user list | `GET /v5/affiliate/aff-user-list` | `get_affiliate_user_list(...)` |
 | Spot margin state and leverage | `GET/POST /v5/spot-margin-trade/*` | `get_spot_margin_state()`, `switch_spot_margin_mode(...)`, `set_spot_margin_leverage(...)` |
 | Spot margin rates and collateral | `GET /v5/spot-margin-trade/data`, `GET /v5/spot-margin-trade/collateral`, `GET /v5/spot-margin-trade/currency-data` | `get_spot_margin_vip_data(...)`, `get_spot_margin_tiered_collateral_ratio(...)`, `get_spot_margin_currency_data(...)` |
-| Spot margin borrow and liability | `GET/POST /v5/spot-margin-trade/*borrow*`, `GET /v5/spot-margin-trade/liability` | `get_spot_margin_fixed_borrow_order_quote(...)`, `create_spot_margin_fixed_borrow(...)`, `get_spot_margin_liability(...)` |
+| Spot margin borrow and liability | `GET/POST /v5/spot-margin-trade/*borrow*`, `GET/POST /v5/spot-cross-margin-trade/*` | `create_spot_margin_fixed_borrow(...)`, `borrow_spot_cross_margin(...)`, `repay_spot_cross_margin(...)` |
 | Spot margin repayment data | `GET/POST /v5/spot-margin-trade/*repay*`, `GET /v5/spot-margin-trade/repayment-available-amount` | `get_spot_margin_repayment_available_amount(...)`, `set_spot_margin_auto_repay_mode(...)` |
 | Spread Trading | `GET/POST /v5/spread/*` | `get_spread_instruments(...)`, `create_spread_order(...)`, `get_spread_trade_history(...)` |
 | RFQ Trading | `GET/POST /v5/rfq/*` | `create_rfq(...)`, `create_rfq_quote(...)`, `get_rfq_trade_history(...)` |
@@ -125,7 +125,7 @@ Recent Bybit changes to keep in mind:
 - Strategy orders now cover TWAP, chase, and iceberg create/list/order-list/stop endpoints.
 - Web3 Alpha now covers quote, purchase, redeem, token metadata, payment-token, order, asset-list, and asset-detail endpoints.
 
-This client covers the core trading wrapper surface plus high-value Account, Asset, User, Affiliate, Exchange Broker, Bybit Card, Earn, Advanced Earn, Strategy, Web3 Alpha, Spread Trading, RFQ Trading, Crypto Loan, Institutional Loan, Spot Margin Trade, Position, Trade, Market, and WebSocket/SBE market-topic methods. SBE decoding and order entry are still open. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
+This client covers the core trading wrapper surface plus high-value Account, Asset, User, Affiliate, Exchange Broker, Bybit Card, Earn, Advanced Earn, Strategy, Web3 Alpha, Spread Trading, RFQ Trading, Crypto Loan, Institutional Loan, Spot Margin Trade, Position, Trade, Market, and WebSocket/SBE market-topic methods. SBE market-data decoding is covered; SBE order entry is still open. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
 
 Because responses are returned as raw JSON, additive response fields usually do not require a client release. Breaking request-contract changes should be tracked in issues and covered by tests before release.
 

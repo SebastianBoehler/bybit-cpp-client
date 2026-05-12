@@ -10,7 +10,7 @@ This project should become a complete, serious C++ Bybit Open API V5 library: br
 ## API Coverage
 
 - Complete the remaining high-value Trade and Position endpoints first.
-- Add remaining Account and Spot Margin endpoints for normal-account margin flows and account-mode-specific operations.
+- Add remaining account-mode-specific operations as they appear in the V5 docs.
 - Add remaining Asset endpoints for broker-specific transfer controls.
 - Add any newly released User endpoints beyond subaccount and API-key management.
 - Add product-specific APIs only when they have a clear caller or example.
