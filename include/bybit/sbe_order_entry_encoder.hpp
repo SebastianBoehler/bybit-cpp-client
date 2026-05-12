@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
+#include <vector>
 
 namespace bybit::sbe {
 
@@ -77,6 +78,55 @@ struct CancelOrderRequest {
   std::string order_link_id;
 };
 
+struct BatchCreateOrderItem {
+  std::int64_t symbol_id{};
+  Side side{Side::Unknown};
+  OrderType order_type{OrderType::Unknown};
+  Decimal64 qty;
+  Decimal64 price;
+  std::string order_link_id;
+  TimeInForce time_in_force{TimeInForce::Unknown};
+  PositionIdx position_idx{PositionIdx::OneWay};
+  MarketUnit market_unit{MarketUnit::Unknown};
+  bool is_leverage{};
+  bool reduce_only{};
+  bool close_on_trigger{};
+  bool mmp{};
+  SmpType smp_type{SmpType::Unknown};
+};
+
+struct BatchReplaceOrderItem {
+  std::int64_t symbol_id{};
+  std::string order_id;
+  std::string order_link_id;
+  Decimal64 qty;
+  Decimal64 price;
+};
+
+struct BatchCancelOrderItem {
+  std::int64_t symbol_id{};
+  std::string order_id;
+  std::string order_link_id;
+};
+
+struct BatchCreateOrderRequest {
+  OrderRequestHeader header;
+  Category category{Category::Unknown};
+  std::vector<BatchCreateOrderItem> orders;
+};
+
+struct BatchReplaceOrderRequest {
+  OrderRequestHeader header;
+  Category category{Category::Unknown};
+  std::vector<BatchReplaceOrderItem> orders;
+};
+
+struct BatchCancelOrderRequest {
+  OrderRequestHeader header;
+  Category category{Category::Unknown};
+  std::vector<BatchCancelOrderItem> orders;
+};
+
 struct OrderEntryMessageHeader {
   std::uint16_t block_length{};
   std::uint16_t template_id{};
@@ -125,16 +175,38 @@ struct CommonErrorResponse {
   std::string ret_msg;
 };
 
+struct BatchOrderResponseItem {
+  std::int32_t code{};
+  Category category{Category::Unknown};
+  std::int64_t symbol_id{};
+  std::string order_id;
+  std::string order_link_id;
+  std::string msg;
+  std::string created_at;
+};
+
+struct BatchOrderResponse {
+  OrderEntryMessageHeader header;
+  ApiResponseHeader response_header;
+  std::int32_t ret_code{};
+  std::vector<BatchOrderResponseItem> items;
+  std::string ret_msg;
+};
+
 std::string encode_auth_request(const AuthRequest& request);
 std::string encode_ping_request(std::uint64_t timestamp);
 std::string encode_create_order_request(const CreateOrderRequest& request);
 std::string encode_replace_order_request(const ReplaceOrderRequest& request);
 std::string encode_cancel_order_request(const CancelOrderRequest& request);
+std::string encode_batch_create_order_request(const BatchCreateOrderRequest& request);
+std::string encode_batch_replace_order_request(const BatchReplaceOrderRequest& request);
+std::string encode_batch_cancel_order_request(const BatchCancelOrderRequest& request);
 
 OrderEntryMessageHeader decode_order_entry_header(std::string_view payload);
 AuthResponse decode_auth_response(std::string_view payload);
 PongResponse decode_pong_response(std::string_view payload);
 OrderResponse decode_order_response(std::string_view payload);
 CommonErrorResponse decode_common_error_response(std::string_view payload);
+BatchOrderResponse decode_batch_order_response(std::string_view payload);
 
 }  // namespace bybit::sbe
