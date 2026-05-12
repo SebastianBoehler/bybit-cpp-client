@@ -114,8 +114,7 @@ std::string PrivateRestClient::set_leverage(const std::string& symbol, const std
 }
 
 std::string PrivateRestClient::get_historic_orders(const std::string& order_id) {
-  std::vector<std::pair<std::string, std::string>> params{{"category", category_}, {"orderId", order_id}};
-  return http_.get("/v5/order/history", params, true);
+  return get_order_history({{"orderId", order_id}});
 }
 
 std::string PrivateRestClient::get_fee_rate() {
@@ -130,9 +129,9 @@ std::string PrivateRestClient::get_wallet_balance(const std::string& category, c
 }
 
 std::string PrivateRestClient::get_open_orders(const std::optional<std::string>& symbol, int limit) {
-  std::vector<std::pair<std::string, std::string>> params{{"category", category_}, {"limit", std::to_string(limit)}};
+  QueryParams params{{"limit", std::to_string(limit)}};
   if (symbol) params.emplace_back("symbol", *symbol);
-  return http_.get("/v5/order/realtime", params, true);
+  return get_realtime_orders(params);
 }
 
 std::string PrivateRestClient::cancel_order(const std::string& symbol, const std::string& order_id) {

@@ -62,6 +62,13 @@ std::string RestClient::get_open_interest(const std::string& symbol, const std::
 std::string RestClient::get_long_short_ratio(const std::string& symbol, const std::string& period, int limit) {
   return public_.get_long_short_ratio(symbol, period, limit);
 }
+std::string RestClient::get_server_time() {
+  return public_.get_server_time();
+}
+std::string RestClient::get_risk_limit(const std::optional<std::string>& symbol,
+                                       const std::optional<std::string>& cursor) {
+  return public_.get_risk_limit(symbol, cursor);
+}
 std::string RestClient::submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                                      const std::string& qty, const std::string& order_link_id, int position_idx,
                                      const std::string& price, const std::string& time_in_force,
@@ -87,17 +94,32 @@ std::string RestClient::set_leverage(const std::string& symbol, const std::strin
                                      const std::string& sell_leverage) {
   return private_.set_leverage(symbol, buy_leverage, sell_leverage);
 }
+std::string RestClient::get_order_history(const QueryParams& filters) {
+  return private_.get_order_history(filters);
+}
 std::string RestClient::get_historic_orders(const std::string& order_id) {
   return private_.get_historic_orders(order_id);
 }
+std::string RestClient::get_trade_history(const QueryParams& filters) {
+  return private_.get_trade_history(filters);
+}
+std::string RestClient::get_closed_pnl(const QueryParams& filters) {
+  return private_.get_closed_pnl(filters);
+}
 std::string RestClient::get_fee_rate() {
   return private_.get_fee_rate();
+}
+std::string RestClient::get_borrow_quota(const std::string& symbol, const std::string& side) {
+  return private_.get_borrow_quota(symbol, side);
 }
 std::string RestClient::get_wallet_balance(const std::string& category, const std::optional<std::string>& coin) {
   return private_.get_wallet_balance(category, coin);
 }
 std::string RestClient::get_open_orders(const std::optional<std::string>& symbol, int limit) {
   return private_.get_open_orders(symbol, limit);
+}
+std::string RestClient::get_realtime_orders(const QueryParams& filters) {
+  return private_.get_realtime_orders(filters);
 }
 std::string RestClient::cancel_order(const std::string& symbol, const std::string& order_id) {
   return private_.cancel_order(symbol, order_id);

@@ -8,9 +8,12 @@
 
 namespace bybit {
 
+using QueryParams = std::vector<std::pair<std::string, std::string>>;
+
 class PublicRestClient {
  public:
   PublicRestClient(HttpClient& http, std::string category);
+  std::string get_server_time();
   std::string get_instruments_info(int limit = 1000);
   std::string get_instruments_info(const std::optional<std::string>& symbol, int limit = 1000,
                                    const std::optional<std::string>& cursor = std::nullopt);
@@ -32,6 +35,8 @@ class PublicRestClient {
   std::string get_funding_history(const std::string& symbol, int limit = 50);
   std::string get_open_interest(const std::string& symbol, const std::string& interval, int limit = 50);
   std::string get_long_short_ratio(const std::string& symbol, const std::string& period, int limit = 50);
+  std::string get_risk_limit(const std::optional<std::string>& symbol = std::nullopt,
+                             const std::optional<std::string>& cursor = std::nullopt);
 
  private:
   HttpClient& http_;
@@ -57,11 +62,16 @@ class PrivateRestClient {
   std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
                            const std::string& sell_leverage);
+  std::string get_order_history(const QueryParams& filters = {});
   std::string get_historic_orders(const std::string& order_id);
+  std::string get_trade_history(const QueryParams& filters = {});
+  std::string get_closed_pnl(const QueryParams& filters = {});
   std::string get_fee_rate();
+  std::string get_borrow_quota(const std::string& symbol, const std::string& side);
   // category is provided per-call to avoid forcing a single accountType for all operations.
   std::string get_wallet_balance(const std::string& category, const std::optional<std::string>& coin = std::nullopt);
   std::string get_open_orders(const std::optional<std::string>& symbol = std::nullopt, int limit = 50);
+  std::string get_realtime_orders(const QueryParams& filters = {});
   std::string cancel_order(const std::string& symbol, const std::string& order_id);
   std::string amend_order(const std::string& symbol, const std::string& order_id,
                           const std::optional<std::string>& qty = std::nullopt,
@@ -113,6 +123,9 @@ class RestClient {
   std::string get_funding_history(const std::string& symbol, int limit = 50);
   std::string get_open_interest(const std::string& symbol, const std::string& interval, int limit = 50);
   std::string get_long_short_ratio(const std::string& symbol, const std::string& period, int limit = 50);
+  std::string get_server_time();
+  std::string get_risk_limit(const std::optional<std::string>& symbol = std::nullopt,
+                             const std::optional<std::string>& cursor = std::nullopt);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx,
                            const std::string& price = "", const std::string& time_in_force = "GTC",
@@ -124,11 +137,16 @@ class RestClient {
   std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
                            const std::string& sell_leverage);
+  std::string get_order_history(const QueryParams& filters = {});
   std::string get_historic_orders(const std::string& order_id);
+  std::string get_trade_history(const QueryParams& filters = {});
+  std::string get_closed_pnl(const QueryParams& filters = {});
   std::string get_fee_rate();
+  std::string get_borrow_quota(const std::string& symbol, const std::string& side);
   // category is provided per-call to avoid forcing a single accountType for all operations.
   std::string get_wallet_balance(const std::string& category, const std::optional<std::string>& coin = std::nullopt);
   std::string get_open_orders(const std::optional<std::string>& symbol = std::nullopt, int limit = 50);
+  std::string get_realtime_orders(const QueryParams& filters = {});
   std::string cancel_order(const std::string& symbol, const std::string& order_id);
   std::string amend_order(const std::string& symbol, const std::string& order_id,
                           const std::optional<std::string>& qty = std::nullopt,

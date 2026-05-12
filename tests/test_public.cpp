@@ -12,6 +12,12 @@ int main() {
       std::cerr << "Public instruments call returned empty list\n";
       return 1;
     }
+
+    auto server_time = client.get_server_time();
+    if (server_time.find("timeSecond") == std::string::npos) {
+      std::cerr << "Server time response did not include timeSecond\n";
+      return 1;
+    }
     return 0;
   } catch (const std::exception& ex) {
     const std::string msg = ex.what();
