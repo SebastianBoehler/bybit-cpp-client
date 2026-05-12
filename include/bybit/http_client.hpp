@@ -13,7 +13,9 @@ struct HttpOptions {
   long connect_timeout_ms = 10000;
   long request_timeout_ms = 30000;
   long dns_cache_timeout_seconds = 300;
+  long max_connections = 8;
   bool tcp_keepalive = true;
+  bool tcp_nodelay = true;
   long tcp_keepidle_seconds = 60;
   long tcp_keepintvl_seconds = 30;
   std::string proxy;

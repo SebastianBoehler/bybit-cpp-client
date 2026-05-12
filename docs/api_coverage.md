@@ -297,4 +297,4 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | WebSocket | Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, but this coverage file tracks REST first. |
 
 ## Not Yet Covered
-High-value REST gap: remaining Asset endpoints for broker-specific transfer controls. Product areas not in scope yet: Spot Margin normal-account endpoints and niche account-mode operations, Crypto Loan legacy endpoints, and SBE.
+Known gaps: Spot Margin normal-account endpoints and niche account-mode operations, legacy Crypto Loan endpoints, and SBE market data.

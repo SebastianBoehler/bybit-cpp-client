@@ -62,7 +62,9 @@ void apply_options(CURL* curl, const HttpOptions& options) {
   curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT_MS, options.connect_timeout_ms);
   curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, options.request_timeout_ms);
   curl_easy_setopt(curl, CURLOPT_DNS_CACHE_TIMEOUT, options.dns_cache_timeout_seconds);
+  curl_easy_setopt(curl, CURLOPT_MAXCONNECTS, options.max_connections);
   curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, options.tcp_keepalive ? 1L : 0L);
+  curl_easy_setopt(curl, CURLOPT_TCP_NODELAY, options.tcp_nodelay ? 1L : 0L);
   if (options.tcp_keepalive) {
     curl_easy_setopt(curl, CURLOPT_TCP_KEEPIDLE, options.tcp_keepidle_seconds);
     curl_easy_setopt(curl, CURLOPT_TCP_KEEPINTVL, options.tcp_keepintvl_seconds);

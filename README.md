@@ -195,7 +195,9 @@ bybit::HttpOptions options;
 options.connect_timeout_ms = 1000;
 options.request_timeout_ms = 3000;
 options.dns_cache_timeout_seconds = 600;
+options.max_connections = 16;
 options.tcp_keepalive = true;
+options.tcp_nodelay = true;
 options.user_agent = "my-trading-service/1.0";
 
 bybit::RestClient client{"YOUR_KEY", "YOUR_SECRET", "linear", options};

@@ -10,6 +10,7 @@ int main() {
   auto position_tiers = &RestClient::get_spot_margin_position_tiers;
   auto coin_state = &RestClient::get_spot_margin_coin_state;
   auto set_auto_repay = &RestClient::set_spot_margin_auto_repay_mode;
+  auto get_auto_repay = &RestClient::get_spot_margin_auto_repay_mode;
   auto fixed_quote = &RestClient::get_spot_margin_fixed_borrow_order_quote;
   auto fixed_borrow = &RestClient::create_spot_margin_fixed_borrow;
   auto fixed_renew = &RestClient::renew_spot_margin_fixed_borrow;
@@ -22,6 +23,7 @@ int main() {
   (void)position_tiers;
   (void)coin_state;
   (void)set_auto_repay;
+  (void)get_auto_repay;
   (void)fixed_quote;
   (void)fixed_borrow;
   (void)fixed_renew;
