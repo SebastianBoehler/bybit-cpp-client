@@ -29,10 +29,14 @@ class HttpError : public std::runtime_error {
   HttpError(long status_code, std::string body);
   long status_code() const { return status_code_; }
   const std::string& body() const { return body_; }
+  const std::optional<long>& ret_code() const { return ret_code_; }
+  const std::optional<std::string>& ret_msg() const { return ret_msg_; }
 
  private:
   long status_code_;
   std::string body_;
+  std::optional<long> ret_code_;
+  std::optional<std::string> ret_msg_;
 };
 
 // Lightweight HTTP helper shared by public/private clients.

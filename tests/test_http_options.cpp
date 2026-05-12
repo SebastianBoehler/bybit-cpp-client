@@ -26,10 +26,16 @@ int main() {
     std::cerr << "HttpOptions were not retained by HttpClient\n";
     return 1;
   }
-  bybit::HttpError error{429, "{\"retCode\":10006}"};
+  bybit::HttpError error{429, "{\"retCode\":10006,\"retMsg\":\"Too many visits!\"}"};
   if (error.status_code() != 429 || error.body().find("10006") == std::string::npos ||
+      !error.ret_code() || *error.ret_code() != 10006 || !error.ret_msg() || *error.ret_msg() != "Too many visits!" ||
       std::string(error.what()).find("HTTP status 429") == std::string::npos) {
     std::cerr << "HttpError did not expose status/body\n";
+    return 1;
+  }
+  bybit::HttpError html_error{502, "<html>bad gateway</html>"};
+  if (html_error.ret_code() || html_error.ret_msg()) {
+    std::cerr << "HttpError parsed non-JSON Bybit fields\n";
     return 1;
   }
 
