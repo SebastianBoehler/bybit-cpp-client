@@ -64,6 +64,18 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | Endpoint | Method |
 | --- | --- |
 | `GET /v5/user/query-api` | `get_query_api_key()` |
+| `GET /v5/user/query-sub-members` | `get_sub_uid_list()` |
+| `POST /v5/user/create-sub-member` | `create_sub_uid(...)` |
+| `POST /v5/user/del-submember` | `delete_sub_uid(...)` |
+| `POST /v5/user/frozen-sub-member` | `freeze_sub_uid(...)` |
+| `POST /v5/user/create-sub-api` | `create_sub_api_key(...)` |
+| `GET /v5/user/sub-apikeys` | `get_sub_api_keys(...)` |
+| `POST /v5/user/update-api` | `update_master_api_key(...)` |
+| `POST /v5/user/delete-api` | `delete_master_api_key()` |
+| `POST /v5/user/update-sub-api` | `update_sub_api_key(...)` |
+| `POST /v5/user/delete-sub-api` | `delete_sub_api_key(...)` |
+| `GET /v5/user/get-member-type` | `get_uid_wallet_type(...)` |
+| `GET /v5/user/aff-customer-info` | `get_affiliate_user_info(...)` |
 | `GET /v5/account/info` | `get_account_info()` |
 | `GET /v5/account/instruments-info` | `get_account_instruments_info(...)` |
 | `GET /v5/account/wallet-balance` | `get_wallet_balance(...)` |
@@ -130,7 +142,6 @@ High-value REST gaps:
 Product areas not in scope yet:
 
 - Spot Margin Trade
-- full User and subaccount management
 - Account upgrade, demo-funds, portfolio margin info, liability info, fixed-rate borrow, and remaining niche account-mode operations
 - Spread Trading
 - RFQ Trading

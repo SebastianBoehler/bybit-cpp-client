@@ -11,16 +11,11 @@ namespace bybit {
 using QueryParams = std::vector<std::pair<std::string, std::string>>;
 
 struct MovePositionLeg {
-  std::string category;
-  std::string symbol;
-  std::string price;
-  std::string side;
-  std::string qty;
+  std::string category, symbol, price, side, qty;
 };
 
 struct CollateralCoinSwitch {
-  std::string coin;
-  std::string collateral_switch;
+  std::string coin, collateral_switch;
 };
 
 class PublicRestClient {
@@ -33,17 +28,13 @@ class PublicRestClient {
   std::string get_tickers(const std::string& symbol = "");
   std::string get_orderbook(const std::string& symbol, int limit = 50);
   std::string get_kline(const std::string& symbol, const std::string& interval,
-                        const std::optional<std::string>& start = std::nullopt,
-                        const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                        const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_mark_price_kline(const std::string& symbol, const std::string& interval,
-                                   const std::optional<std::string>& start = std::nullopt,
-                                   const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                                   const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_index_price_kline(const std::string& symbol, const std::string& interval,
-                                    const std::optional<std::string>& start = std::nullopt,
-                                    const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                                    const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_premium_index_price_kline(const std::string& symbol, const std::string& interval,
-                                            const std::optional<std::string>& start = std::nullopt,
-                                            const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                                            const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_recent_trades(const std::string& symbol, int limit = 50);
   std::string get_funding_history(const std::string& symbol, int limit = 50);
   std::string get_open_interest(const std::string& symbol, const std::string& interval, int limit = 50);
@@ -85,6 +76,18 @@ class PrivateRestClient {
   std::string get_option_asset_info();
   std::string get_pay_info(const std::optional<std::string>& coin = std::nullopt);
   std::string get_trade_info_for_analysis(const QueryParams& filters);
+  std::string get_sub_uid_list();
+  std::string create_sub_uid(const std::string& json_body);
+  std::string delete_sub_uid(const std::string& sub_member_id);
+  std::string freeze_sub_uid(int subuid, int frozen);
+  std::string create_sub_api_key(const std::string& json_body);
+  std::string get_sub_api_keys(const QueryParams& filters);
+  std::string update_master_api_key(const std::string& json_body);
+  std::string delete_master_api_key();
+  std::string update_sub_api_key(const std::string& json_body);
+  std::string delete_sub_api_key(const std::optional<std::string>& api_key = std::nullopt);
+  std::string get_uid_wallet_type(const std::optional<std::string>& member_ids = std::nullopt);
+  std::string get_affiliate_user_info(const QueryParams& filters = {});
   std::string get_asset_info(const QueryParams& filters);
   std::string get_all_coin_balances(const QueryParams& filters);
   std::string get_single_coin_balance(const QueryParams& filters);
@@ -105,15 +108,12 @@ class PrivateRestClient {
                                 const std::optional<std::string>& symbol = std::nullopt, int limit = 200);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx,
-                           const std::string& price = "", const std::string& time_in_force = "GTC",
-                           const std::optional<bool>& reduce_only = std::nullopt,
-                           const std::optional<std::string>& bbo_side_type = std::nullopt,
-                           const std::optional<std::string>& bbo_level = std::nullopt);
+                           const std::string& price = "", const std::string& time_in_force = "GTC", const std::optional<bool>& reduce_only = std::nullopt,
+                           const std::optional<std::string>& bbo_side_type = std::nullopt, const std::optional<std::string>& bbo_level = std::nullopt);
   std::string batch_submit_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests);
   std::string batch_cancel_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests);
   std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);
-  std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
-                           const std::string& sell_leverage);
+  std::string set_leverage(const std::string& symbol, const std::string& buy_leverage, const std::string& sell_leverage);
   std::string pre_check_order(const QueryParams& order_params);
   std::string get_order_history(const QueryParams& filters = {});
   std::string get_historic_orders(const std::string& order_id);
@@ -130,22 +130,16 @@ class PrivateRestClient {
   std::string cancel_all_orders(const QueryParams& filters = {});
   std::string set_disconnect_cancel_all(int time_window, const std::optional<std::string>& product = std::nullopt);
   std::string get_dcp_info();
-  std::string amend_order(const std::string& symbol, const std::string& order_id,
-                          const std::optional<std::string>& qty = std::nullopt,
+  std::string amend_order(const std::string& symbol, const std::string& order_id, const std::optional<std::string>& qty = std::nullopt,
                           const std::optional<std::string>& price = std::nullopt);
   std::string get_transaction_log(int limit = 50, const std::optional<std::string>& cursor = std::nullopt);
-  std::string move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol,
-                            const std::string& qty, int position_idx = 1);
-  std::string move_positions(const std::string& from_uid, const std::string& to_uid,
-                             const std::vector<MovePositionLeg>& legs);
+  std::string move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol, const std::string& qty, int position_idx = 1);
+  std::string move_positions(const std::string& from_uid, const std::string& to_uid, const std::vector<MovePositionLeg>& legs);
   std::string get_move_position_history(const QueryParams& filters = {});
-  std::string set_auto_add_margin(const std::string& symbol, int auto_add_margin,
-                                  const std::optional<int>& position_idx = std::nullopt);
+  std::string set_auto_add_margin(const std::string& symbol, int auto_add_margin, const std::optional<int>& position_idx = std::nullopt);
   std::string confirm_pending_mmr(const std::string& symbol);
-  std::string set_trading_stop(const std::string& symbol, int position_idx,
-                               const std::optional<std::string>& take_profit = std::nullopt,
-                               const std::optional<std::string>& stop_loss = std::nullopt,
-                               const std::optional<std::string>& trailing_stop = std::nullopt);
+  std::string set_trading_stop(const std::string& symbol, int position_idx, const std::optional<std::string>& take_profit = std::nullopt,
+                               const std::optional<std::string>& stop_loss = std::nullopt, const std::optional<std::string>& trailing_stop = std::nullopt);
   std::string set_risk_limit(const std::string& symbol, const std::string& risk_id, int position_idx = 1);
   std::string add_margin(const std::string& symbol, const std::string& margin, int position_idx = 1);
   std::string switch_position_mode(const std::string& mode, int position_idx = 1);
@@ -191,6 +185,18 @@ class RestClient {
   std::string get_option_asset_info();
   std::string get_pay_info(const std::optional<std::string>& coin = std::nullopt);
   std::string get_trade_info_for_analysis(const QueryParams& filters);
+  std::string get_sub_uid_list();
+  std::string create_sub_uid(const std::string& json_body);
+  std::string delete_sub_uid(const std::string& sub_member_id);
+  std::string freeze_sub_uid(int subuid, int frozen);
+  std::string create_sub_api_key(const std::string& json_body);
+  std::string get_sub_api_keys(const QueryParams& filters);
+  std::string update_master_api_key(const std::string& json_body);
+  std::string delete_master_api_key();
+  std::string update_sub_api_key(const std::string& json_body);
+  std::string delete_sub_api_key(const std::optional<std::string>& api_key = std::nullopt);
+  std::string get_uid_wallet_type(const std::optional<std::string>& member_ids = std::nullopt);
+  std::string get_affiliate_user_info(const QueryParams& filters = {});
   std::string get_asset_info(const QueryParams& filters);
   std::string get_all_coin_balances(const QueryParams& filters);
   std::string get_single_coin_balance(const QueryParams& filters);
@@ -213,17 +219,13 @@ class RestClient {
   std::string get_tickers(const std::string& symbol = "");
   std::string get_orderbook(const std::string& symbol, int limit = 50);
   std::string get_kline(const std::string& symbol, const std::string& interval,
-                        const std::optional<std::string>& start = std::nullopt,
-                        const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                        const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_mark_price_kline(const std::string& symbol, const std::string& interval,
-                                   const std::optional<std::string>& start = std::nullopt,
-                                   const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                                   const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_index_price_kline(const std::string& symbol, const std::string& interval,
-                                    const std::optional<std::string>& start = std::nullopt,
-                                    const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                                    const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_premium_index_price_kline(const std::string& symbol, const std::string& interval,
-                                            const std::optional<std::string>& start = std::nullopt,
-                                            const std::optional<std::string>& end = std::nullopt, int limit = 200);
+                                            const std::optional<std::string>& start = std::nullopt, const std::optional<std::string>& end = std::nullopt, int limit = 200);
   std::string get_recent_trades(const std::string& symbol, int limit = 50);
   std::string get_funding_history(const std::string& symbol, int limit = 50);
   std::string get_open_interest(const std::string& symbol, const std::string& interval, int limit = 50);
@@ -233,15 +235,12 @@ class RestClient {
                              const std::optional<std::string>& cursor = std::nullopt);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
                            const std::string& qty, const std::string& order_link_id, int position_idx,
-                           const std::string& price = "", const std::string& time_in_force = "GTC",
-                           const std::optional<bool>& reduce_only = std::nullopt,
-                           const std::optional<std::string>& bbo_side_type = std::nullopt,
-                           const std::optional<std::string>& bbo_level = std::nullopt);
+                           const std::string& price = "", const std::string& time_in_force = "GTC", const std::optional<bool>& reduce_only = std::nullopt,
+                           const std::optional<std::string>& bbo_side_type = std::nullopt, const std::optional<std::string>& bbo_level = std::nullopt);
   std::string batch_submit_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests);
   std::string batch_cancel_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests);
   std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);
-  std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
-                           const std::string& sell_leverage);
+  std::string set_leverage(const std::string& symbol, const std::string& buy_leverage, const std::string& sell_leverage);
   std::string pre_check_order(const QueryParams& order_params);
   std::string get_order_history(const QueryParams& filters = {});
   std::string get_historic_orders(const std::string& order_id);
@@ -258,22 +257,16 @@ class RestClient {
   std::string cancel_all_orders(const QueryParams& filters = {});
   std::string set_disconnect_cancel_all(int time_window, const std::optional<std::string>& product = std::nullopt);
   std::string get_dcp_info();
-  std::string amend_order(const std::string& symbol, const std::string& order_id,
-                          const std::optional<std::string>& qty = std::nullopt,
+  std::string amend_order(const std::string& symbol, const std::string& order_id, const std::optional<std::string>& qty = std::nullopt,
                           const std::optional<std::string>& price = std::nullopt);
   std::string get_transaction_log(int limit = 50, const std::optional<std::string>& cursor = std::nullopt);
-  std::string move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol,
-                            const std::string& qty, int position_idx = 1);
-  std::string move_positions(const std::string& from_uid, const std::string& to_uid,
-                             const std::vector<MovePositionLeg>& legs);
+  std::string move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol, const std::string& qty, int position_idx = 1);
+  std::string move_positions(const std::string& from_uid, const std::string& to_uid, const std::vector<MovePositionLeg>& legs);
   std::string get_move_position_history(const QueryParams& filters = {});
-  std::string set_auto_add_margin(const std::string& symbol, int auto_add_margin,
-                                  const std::optional<int>& position_idx = std::nullopt);
+  std::string set_auto_add_margin(const std::string& symbol, int auto_add_margin, const std::optional<int>& position_idx = std::nullopt);
   std::string confirm_pending_mmr(const std::string& symbol);
-  std::string set_trading_stop(const std::string& symbol, int position_idx,
-                               const std::optional<std::string>& take_profit = std::nullopt,
-                               const std::optional<std::string>& stop_loss = std::nullopt,
-                               const std::optional<std::string>& trailing_stop = std::nullopt);
+  std::string set_trading_stop(const std::string& symbol, int position_idx, const std::optional<std::string>& take_profit = std::nullopt,
+                               const std::optional<std::string>& stop_loss = std::nullopt, const std::optional<std::string>& trailing_stop = std::nullopt);
   std::string set_risk_limit(const std::string& symbol, const std::string& risk_id, int position_idx = 1);
   std::string add_margin(const std::string& symbol, const std::string& margin, int position_idx = 1);
   std::string switch_position_mode(const std::string& mode, int position_idx = 1);

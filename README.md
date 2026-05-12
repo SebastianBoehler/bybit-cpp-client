@@ -37,6 +37,9 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | --- | --- | --- |
 | Server time | `GET /v5/market/time` | `get_server_time()` |
 | API key validation | `GET /v5/user/query-api` | `get_query_api_key()` |
+| Subaccounts | `GET/POST /v5/user/*sub*` | `get_sub_uid_list()`, `create_sub_uid(...)`, `freeze_sub_uid(...)`, `delete_sub_uid(...)` |
+| API key management | `POST /v5/user/*api` | `create_sub_api_key(...)`, `update_master_api_key(...)`, `update_sub_api_key(...)` |
+| User wallet and affiliate info | `GET /v5/user/get-member-type`, `GET /v5/user/aff-customer-info` | `get_uid_wallet_type(...)`, `get_affiliate_user_info(...)` |
 | Account margin mode | `GET /v5/account/info` | `get_account_info()` |
 | Account instruments | `GET /v5/account/instruments-info` | `get_account_instruments_info(...)` |
 | Transferable amount | `GET /v5/account/withdrawal` | `get_transferable_amount(...)` |
@@ -88,8 +91,9 @@ Recent Bybit changes to keep in mind:
 - `Place Order` supports BBO order parameters `bboSideType` and `bboLevel`; this client already exposes optional parameters for them.
 - Manual borrow/repay, Delta Neutral mode, pay info, option asset info, and spot trade analysis are active Account endpoints and are now wrapped.
 - Asset endpoints now cover core balances, transfers, deposit records, deposit addresses, coin metadata, withdrawable amount, withdrawal records, and withdrawal creation.
+- User endpoints now cover sub UID management, sub API key management, master API key mutation/deletion, UID wallet type, and affiliate user info.
 
-This client covers the core trading wrapper surface plus high-value Account, Asset, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as User management, Spot Margin Trade, Spread Trading, RFQ, Crypto Loan, Broker, Finance, Bybit Card, Web3, or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
+This client covers the core trading wrapper surface plus high-value Account, Asset, User, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as Spot Margin Trade, Spread Trading, RFQ, Crypto Loan, Broker, Finance, Bybit Card, Web3, or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
 
 Because responses are returned as raw JSON, additive response fields usually do not require a client release. Breaking request-contract changes should be tracked in issues and covered by tests before release.
 
@@ -252,7 +256,7 @@ Please read [`CONTRIBUTING.md`](./CONTRIBUTING.md), [`CODE_OF_CONDUCT.md`](./COD
 
 This project handles exchange API keys and signed trading requests. Never commit secrets, `.env` files, logs containing headers, account exports, or raw private WebSocket payloads.
 
-Withdrawal creation is exposed as `create_withdrawal(json_body)` so callers can pass Bybit's exact typed JSON, including integer fields and nested travel-rule objects. Use whitelisted addresses, idempotent `requestId` values, and environment-specific keys with the minimum required permissions.
+Withdrawal creation and API-key mutation methods accept raw JSON bodies so callers can pass Bybit's exact typed JSON, including integer fields and nested objects. Use whitelisted addresses, idempotent `requestId` values where supported, and environment-specific keys with the minimum required permissions.
 
 If you find a vulnerability or credential exposure, follow [`SECURITY.md`](./SECURITY.md) and report it privately first.
 
