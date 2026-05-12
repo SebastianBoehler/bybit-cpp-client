@@ -49,7 +49,7 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | RFQ Trading | `GET/POST /v5/rfq/*` | `create_rfq(...)`, `create_rfq_quote(...)`, `get_rfq_trade_history(...)` |
 | Exchange Broker | `GET/POST /v5/broker/*` | `get_broker_earnings(...)`, `set_broker_rate_limit(...)`, `issue_broker_voucher(...)` |
 | Bybit Card | `POST /v5/card/*` | `get_card_transaction_records(...)`, `get_card_point_balance()`, `get_card_mall_items(...)` |
-| Earn | `GET/POST /v5/earn/*` | `get_earn_product_info(...)`, `place_earn_order(...)`, `get_earn_yield_history(...)` |
+| Earn / Advanced Earn | `GET/POST /v5/earn/*` | `get_earn_product_info(...)`, `get_advanced_earn_product_quote(...)`, `add_advanced_earn_liquidity_mining_liquidity(...)` |
 | Crypto Loan (New) | `GET/POST /v5/crypto-loan-*` | `get_crypto_loan_position()`, `borrow_flexible_crypto_loan(...)`, `borrow_fixed_crypto_loan(...)` |
 | Institutional Loan | `GET/POST /v5/ins-loan/*` | `get_institutional_loan_ltv()`, `get_institutional_loan_orders(...)`, `repay_institutional_loan(...)` |
 | Account margin mode | `GET /v5/account/info` | `get_account_info()` |
@@ -116,9 +116,9 @@ Recent Bybit changes to keep in mind:
 - Institutional Loan now covers product data, margin coin data, loan and repayment orders, LTV, UID association, and manual repayment.
 - Exchange Broker now covers earnings, account info, subaccount deposits, rate-limit setup, and reward vouchers.
 - Bybit Card now covers transaction records plus reward points, tiers, mall items, and cashback details.
-- Earn now covers core product info, stake/redeem orders, order history, staked positions, and yield history.
+- Earn now covers core product info, stake/redeem flows, yield history, Advanced Earn structured products, and liquidity-mining actions/history.
 
-This client covers the core trading wrapper surface plus high-value Account, Asset, User, Affiliate, Exchange Broker, Bybit Card, Earn, Spread Trading, RFQ Trading, Crypto Loan (New), Institutional Loan, Spot Margin Trade, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as Advanced Earn, legacy Crypto Loan, Web3, or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
+This client covers the core trading wrapper surface plus high-value Account, Asset, User, Affiliate, Exchange Broker, Bybit Card, Earn, Advanced Earn, Spread Trading, RFQ Trading, Crypto Loan (New), Institutional Loan, Spot Margin Trade, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as legacy Crypto Loan, Web3, or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
 
 Because responses are returned as raw JSON, additive response fields usually do not require a client release. Breaking request-contract changes should be tracked in issues and covered by tests before release.
 

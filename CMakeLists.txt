@@ -9,6 +9,7 @@ find_package(CURL REQUIRED)
 
 add_library(bybit_client
     src/rest_client.cpp
+    src/rest_client_advanced_earn.cpp
     src/rest_client_asset.cpp
     src/rest_client_broker.cpp
     src/rest_client_card.cpp
@@ -22,8 +23,10 @@ add_library(bybit_client
     src/rest_client_user.cpp
     src/http_client.cpp
     src/public_rest_client.cpp
+    src/public_rest_client_advanced_earn.cpp
     src/public_rest_client_earn.cpp
     src/private_rest_client.cpp
+    src/private_rest_client_advanced_earn.cpp
     src/private_rest_client_account.cpp
     src/private_rest_client_asset.cpp
     src/private_rest_client_broker.cpp
@@ -145,6 +148,9 @@ if(BYBIT_BUILD_TESTS)
         add_executable(bybit_account_api_test tests/test_account_api.cpp)
         target_link_libraries(bybit_account_api_test PRIVATE bybit_client)
         add_test(NAME bybit_account_api_test COMMAND bybit_account_api_test)
+        add_executable(bybit_advanced_earn_api_test tests/test_advanced_earn_api.cpp)
+        target_link_libraries(bybit_advanced_earn_api_test PRIVATE bybit_client)
+        add_test(NAME bybit_advanced_earn_api_test COMMAND bybit_advanced_earn_api_test)
         add_executable(bybit_affiliate_api_test tests/test_affiliate_api.cpp)
         target_link_libraries(bybit_affiliate_api_test PRIVATE bybit_client)
         add_test(NAME bybit_affiliate_api_test COMMAND bybit_affiliate_api_test)

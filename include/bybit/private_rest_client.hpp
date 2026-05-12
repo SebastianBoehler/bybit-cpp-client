@@ -74,6 +74,18 @@ class PrivateRestClient {
   std::string get_earn_position(const QueryParams& filters);
   std::string get_earn_yield_history(const QueryParams& filters);
   std::string get_earn_hourly_yield_history(const QueryParams& filters);
+  std::string place_advanced_earn_order(const std::string& json_body);
+  std::string get_advanced_earn_position(const QueryParams& filters);
+  std::string get_advanced_earn_order_history(const QueryParams& filters);
+  std::string add_advanced_earn_liquidity_mining_liquidity(const std::string& json_body);
+  std::string remove_advanced_earn_liquidity_mining_liquidity(const std::string& json_body);
+  std::string reinvest_advanced_earn_liquidity_mining(const std::string& json_body);
+  std::string add_advanced_earn_liquidity_mining_margin(const std::string& json_body);
+  std::string claim_advanced_earn_liquidity_mining_interest(const std::string& json_body);
+  std::string get_advanced_earn_liquidity_mining_position(const QueryParams& filters);
+  std::string get_advanced_earn_liquidity_mining_order_history(const QueryParams& filters);
+  std::string get_advanced_earn_liquidity_mining_yield_records(const QueryParams& filters);
+  std::string get_advanced_earn_liquidity_mining_liquidation_records(const QueryParams& filters);
   std::string get_spot_margin_vip_data(const QueryParams& filters = {});
   std::string get_spot_margin_currency_data(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_state();

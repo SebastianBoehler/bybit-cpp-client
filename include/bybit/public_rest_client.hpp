@@ -36,6 +36,9 @@ class PublicRestClient {
   std::string get_risk_limit(const std::optional<std::string>& symbol = std::nullopt,
                              const std::optional<std::string>& cursor = std::nullopt);
   std::string get_earn_product_info(const QueryParams& filters);
+  std::string get_advanced_earn_product_info(const QueryParams& filters);
+  std::string get_advanced_earn_product_quote(const QueryParams& filters);
+  std::string get_advanced_earn_liquidity_mining_product_info(const QueryParams& filters);
   std::string get_spread_instruments(const QueryParams& filters = {});
   std::string get_spread_orderbook(const std::string& symbol, int limit = 1);
   std::string get_spread_tickers(const std::string& symbol);

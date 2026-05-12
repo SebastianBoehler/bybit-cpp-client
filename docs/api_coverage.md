@@ -280,6 +280,8 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | --- | --- | --- |
 | Core Earn | `GET /v5/earn/product`, `POST /v5/earn/place-order`, `GET /v5/earn/order` | `get_earn_product_info(...)`, `place_earn_order(...)`, `get_earn_order_history(...)` |
 | Positions and yield | `GET /v5/earn/position`, `GET /v5/earn/yield`, `GET /v5/earn/hourly-yield` | `get_earn_position(...)`, `get_earn_yield_history(...)`, `get_earn_hourly_yield_history(...)` |
+| Advanced Earn structured products | `GET/POST /v5/earn/advance/*` | `get_advanced_earn_product_info(...)`, `get_advanced_earn_product_quote(...)`, `place_advanced_earn_order(...)` |
+| Advanced Earn liquidity mining | `GET/POST /v5/earn/liquidity-mining/*` | `get_advanced_earn_liquidity_mining_product_info(...)`, `add_advanced_earn_liquidity_mining_liquidity(...)`, `get_advanced_earn_liquidity_mining_yield_records(...)` |
 
 ## Partially Covered or Needs Review
 
@@ -294,4 +296,4 @@ High-value REST gaps:
 
 - remaining Asset endpoints for broker-specific transfer controls
 
-Product areas not in scope yet: Spot Margin normal-account endpoints and niche account-mode operations, Crypto Loan legacy endpoints, Advanced Earn, Web3, and SBE.
+Product areas not in scope yet: Spot Margin normal-account endpoints and niche account-mode operations, Crypto Loan legacy endpoints, Web3, and SBE.
