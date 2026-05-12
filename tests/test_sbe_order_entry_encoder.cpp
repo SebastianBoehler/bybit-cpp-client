@@ -19,6 +19,41 @@ std::string fixed_string(const std::string& data, std::size_t pos, std::size_t l
   return data.substr(pos, length);
 }
 
+template <typename T>
+void put_le(std::string& out, T value) {
+  for (std::size_t i = 0; i < sizeof(T); ++i) {
+    out.push_back(static_cast<char>((static_cast<std::uint64_t>(value) >> (i * 8)) & 0xff));
+  }
+}
+
+void put_fixed(std::string& out, const std::string& value, std::size_t length) {
+  out.append(value);
+  out.append(length - value.size(), '\0');
+}
+
+void put_var(std::string& out, const std::string& value) {
+  put_le<std::uint8_t>(out, static_cast<std::uint8_t>(value.size()));
+  out.append(value);
+}
+
+void put_sbe_header(std::string& out, std::uint16_t block_length, std::uint16_t template_id) {
+  put_le<std::uint16_t>(out, block_length);
+  put_le<std::uint16_t>(out, template_id);
+  put_le<std::uint16_t>(out, 2);
+  put_le<std::uint16_t>(out, 1);
+}
+
+void put_response_header(std::string& out) {
+  put_fixed(out, "req-1", 64);
+  put_fixed(out, "conn-1", 64);
+  put_fixed(out, "trace-1", 64);
+  put_le<std::int64_t>(out, 1);
+  put_le<std::int64_t>(out, 2);
+  put_le<std::int64_t>(out, 50);
+  put_le<std::int64_t>(out, 49);
+  put_le<std::int64_t>(out, 3);
+}
+
 }  // namespace
 
 int main() {
@@ -132,5 +167,64 @@ int main() {
       assert(false);
     } catch (const std::invalid_argument&) {
     }
+  }
+
+  {
+    std::string payload;
+    put_sbe_header(payload, 132, 2);
+    put_fixed(payload, "auth-1", 64);
+    put_le<std::int32_t>(payload, 0);
+    put_fixed(payload, "conn-1", 64);
+    put_var(payload, "OK");
+
+    const auto decoded = bybit::sbe::decode_auth_response(payload);
+    assert(decoded.header.template_id == 2);
+    assert(decoded.req_id == "auth-1");
+    assert(decoded.ret_code == 0);
+    assert(decoded.conn_id == "conn-1");
+    assert(decoded.ret_msg == "OK");
+  }
+
+  {
+    std::string payload;
+    put_sbe_header(payload, 16, 4);
+    put_le<std::uint64_t>(payload, 10);
+    put_le<std::uint64_t>(payload, 20);
+
+    const auto decoded = bybit::sbe::decode_pong_response(payload);
+    assert(decoded.timestamp == 10);
+    assert(decoded.pong_time == 20);
+  }
+
+  {
+    std::string payload;
+    put_sbe_header(payload, 364, 6);
+    put_response_header(payload);
+    put_le<std::int32_t>(payload, 0);
+    put_fixed(payload, "order-1", 64);
+    put_fixed(payload, "link-1", 64);
+    put_var(payload, "OK");
+
+    const auto decoded = bybit::sbe::decode_order_response(payload);
+    assert(decoded.header.template_id == 6);
+    assert(decoded.response_header.req_id == "req-1");
+    assert(decoded.response_header.bapi_limit == 50);
+    assert(decoded.ret_code == 0);
+    assert(decoded.order_id == "order-1");
+    assert(decoded.order_link_id == "link-1");
+    assert(decoded.ret_msg == "OK");
+  }
+
+  {
+    std::string payload;
+    put_sbe_header(payload, 236, 17);
+    put_response_header(payload);
+    put_le<std::int32_t>(payload, 10001);
+    put_var(payload, "bad request");
+
+    const auto decoded = bybit::sbe::decode_common_error_response(payload);
+    assert(decoded.header.template_id == 17);
+    assert(decoded.ret_code == 10001);
+    assert(decoded.ret_msg == "bad request");
   }
 }

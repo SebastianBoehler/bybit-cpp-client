@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <string>
+#include <string_view>
 
 namespace bybit::sbe {
 
@@ -76,10 +77,64 @@ struct CancelOrderRequest {
   std::string order_link_id;
 };
 
+struct OrderEntryMessageHeader {
+  std::uint16_t block_length{};
+  std::uint16_t template_id{};
+  std::uint16_t schema_id{};
+  std::uint16_t version{};
+};
+
+struct ApiResponseHeader {
+  std::string req_id;
+  std::string conn_id;
+  std::string trace_id;
+  std::int64_t time_now{};
+  std::int64_t in_time{};
+  std::int64_t bapi_limit{};
+  std::int64_t bapi_limit_status{};
+  std::int64_t bapi_limit_reset_timestamp{};
+};
+
+struct AuthResponse {
+  OrderEntryMessageHeader header;
+  std::string req_id;
+  std::int32_t ret_code{};
+  std::string conn_id;
+  std::string ret_msg;
+};
+
+struct PongResponse {
+  OrderEntryMessageHeader header;
+  std::uint64_t timestamp{};
+  std::uint64_t pong_time{};
+};
+
+struct OrderResponse {
+  OrderEntryMessageHeader header;
+  ApiResponseHeader response_header;
+  std::int32_t ret_code{};
+  std::string order_id;
+  std::string order_link_id;
+  std::string ret_msg;
+};
+
+struct CommonErrorResponse {
+  OrderEntryMessageHeader header;
+  ApiResponseHeader response_header;
+  std::int32_t ret_code{};
+  std::string ret_msg;
+};
+
 std::string encode_auth_request(const AuthRequest& request);
 std::string encode_ping_request(std::uint64_t timestamp);
 std::string encode_create_order_request(const CreateOrderRequest& request);
 std::string encode_replace_order_request(const ReplaceOrderRequest& request);
 std::string encode_cancel_order_request(const CancelOrderRequest& request);
+
+OrderEntryMessageHeader decode_order_entry_header(std::string_view payload);
+AuthResponse decode_auth_response(std::string_view payload);
+PongResponse decode_pong_response(std::string_view payload);
+OrderResponse decode_order_response(std::string_view payload);
+CommonErrorResponse decode_common_error_response(std::string_view payload);
 
 }  // namespace bybit::sbe
