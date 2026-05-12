@@ -65,11 +65,33 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | --- | --- |
 | `GET /v5/user/query-api` | `get_query_api_key()` |
 | `GET /v5/account/info` | `get_account_info()` |
+| `GET /v5/account/instruments-info` | `get_account_instruments_info(...)` |
 | `GET /v5/account/wallet-balance` | `get_wallet_balance(...)` |
+| `GET /v5/account/withdrawal` | `get_transferable_amount(...)` |
 | `GET /v5/account/transaction-log` | `get_transaction_log(...)` |
 | `GET /v5/account/fee-rate` | `get_fee_rate()` |
+| `GET /v5/account/collateral-info` | `get_collateral_info(...)` |
+| `POST /v5/account/set-collateral-switch` | `set_collateral_coin(...)` |
+| `POST /v5/account/set-collateral-switch-batch` | `batch_set_collateral_coins(...)` |
+| `GET /v5/account/borrow-history` | `get_borrow_history(...)` |
+| `POST /v5/account/borrow` | `manual_borrow(...)` |
+| `POST /v5/account/repay` | `manual_repay(...)` |
+| `POST /v5/account/no-convert-repay` | `no_convert_repay(...)` |
+| `POST /v5/account/quick-repayment` | `quick_repayment(...)` |
+| `GET /v5/asset/coin-greeks` | `get_coin_greeks(...)` |
 | `GET /v5/account/query-dcp-info` | `get_dcp_info()` |
 | `POST /v5/account/set-margin-mode` | `switch_margin_mode(...)` |
+| `POST /v5/account/set-hedging-mode` | `set_spot_hedging(...)` |
+| `GET /v5/account/mmp-state` | `get_mmp_state(...)` |
+| `POST /v5/account/mmp-reset` | `reset_mmp(...)` |
+| `POST /v5/account/mmp-modify` | `set_mmp(...)` |
+| `GET /v5/account/smp-group` | `get_smp_group()` |
+| `GET /v5/account/user-setting-config` | `get_trade_behaviour_config()` |
+| `POST /v5/account/set-delta-mode` | `set_delta_neutral_mode(...)` |
+| `POST /v5/account/set-limit-px-action` | `set_price_limit_behaviour(...)` |
+| `GET /v5/account/option-asset-info` | `get_option_asset_info()` |
+| `GET /v5/account/pay-info` | `get_pay_info(...)` |
+| `GET /v5/account/trade-info-for-analysis` | `get_trade_info_for_analysis(...)` |
 
 ## Partially Covered or Needs Review
 
@@ -82,7 +104,6 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 
 High-value REST gaps:
 
-- broader Account endpoints such as collateral, borrow history, coin greeks, MMP, and repayment
 - Asset transfer, deposit, and withdrawal endpoints
 
 Product areas not in scope yet:
@@ -90,6 +111,7 @@ Product areas not in scope yet:
 - Spot Margin Trade
 - Asset
 - full User and subaccount management
+- Account upgrade, demo-funds, portfolio margin info, liability info, fixed-rate borrow, and remaining niche account-mode operations
 - Spread Trading
 - RFQ Trading
 - Affiliate

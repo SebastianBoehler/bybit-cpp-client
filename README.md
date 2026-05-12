@@ -38,6 +38,21 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Server time | `GET /v5/market/time` | `get_server_time()` |
 | API key validation | `GET /v5/user/query-api` | `get_query_api_key()` |
 | Account margin mode | `GET /v5/account/info` | `get_account_info()` |
+| Account instruments | `GET /v5/account/instruments-info` | `get_account_instruments_info(...)` |
+| Transferable amount | `GET /v5/account/withdrawal` | `get_transferable_amount(...)` |
+| Collateral info | `GET /v5/account/collateral-info` | `get_collateral_info(...)` |
+| Set collateral coin | `POST /v5/account/set-collateral-switch` | `set_collateral_coin(...)` |
+| Batch collateral coins | `POST /v5/account/set-collateral-switch-batch` | `batch_set_collateral_coins(...)` |
+| Manual borrow and repay | `POST /v5/account/borrow`, `POST /v5/account/repay` | `manual_borrow(...)`, `manual_repay(...)` |
+| No-convert repay | `POST /v5/account/no-convert-repay` | `no_convert_repay(...)` |
+| Repay liability | `POST /v5/account/quick-repayment` | `quick_repayment(...)` |
+| Coin Greeks | `GET /v5/asset/coin-greeks` | `get_coin_greeks(...)` |
+| MMP and SMP account state | `GET/POST /v5/account/mmp-*`, `GET /v5/account/smp-group` | `get_mmp_state(...)`, `set_mmp(...)`, `reset_mmp(...)`, `get_smp_group()` |
+| Account trade behaviour | `GET /v5/account/user-setting-config` | `get_trade_behaviour_config()` |
+| Delta Neutral mode | `POST /v5/account/set-delta-mode` | `set_delta_neutral_mode(...)` |
+| Limit price behaviour | `POST /v5/account/set-limit-px-action` | `set_price_limit_behaviour(...)` |
+| Option asset and pay info | `GET /v5/account/option-asset-info`, `GET /v5/account/pay-info` | `get_option_asset_info()`, `get_pay_info(...)` |
+| Spot trade analysis | `GET /v5/account/trade-info-for-analysis` | `get_trade_info_for_analysis(...)` |
 | Open positions | `GET /v5/position/list` | `get_position_info(...)` |
 | Instrument specs and lot size | `GET /v5/market/instruments-info` | `get_instruments_info(...)` |
 | Risk tiers | `GET /v5/market/risk-limit` | `get_risk_limit(...)` |
@@ -66,8 +81,9 @@ Recent Bybit changes to keep in mind:
 - `Get Position Info` now includes `openTime`.
 - `Get API Key Information` includes `FiatBitPay` while the older `FiatBybitPay` field remains during transition.
 - `Place Order` supports BBO order parameters `bboSideType` and `bboLevel`; this client already exposes optional parameters for them.
+- Manual borrow/repay, Delta Neutral mode, pay info, option asset info, and spot trade analysis are active Account endpoints and are now wrapped.
 
-This client covers the core trading wrapper surface plus the highest-value account/trade history methods. It does not yet wrap every Bybit V5 category such as Asset, User management, Spread Trading, RFQ, Crypto Loan, Broker, Finance, Bybit Card, Web3, or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
+This client covers the core trading wrapper surface plus high-value Account, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as Asset, User management, Spot Margin Trade, Spread Trading, RFQ, Crypto Loan, Broker, Finance, Bybit Card, Web3, or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
 
 Because responses are returned as raw JSON, additive response fields usually do not require a client release. Breaking request-contract changes should be tracked in issues and covered by tests before release.
 

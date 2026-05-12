@@ -28,6 +28,73 @@ std::string RestClient::get_query_api_key() {
 std::string RestClient::get_account_info() {
   return private_.get_account_info();
 }
+std::string RestClient::get_account_instruments_info(const QueryParams& filters) {
+  return private_.get_account_instruments_info(filters);
+}
+std::string RestClient::get_transferable_amount(const std::string& coin_name) {
+  return private_.get_transferable_amount(coin_name);
+}
+std::string RestClient::get_collateral_info(const std::optional<std::string>& currency) {
+  return private_.get_collateral_info(currency);
+}
+std::string RestClient::set_collateral_coin(const std::string& coin, const std::string& collateral_switch) {
+  return private_.set_collateral_coin(coin, collateral_switch);
+}
+std::string RestClient::batch_set_collateral_coins(const std::vector<CollateralCoinSwitch>& request) {
+  return private_.batch_set_collateral_coins(request);
+}
+std::string RestClient::get_borrow_history(const QueryParams& filters) {
+  return private_.get_borrow_history(filters);
+}
+std::string RestClient::get_coin_greeks(const std::optional<std::string>& base_coin) {
+  return private_.get_coin_greeks(base_coin);
+}
+std::string RestClient::manual_borrow(const std::string& coin, const std::string& amount) {
+  return private_.manual_borrow(coin, amount);
+}
+std::string RestClient::manual_repay(const QueryParams& params) {
+  return private_.manual_repay(params);
+}
+std::string RestClient::no_convert_repay(const std::string& coin, const std::optional<std::string>& amount,
+                                         const std::optional<std::string>& repayment_type) {
+  return private_.no_convert_repay(coin, amount, repayment_type);
+}
+std::string RestClient::quick_repayment(const std::optional<std::string>& coin) {
+  return private_.quick_repayment(coin);
+}
+std::string RestClient::set_spot_hedging(const std::string& set_hedging_mode) {
+  return private_.set_spot_hedging(set_hedging_mode);
+}
+std::string RestClient::get_mmp_state(const std::string& base_coin) {
+  return private_.get_mmp_state(base_coin);
+}
+std::string RestClient::reset_mmp(const std::string& base_coin) {
+  return private_.reset_mmp(base_coin);
+}
+std::string RestClient::set_mmp(const QueryParams& params) {
+  return private_.set_mmp(params);
+}
+std::string RestClient::get_smp_group() {
+  return private_.get_smp_group();
+}
+std::string RestClient::get_trade_behaviour_config() {
+  return private_.get_trade_behaviour_config();
+}
+std::string RestClient::set_delta_neutral_mode(const std::string& delta_enable) {
+  return private_.set_delta_neutral_mode(delta_enable);
+}
+std::string RestClient::set_price_limit_behaviour(const std::string& category, bool modify_enable) {
+  return private_.set_price_limit_behaviour(category, modify_enable);
+}
+std::string RestClient::get_option_asset_info() {
+  return private_.get_option_asset_info();
+}
+std::string RestClient::get_pay_info(const std::optional<std::string>& coin) {
+  return private_.get_pay_info(coin);
+}
+std::string RestClient::get_trade_info_for_analysis(const QueryParams& filters) {
+  return private_.get_trade_info_for_analysis(filters);
+}
 std::string RestClient::get_position_info(const std::optional<std::string>& settle_coin,
                                           const std::optional<std::string>& symbol, int limit) {
   return private_.get_position_info(settle_coin, symbol, limit);

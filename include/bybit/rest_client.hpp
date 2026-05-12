@@ -18,6 +18,11 @@ struct MovePositionLeg {
   std::string qty;
 };
 
+struct CollateralCoinSwitch {
+  std::string coin;
+  std::string collateral_switch;
+};
+
 class PublicRestClient {
  public:
   PublicRestClient(HttpClient& http, std::string category);
@@ -57,6 +62,29 @@ class PrivateRestClient {
 
   std::string get_query_api_key();
   std::string get_account_info();
+  std::string get_account_instruments_info(const QueryParams& filters = {});
+  std::string get_transferable_amount(const std::string& coin_name);
+  std::string get_collateral_info(const std::optional<std::string>& currency = std::nullopt);
+  std::string set_collateral_coin(const std::string& coin, const std::string& collateral_switch);
+  std::string batch_set_collateral_coins(const std::vector<CollateralCoinSwitch>& request);
+  std::string get_borrow_history(const QueryParams& filters = {});
+  std::string get_coin_greeks(const std::optional<std::string>& base_coin = std::nullopt);
+  std::string manual_borrow(const std::string& coin, const std::string& amount);
+  std::string manual_repay(const QueryParams& params = {});
+  std::string no_convert_repay(const std::string& coin, const std::optional<std::string>& amount = std::nullopt,
+                               const std::optional<std::string>& repayment_type = std::nullopt);
+  std::string quick_repayment(const std::optional<std::string>& coin = std::nullopt);
+  std::string set_spot_hedging(const std::string& set_hedging_mode);
+  std::string get_mmp_state(const std::string& base_coin);
+  std::string reset_mmp(const std::string& base_coin);
+  std::string set_mmp(const QueryParams& params);
+  std::string get_smp_group();
+  std::string get_trade_behaviour_config();
+  std::string set_delta_neutral_mode(const std::string& delta_enable);
+  std::string set_price_limit_behaviour(const std::string& category, bool modify_enable);
+  std::string get_option_asset_info();
+  std::string get_pay_info(const std::optional<std::string>& coin = std::nullopt);
+  std::string get_trade_info_for_analysis(const QueryParams& filters);
   std::string get_position_info(const std::optional<std::string>& settle_coin = std::nullopt,
                                 const std::optional<std::string>& symbol = std::nullopt, int limit = 200);
   std::string submit_order(const std::string& symbol, const std::string& side, const std::string& order_type,
@@ -124,6 +152,29 @@ class RestClient {
 
   std::string get_query_api_key();
   std::string get_account_info();
+  std::string get_account_instruments_info(const QueryParams& filters = {});
+  std::string get_transferable_amount(const std::string& coin_name);
+  std::string get_collateral_info(const std::optional<std::string>& currency = std::nullopt);
+  std::string set_collateral_coin(const std::string& coin, const std::string& collateral_switch);
+  std::string batch_set_collateral_coins(const std::vector<CollateralCoinSwitch>& request);
+  std::string get_borrow_history(const QueryParams& filters = {});
+  std::string get_coin_greeks(const std::optional<std::string>& base_coin = std::nullopt);
+  std::string manual_borrow(const std::string& coin, const std::string& amount);
+  std::string manual_repay(const QueryParams& params = {});
+  std::string no_convert_repay(const std::string& coin, const std::optional<std::string>& amount = std::nullopt,
+                               const std::optional<std::string>& repayment_type = std::nullopt);
+  std::string quick_repayment(const std::optional<std::string>& coin = std::nullopt);
+  std::string set_spot_hedging(const std::string& set_hedging_mode);
+  std::string get_mmp_state(const std::string& base_coin);
+  std::string reset_mmp(const std::string& base_coin);
+  std::string set_mmp(const QueryParams& params);
+  std::string get_smp_group();
+  std::string get_trade_behaviour_config();
+  std::string set_delta_neutral_mode(const std::string& delta_enable);
+  std::string set_price_limit_behaviour(const std::string& category, bool modify_enable);
+  std::string get_option_asset_info();
+  std::string get_pay_info(const std::optional<std::string>& coin = std::nullopt);
+  std::string get_trade_info_for_analysis(const QueryParams& filters);
   std::string get_position_info(const std::optional<std::string>& settle_coin = std::nullopt,
                                 const std::optional<std::string>& symbol = std::nullopt, int limit = 200);
   std::string get_instruments_info(int limit = 1000);

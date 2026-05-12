@@ -10,7 +10,7 @@ This project should become a complete, serious C++ Bybit Open API V5 library: br
 ## API Coverage
 
 - Complete the remaining high-value Trade and Position endpoints first.
-- Add Account endpoints needed for collateral, borrow state, repayment, and Greeks.
+- Add remaining Account endpoints for upgrade/demo flows, portfolio margin info, liability info, fixed-rate borrow, and account-mode-specific operations.
 - Add Asset transfer, deposit, and withdrawal endpoints behind clear safety docs.
 - Add User and subaccount management endpoints.
 - Add product-specific APIs only when they have a clear caller or example.
