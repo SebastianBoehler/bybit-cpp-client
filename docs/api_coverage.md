@@ -201,6 +201,23 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `GET /v5/affiliate/aff-user-list` | `get_affiliate_user_list(...)` |
 | `GET /v5/user/aff-customer-info` | `get_affiliate_user_info(...)` |
 
+### Spread Trading
+
+| Endpoint | Method |
+| --- | --- |
+| `GET /v5/spread/instrument` | `get_spread_instruments(...)` |
+| `GET /v5/spread/orderbook` | `get_spread_orderbook(...)` |
+| `GET /v5/spread/tickers` | `get_spread_tickers(...)` |
+| `GET /v5/spread/recent-trade` | `get_spread_recent_trades(...)` |
+| `POST /v5/spread/order/create` | `create_spread_order(...)` |
+| `POST /v5/spread/order/amend` | `amend_spread_order(...)` |
+| `POST /v5/spread/order/cancel` | `cancel_spread_order(...)` |
+| `POST /v5/spread/order/cancel-all` | `cancel_all_spread_orders(...)` |
+| `GET /v5/spread/order/realtime` | `get_spread_open_orders(...)` |
+| `GET /v5/spread/order/history` | `get_spread_order_history(...)` |
+| `GET /v5/spread/execution/list` | `get_spread_trade_history(...)` |
+| `GET /v5/spread/max-qty` | `get_spread_max_order_qty(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |
@@ -216,7 +233,6 @@ High-value REST gaps:
 
 Product areas not in scope yet:
 - Spot Margin normal-account endpoints and remaining niche account-mode operations
-- Spread Trading
 - RFQ Trading
 - Crypto Loan and Institutional Loan
 - Broker

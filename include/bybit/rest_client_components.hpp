@@ -41,6 +41,10 @@ class PublicRestClient {
   std::string get_long_short_ratio(const std::string& symbol, const std::string& period, int limit = 50);
   std::string get_risk_limit(const std::optional<std::string>& symbol = std::nullopt,
                              const std::optional<std::string>& cursor = std::nullopt);
+  std::string get_spread_instruments(const QueryParams& filters = {});
+  std::string get_spread_orderbook(const std::string& symbol, int limit = 1);
+  std::string get_spread_tickers(const std::string& symbol);
+  std::string get_spread_recent_trades(const std::string& symbol, int limit = 500);
 
  private:
   HttpClient& http_;
@@ -174,6 +178,14 @@ class PrivateRestClient {
   std::string get_trade_history(const QueryParams& filters = {});
   std::string get_closed_pnl(const QueryParams& filters = {});
   std::string get_closed_options_positions(const QueryParams& filters = {});
+  std::string create_spread_order(const std::string& json_body);
+  std::string amend_spread_order(const std::string& json_body);
+  std::string cancel_spread_order(const std::string& json_body);
+  std::string cancel_all_spread_orders(const std::string& json_body);
+  std::string get_spread_open_orders(const QueryParams& filters = {});
+  std::string get_spread_order_history(const QueryParams& filters = {});
+  std::string get_spread_trade_history(const QueryParams& filters = {});
+  std::string get_spread_max_order_qty(const QueryParams& filters);
   std::string get_pre_upgrade_order_history(const QueryParams& filters = {});
   std::string get_pre_upgrade_trade_history(const QueryParams& filters = {});
   std::string get_pre_upgrade_closed_pnl(const QueryParams& filters = {});

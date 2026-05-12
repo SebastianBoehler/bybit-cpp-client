@@ -103,4 +103,20 @@ std::string PublicRestClient::get_risk_limit(const std::optional<std::string>& s
   return http_.get("/v5/market/risk-limit", params, false);
 }
 
+std::string PublicRestClient::get_spread_instruments(const QueryParams& filters) {
+  return http_.get("/v5/spread/instrument", filters, false);
+}
+
+std::string PublicRestClient::get_spread_orderbook(const std::string& symbol, int limit) {
+  return http_.get("/v5/spread/orderbook", {{"symbol", symbol}, {"limit", std::to_string(limit)}}, false);
+}
+
+std::string PublicRestClient::get_spread_tickers(const std::string& symbol) {
+  return http_.get("/v5/spread/tickers", {{"symbol", symbol}}, false);
+}
+
+std::string PublicRestClient::get_spread_recent_trades(const std::string& symbol, int limit) {
+  return http_.get("/v5/spread/recent-trade", {{"symbol", symbol}, {"limit", std::to_string(limit)}}, false);
+}
+
 }  // namespace bybit
