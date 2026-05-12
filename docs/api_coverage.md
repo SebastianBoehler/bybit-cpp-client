@@ -259,6 +259,13 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `POST /v5/ins-loan/association-uid` | `bind_or_unbind_institutional_loan_uid(...)` |
 | `POST /v5/ins-loan/repay-loan` | `repay_institutional_loan(...)` |
 
+### Exchange Broker
+
+| Area | Endpoints | Representative methods |
+| --- | --- | --- |
+| Account and deposits | `GET /v5/broker/earnings-info`, `GET /v5/broker/account-info`, `GET /v5/broker/asset/query-sub-member-deposit-record` | `get_broker_earnings(...)`, `get_broker_account_info()`, `get_broker_sub_deposit_records(...)` |
+| Rate limits and rewards | `GET/POST /v5/broker/apilimit/*`, `POST /v5/broker/award/*` | `set_broker_rate_limit(...)`, `get_broker_rate_limits(...)`, `issue_broker_voucher(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |
@@ -275,20 +282,7 @@ High-value REST gaps:
 Product areas not in scope yet:
 - Spot Margin normal-account endpoints and remaining niche account-mode operations
 - Crypto Loan legacy endpoints
-- Broker
 - Finance
 - Bybit Card
 - Web3
 - SBE
-
-## Selection Rule
-
-Prefer adding endpoints that help trading clients make safer decisions:
-
-1. account state and permissions
-2. order lifecycle
-3. execution history and fees
-4. position lifecycle and PnL
-5. instrument metadata and risk limits
-
-Add narrower product APIs only when there is a concrete caller or example that needs them.

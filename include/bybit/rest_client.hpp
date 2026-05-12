@@ -54,6 +54,15 @@ class RestClient {
   std::string get_uid_wallet_type(const std::optional<std::string>& member_ids = std::nullopt);
   std::string get_affiliate_user_list(const QueryParams& filters = {});
   std::string get_affiliate_user_info(const QueryParams& filters = {});
+  std::string get_broker_earnings(const QueryParams& filters = {});
+  std::string get_broker_account_info();
+  std::string get_broker_sub_deposit_records(const QueryParams& filters = {});
+  std::string set_broker_rate_limit(const std::string& json_body);
+  std::string get_broker_rate_limit_cap();
+  std::string get_broker_rate_limits(const QueryParams& filters = {});
+  std::string get_broker_voucher_spec(const std::string& json_body);
+  std::string issue_broker_voucher(const std::string& json_body);
+  std::string get_broker_issued_voucher(const std::string& json_body);
   std::string get_spot_margin_vip_data(const QueryParams& filters = {});
   std::string get_spot_margin_currency_data(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_state();
