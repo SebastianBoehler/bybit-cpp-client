@@ -118,6 +118,10 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `GET /v5/asset/settlement-record` | `get_settlement_records(...)` |
 | `GET /v5/asset/exchange/order-record` | `get_coin_exchange_records(...)` |
 | `GET /v5/asset/exchange/query-coin-list` | `get_convert_coin_list(...)` |
+| `POST /v5/asset/exchange/quote-apply` | `request_convert_quote(...)` |
+| `POST /v5/asset/exchange/convert-execute` | `confirm_convert_quote(...)` |
+| `GET /v5/asset/exchange/convert-result-query` | `get_convert_status(...)` |
+| `GET /v5/asset/exchange/query-convert-history` | `get_convert_history(...)` |
 | `GET /v5/asset/transfer/query-sub-member-list` | `get_asset_sub_uids()` |
 | `GET /v5/asset/transfer/query-account-coins-balance` | `get_all_coin_balances(...)` |
 | `GET /v5/asset/transfer/query-account-coin-balance` | `get_single_coin_balance(...)` |
@@ -136,6 +140,7 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `GET /v5/asset/coin/query-info` | `get_coin_info(...)` |
 | `GET /v5/asset/withdraw/withdrawable-amount` | `get_withdrawable_amount(...)` |
 | `GET /v5/asset/withdraw/query-address` | `get_withdrawal_address_list(...)` |
+| `GET /v5/asset/withdraw/vasp/list` | `get_available_vasps()` |
 | `GET /v5/asset/withdraw/query-record` | `get_withdrawal_records(...)` |
 | `POST /v5/asset/withdraw/create` | `create_withdrawal(...)` |
 | `POST /v5/asset/withdraw/cancel` | `cancel_withdrawal(...)` |
@@ -175,7 +180,7 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 
 High-value REST gaps:
 
-- remaining Asset endpoints for VASP lists, full convert execution flows, small-balance convert, fiat-convert, and broker-specific transfer controls
+- remaining Asset endpoints for small-balance convert, fiat-convert, and broker-specific transfer controls
 
 Product areas not in scope yet:
 - Account upgrade, demo-funds, portfolio margin info, Spot Margin normal-account endpoints, and remaining niche account-mode operations

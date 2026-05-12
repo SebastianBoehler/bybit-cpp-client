@@ -79,6 +79,10 @@ class RestClient {
   std::string get_settlement_records(const QueryParams& filters = {});
   std::string get_coin_exchange_records(const QueryParams& filters = {});
   std::string get_convert_coin_list(const QueryParams& filters);
+  std::string request_convert_quote(const QueryParams& params);
+  std::string confirm_convert_quote(const std::string& quote_tx_id);
+  std::string get_convert_status(const std::string& quote_tx_id, const std::string& account_type);
+  std::string get_convert_history(const QueryParams& filters = {});
   std::string get_asset_sub_uids();
   std::string get_all_coin_balances(const QueryParams& filters);
   std::string get_single_coin_balance(const QueryParams& filters);
@@ -97,6 +101,7 @@ class RestClient {
   std::string get_coin_info(const std::optional<std::string>& coin = std::nullopt);
   std::string get_withdrawable_amount(const QueryParams& filters);
   std::string get_withdrawal_address_list(const QueryParams& filters = {});
+  std::string get_available_vasps();
   std::string get_withdrawal_records(const QueryParams& filters = {});
   std::string create_withdrawal(const std::string& json_body);
   std::string cancel_withdrawal(const std::string& withdraw_id);

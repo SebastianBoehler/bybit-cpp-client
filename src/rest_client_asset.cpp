@@ -41,6 +41,22 @@ std::string RestClient::get_convert_coin_list(const QueryParams& filters) {
   return private_.get_convert_coin_list(filters);
 }
 
+std::string RestClient::request_convert_quote(const QueryParams& params) {
+  return private_.request_convert_quote(params);
+}
+
+std::string RestClient::confirm_convert_quote(const std::string& quote_tx_id) {
+  return private_.confirm_convert_quote(quote_tx_id);
+}
+
+std::string RestClient::get_convert_status(const std::string& quote_tx_id, const std::string& account_type) {
+  return private_.get_convert_status(quote_tx_id, account_type);
+}
+
+std::string RestClient::get_convert_history(const QueryParams& filters) {
+  return private_.get_convert_history(filters);
+}
+
 std::string RestClient::get_asset_sub_uids() {
   return private_.get_asset_sub_uids();
 }
@@ -111,6 +127,10 @@ std::string RestClient::get_withdrawable_amount(const QueryParams& filters) {
 
 std::string RestClient::get_withdrawal_address_list(const QueryParams& filters) {
   return private_.get_withdrawal_address_list(filters);
+}
+
+std::string RestClient::get_available_vasps() {
+  return private_.get_available_vasps();
 }
 
 std::string RestClient::get_withdrawal_records(const QueryParams& filters) {

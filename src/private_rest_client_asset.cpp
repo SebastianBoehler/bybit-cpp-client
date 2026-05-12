@@ -42,6 +42,23 @@ std::string PrivateRestClient::get_convert_coin_list(const QueryParams& filters)
   return http_.get("/v5/asset/exchange/query-coin-list", filters, true);
 }
 
+std::string PrivateRestClient::request_convert_quote(const QueryParams& params) {
+  return http_.post("/v5/asset/exchange/quote-apply", to_json_object(params), true);
+}
+
+std::string PrivateRestClient::confirm_convert_quote(const std::string& quote_tx_id) {
+  return http_.post("/v5/asset/exchange/convert-execute", to_json_object({{"quoteTxId", quote_tx_id}}), true);
+}
+
+std::string PrivateRestClient::get_convert_status(const std::string& quote_tx_id, const std::string& account_type) {
+  return http_.get("/v5/asset/exchange/convert-result-query",
+                   {{"quoteTxId", quote_tx_id}, {"accountType", account_type}}, true);
+}
+
+std::string PrivateRestClient::get_convert_history(const QueryParams& filters) {
+  return http_.get("/v5/asset/exchange/query-convert-history", filters, true);
+}
+
 std::string PrivateRestClient::get_asset_sub_uids() {
   return http_.get("/v5/asset/transfer/query-sub-member-list", {}, true);
 }
@@ -114,6 +131,10 @@ std::string PrivateRestClient::get_withdrawable_amount(const QueryParams& filter
 
 std::string PrivateRestClient::get_withdrawal_address_list(const QueryParams& filters) {
   return http_.get("/v5/asset/withdraw/query-address", filters, true);
+}
+
+std::string PrivateRestClient::get_available_vasps() {
+  return http_.get("/v5/asset/withdraw/vasp/list", {}, true);
 }
 
 std::string PrivateRestClient::get_withdrawal_records(const QueryParams& filters) {

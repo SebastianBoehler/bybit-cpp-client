@@ -11,7 +11,7 @@ This project should become a complete, serious C++ Bybit Open API V5 library: br
 
 - Complete the remaining high-value Trade and Position endpoints first.
 - Add remaining Account and Spot Margin endpoints for upgrade/demo flows, portfolio margin info, normal-account margin flows, and account-mode-specific operations.
-- Add remaining Asset endpoints for VASP metadata, full convert execution flows, small-balance convert, fiat-convert, and broker-specific transfer controls.
+- Add remaining Asset endpoints for small-balance convert, fiat-convert, and broker-specific transfer controls.
 - Add any newly released User endpoints beyond subaccount and API-key management.
 - Add product-specific APIs only when they have a clear caller or example.
 
