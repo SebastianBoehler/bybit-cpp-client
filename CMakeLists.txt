@@ -15,6 +15,7 @@ add_library(bybit_client
     src/private_rest_client_history.cpp
     src/signing.cpp
     src/websocket_client.cpp
+    src/websocket_topics.cpp
 )
 
 target_include_directories(bybit_client

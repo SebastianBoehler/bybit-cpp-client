@@ -1,51 +1,12 @@
 #include "bybit/websocket_client.hpp"
 
-#include <openssl/hmac.h>
-
 #include <algorithm>
 #include <chrono>
-#include <iomanip>
-#include <iostream>
 #include <sstream>
 
 #include "bybit/signing.hpp"
 
 namespace bybit {
-namespace {
-std::string join_args(const std::vector<std::string>& topics) {
-  std::ostringstream oss;
-  oss << "[";
-  for (size_t i = 0; i < topics.size(); ++i) {
-    oss << "\"" << topics[i] << "\"";
-    if (i + 1 < topics.size()) oss << ",";
-  }
-  oss << "]";
-  return oss.str();
-}
-
-std::string hmac_sha256_hex(const std::string& key, const std::string& data) {
-  unsigned int len = EVP_MAX_MD_SIZE;
-  unsigned char out[EVP_MAX_MD_SIZE];
-  HMAC(EVP_sha256(), key.data(), static_cast<int>(key.size()), reinterpret_cast<const unsigned char*>(data.data()),
-       data.size(), out, &len);
-  std::ostringstream oss;
-  for (unsigned int i = 0; i < len; ++i) {
-    oss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(out[i]);
-  }
-  return oss.str();
-}
-}  // namespace
-
-std::vector<std::string> WebSocketClient::make_topics(const std::string& prefix,
-                                                      const std::vector<std::string>& symbols,
-                                                      const std::string& suffix) {
-  std::vector<std::string> topics;
-  topics.reserve(symbols.size());
-  for (const auto& sym : symbols) {
-    topics.push_back(prefix + sym + suffix);
-  }
-  return topics;
-}
 
 std::string WebSocketClient::now_ms() {
   auto now = std::chrono::system_clock::now();
@@ -228,23 +189,13 @@ void WebSocketClient::authenticate() {
   // expires_ms)
   auto expires_ms = std::to_string(std::stoll(now_ms()) + 10000);  // +10s buffer
   const std::string to_sign = "GET/realtime" + expires_ms;
-  const std::string signature = hmac_sha256_hex(api_secret_, to_sign);
+  const std::string signature = Signer::hmac_sha256_hex(api_secret_, to_sign);
   std::ostringstream oss;
   // Bybit expects [api_key, expires_ms, signature].
   // Use numeric expires in JSON (no quotes).
   oss << "{\"op\":\"auth\",\"args\":[\"" << api_key_ << "\"," << expires_ms << ",\"" << signature << "\"]}";
-  std::cerr << "[ws auth] to_sign=\"" << to_sign << "\" payload=" << oss.str() << "\n";
   send_raw(oss.str());
 #endif
-}
-
-std::string WebSocketClient::serialize_args(const std::vector<std::string>& topics) const {
-  std::string args;
-  for (size_t i = 0; i < topics.size(); ++i) {
-    if (i > 0) args += ",";
-    args += "\"" + topics[i] + "\"";
-  }
-  return "[" + args + "]";
 }
 
 void WebSocketClient::remember_topics(const std::vector<std::string>& topics) {

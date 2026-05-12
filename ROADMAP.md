@@ -4,7 +4,6 @@ This project should become a complete, serious C++ Bybit Open API V5 library: br
 
 ## Near Term
 
-- Replace deprecated OpenSSL HMAC calls with the OpenSSL 3 EVP MAC API.
 - Add transport options for timeouts, keepalive, DNS cache TTL, proxy, and user agent.
 - Add current-shape support for `POST /v5/position/move-positions`.
 - Add richer order placement options without making simple market orders harder to use.

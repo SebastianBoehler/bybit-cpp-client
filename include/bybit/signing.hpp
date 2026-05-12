@@ -15,6 +15,8 @@ struct SignedRequest {
 
 class Signer {
  public:
+  static std::string hmac_sha256_hex(const std::string& key, const std::string& data);
+
   // Computes signature for Bybit v5: sign(timestamp + apiKey + recvWindow + payload)
   static SignedRequest sign(const std::string& api_key, const std::string& api_secret, const std::string& payload,
                             const std::string& recv_window = "5000");
