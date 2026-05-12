@@ -10,6 +10,8 @@
 
 namespace bybit {
 
+using HttpHeaders = std::vector<std::pair<std::string, std::string>>;
+
 struct HttpOptions {
   long connect_timeout_ms = 10000;
   long request_timeout_ms = 30000;
@@ -26,15 +28,18 @@ struct HttpOptions {
 
 class HttpError : public std::runtime_error {
  public:
-  HttpError(long status_code, std::string body);
+  HttpError(long status_code, std::string body, HttpHeaders headers = {});
   long status_code() const { return status_code_; }
   const std::string& body() const { return body_; }
+  const HttpHeaders& headers() const { return headers_; }
+  std::optional<std::string> header(const std::string& name) const;
   const std::optional<long>& ret_code() const { return ret_code_; }
   const std::optional<std::string>& ret_msg() const { return ret_msg_; }
 
  private:
   long status_code_;
   std::string body_;
+  HttpHeaders headers_;
   std::optional<long> ret_code_;
   std::optional<std::string> ret_msg_;
 };

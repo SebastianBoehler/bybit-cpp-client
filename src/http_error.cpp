@@ -1,6 +1,7 @@
 #include "bybit/http_client.hpp"
 
 #include <cctype>
+#include <algorithm>
 #include <optional>
 #include <sstream>
 #include <string>
@@ -13,6 +14,11 @@ std::string http_error_message(long status, const std::string& body) {
   std::ostringstream oss;
   oss << "HTTP status " << status << " body: " << body;
   return oss.str();
+}
+
+std::string lower(std::string value) {
+  std::transform(value.begin(), value.end(), value.begin(), [](unsigned char c) { return std::tolower(c); });
+  return value;
 }
 
 std::optional<size_t> value_start(const std::string& body, const std::string& key) {
@@ -59,11 +65,20 @@ std::optional<std::string> json_string(const std::string& body, const std::strin
 
 }  // namespace
 
-HttpError::HttpError(long status_code, std::string body)
+HttpError::HttpError(long status_code, std::string body, HttpHeaders headers)
     : std::runtime_error(http_error_message(status_code, body)),
       status_code_(status_code),
       body_(std::move(body)),
+      headers_(std::move(headers)),
       ret_code_(json_long(body_, "retCode")),
       ret_msg_(json_string(body_, "retMsg")) {}
+
+std::optional<std::string> HttpError::header(const std::string& name) const {
+  const std::string wanted = lower(name);
+  for (const auto& header : headers_) {
+    if (lower(header.first) == wanted) return header.second;
+  }
+  return std::nullopt;
+}
 
 }  // namespace bybit

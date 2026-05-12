@@ -51,6 +51,7 @@ add_library(bybit_client
     src/websocket_client.cpp
     src/websocket_topics.cpp
     src/http_error.cpp
+    src/http_serialization.cpp
 )
 
 target_include_directories(bybit_client

@@ -2,9 +2,7 @@
 
 #include <curl/curl.h>
 
-#include <algorithm>
 #include <mutex>
-#include <sstream>
 #include <stdexcept>
 
 #include "bybit/signing.hpp"
@@ -18,6 +16,19 @@ size_t write_callback(char* ptr, size_t size, size_t nmemb, void* userdata) {
   return real_size;
 }
 
+size_t header_callback(char* ptr, size_t size, size_t nmemb, void* userdata) {
+  auto real_size = size * nmemb;
+  std::string line(ptr, real_size);
+  while (!line.empty() && (line.back() == '\r' || line.back() == '\n')) line.pop_back();
+  auto colon = line.find(':');
+  if (colon == std::string::npos) return real_size;
+  size_t value_start = colon + 1;
+  while (value_start < line.size() && line[value_start] == ' ') ++value_start;
+  auto* headers = static_cast<HttpHeaders*>(userdata);
+  headers->emplace_back(line.substr(0, colon), line.substr(value_start));
+  return real_size;
+}
+
 std::string join_url(const std::string& base, const std::string& path) {
   if (!base.empty() && base.back() == '/' && !path.empty() && path.front() == '/') {
     return base + path.substr(1);
@@ -26,24 +37,6 @@ std::string join_url(const std::string& base, const std::string& path) {
     return base + "/" + path;
   }
   return base + path;
-}
-
-std::string json_escape(const std::string& input) {
-  std::ostringstream oss;
-  for (char c : input) {
-    switch (c) {
-      case '"':
-        oss << "\\\"";
-        break;
-      case '\\':
-        oss << "\\\\";
-        break;
-      default:
-        oss << c;
-        break;
-    }
-  }
-  return oss.str();
 }
 
 void ensure_curl_global() {
@@ -107,28 +100,6 @@ void apply_options(CURL* curl, const HttpOptions& options) {
 
 }  // namespace
 
-std::string to_json_object(const std::vector<std::pair<std::string, std::string>>& kvs) {
-  std::ostringstream oss;
-  oss << "{";
-  for (size_t i = 0; i < kvs.size(); ++i) {
-    oss << "\"" << json_escape(kvs[i].first) << "\":\"" << json_escape(kvs[i].second) << "\"";
-    if (i + 1 < kvs.size()) oss << ",";
-  }
-  oss << "}";
-  return oss.str();
-}
-
-std::string canonical_query(const std::vector<std::pair<std::string, std::string>>& params) {
-  std::vector<std::pair<std::string, std::string>> sorted = params;
-  std::sort(sorted.begin(), sorted.end(), [](const auto& a, const auto& b) { return a.first < b.first; });
-  std::ostringstream oss;
-  for (size_t i = 0; i < sorted.size(); ++i) {
-    oss << sorted[i].first << "=" << sorted[i].second;
-    if (i + 1 < sorted.size()) oss << "&";
-  }
-  return oss.str();
-}
-
 HttpClient::HttpClient(std::string api_key, std::string api_secret, std::string base_url, std::string recv_window,
                        HttpOptions options)
     : api_key_(std::move(api_key)),
@@ -166,6 +137,7 @@ std::string HttpClient::get(const std::string& path, const std::vector<std::pair
 
   std::string payload = query;
   std::string response;
+  HttpHeaders response_headers;
   std::lock_guard<std::mutex> lock(curl_mutex_);
 
   struct curl_slist* headers = nullptr;
@@ -183,6 +155,8 @@ std::string HttpClient::get(const std::string& path, const std::vector<std::pair
   curl_easy_setopt(curl_, CURLOPT_HTTPGET, 1L);
   curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, write_callback);
   curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &response);
+  curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, header_callback);
+  curl_easy_setopt(curl_, CURLOPT_HEADERDATA, &response_headers);
   if (headers) curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, headers);
 
   auto res = curl_easy_perform(curl_);
@@ -195,7 +169,7 @@ std::string HttpClient::get(const std::string& path, const std::vector<std::pair
     throw std::runtime_error(std::string("curl perform failed: ") + curl_easy_strerror(res));
   }
   if (status >= 400) {
-    throw HttpError(status, response);
+    throw HttpError(status, response, std::move(response_headers));
   }
   return response;
 }
@@ -204,6 +178,7 @@ std::string HttpClient::post(const std::string& path, const std::string& body, b
   std::string url = join_url(base_url_, path);
   std::string payload = body;
   std::string response;
+  HttpHeaders response_headers;
   std::lock_guard<std::mutex> lock(curl_mutex_);
 
   struct curl_slist* headers = nullptr;
@@ -223,6 +198,8 @@ std::string HttpClient::post(const std::string& path, const std::string& body, b
   curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, body.c_str());
   curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, write_callback);
   curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &response);
+  curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, header_callback);
+  curl_easy_setopt(curl_, CURLOPT_HEADERDATA, &response_headers);
   curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, headers);
 
   auto res = curl_easy_perform(curl_);
@@ -235,7 +212,7 @@ std::string HttpClient::post(const std::string& path, const std::string& body, b
     throw std::runtime_error(std::string("curl perform failed: ") + curl_easy_strerror(res));
   }
   if (status >= 400) {
-    throw HttpError(status, response);
+    throw HttpError(status, response, std::move(response_headers));
   }
   return response;
 }
@@ -255,6 +232,7 @@ std::string HttpClient::post_query(const std::string& path,
   }
 
   std::string response;
+  HttpHeaders response_headers;
   std::lock_guard<std::mutex> lock(curl_mutex_);
 
   struct curl_slist* headers = nullptr;
@@ -274,6 +252,8 @@ std::string HttpClient::post_query(const std::string& path,
   curl_easy_setopt(curl_, CURLOPT_POSTFIELDS, "");
   curl_easy_setopt(curl_, CURLOPT_WRITEFUNCTION, write_callback);
   curl_easy_setopt(curl_, CURLOPT_WRITEDATA, &response);
+  curl_easy_setopt(curl_, CURLOPT_HEADERFUNCTION, header_callback);
+  curl_easy_setopt(curl_, CURLOPT_HEADERDATA, &response_headers);
   curl_easy_setopt(curl_, CURLOPT_HTTPHEADER, headers);
 
   auto res = curl_easy_perform(curl_);
@@ -286,7 +266,7 @@ std::string HttpClient::post_query(const std::string& path,
     throw std::runtime_error(std::string("curl perform failed: ") + curl_easy_strerror(res));
   }
   if (status >= 400) {
-    throw HttpError(status, response);
+    throw HttpError(status, response, std::move(response_headers));
   }
   return response;
 }

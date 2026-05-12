@@ -45,5 +45,4 @@ bybit::RestClient client{"KEY", "SECRET", "linear", options};
 
 - Add explicit multi-handle support for concurrent request pipelines where it is worth the extra API surface.
 - Add benchmark examples for cold versus warm request latency.
-- Surface response headers such as Bybit rate-limit metadata on `HttpError`.
 - Add testnet integration tests that can be enabled explicitly with credentials.
