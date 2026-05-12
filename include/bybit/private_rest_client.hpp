@@ -35,6 +35,7 @@ class PrivateRestClient {
   std::string set_mmp(const QueryParams& params);
   std::string get_smp_group();
   std::string get_trade_behaviour_config();
+  std::string get_limit_price_behaviour();
   std::string set_delta_neutral_mode(const std::string& delta_enable);
   std::string set_price_limit_behaviour(const std::string& category, bool modify_enable);
   std::string get_option_asset_info();

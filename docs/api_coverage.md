@@ -102,7 +102,7 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | `POST /v5/account/mmp-reset` | `reset_mmp(...)` |
 | `POST /v5/account/mmp-modify` | `set_mmp(...)` |
 | `GET /v5/account/smp-group` | `get_smp_group()` |
-| `GET /v5/account/user-setting-config` | `get_trade_behaviour_config()` |
+| `GET /v5/account/user-setting-config` | `get_trade_behaviour_config()`, `get_limit_price_behaviour()` |
 | `POST /v5/account/set-delta-mode` | `set_delta_neutral_mode(...)` |
 | `POST /v5/account/set-limit-px-action` | `set_price_limit_behaviour(...)` |
 | `GET /v5/account/option-asset-info` | `get_option_asset_info()` |
@@ -281,4 +281,4 @@ Covered via `get_leverage_token_info(...)`, `get_leverage_token_market(...)`, `p
 Legacy `move_position(...)` is retained for compatibility with the old singular path; prefer `move_positions(...)`. Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, including SBE market topic helpers, binary send/payload delivery, market-data decoding for BBO, level-50 orderbook, public trades, SBE auth/ping/create/replace/cancel order encoders, batch create/replace/cancel order encoders, and auth/pong/single-order/batch/common-error response decoders.
 
 ## Not Yet Covered
-Known gaps: niche account-mode operations.
+Known gaps: no specific V5 REST account-mode endpoint gap is known after the 2026-05-12 account/API-explorer audit; keep monitoring the Bybit changelog for additive fields and new endpoints.

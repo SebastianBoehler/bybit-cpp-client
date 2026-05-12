@@ -90,6 +90,9 @@ std::string RestClient::get_smp_group() {
 std::string RestClient::get_trade_behaviour_config() {
   return private_.get_trade_behaviour_config();
 }
+std::string RestClient::get_limit_price_behaviour() {
+  return private_.get_limit_price_behaviour();
+}
 std::string RestClient::set_delta_neutral_mode(const std::string& delta_enable) {
   return private_.set_delta_neutral_mode(delta_enable);
 }

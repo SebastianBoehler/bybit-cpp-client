@@ -132,6 +132,10 @@ std::string PrivateRestClient::get_trade_behaviour_config() {
   return http_.get("/v5/account/user-setting-config", {}, true);
 }
 
+std::string PrivateRestClient::get_limit_price_behaviour() {
+  return get_trade_behaviour_config();
+}
+
 std::string PrivateRestClient::set_delta_neutral_mode(const std::string& delta_enable) {
   return http_.post("/v5/account/set-delta-mode", to_json_object({{"deltaEnable", delta_enable}}), true);
 }
