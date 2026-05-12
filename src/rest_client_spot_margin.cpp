@@ -84,4 +84,44 @@ std::string RestClient::get_spot_margin_liability(const std::string& currency) {
   return private_.get_spot_margin_liability(currency);
 }
 
+std::string RestClient::get_spot_cross_margin_vip_data(const QueryParams& filters) {
+  return private_.get_spot_cross_margin_vip_data(filters);
+}
+
+std::string RestClient::get_spot_cross_margin_pledge_token(const QueryParams& filters) {
+  return private_.get_spot_cross_margin_pledge_token(filters);
+}
+
+std::string RestClient::get_spot_cross_margin_borrow_token(const QueryParams& filters) {
+  return private_.get_spot_cross_margin_borrow_token(filters);
+}
+
+std::string RestClient::get_spot_cross_margin_loan_info(const std::string& coin) {
+  return private_.get_spot_cross_margin_loan_info(coin);
+}
+
+std::string RestClient::get_spot_cross_margin_account(const QueryParams& filters) {
+  return private_.get_spot_cross_margin_account(filters);
+}
+
+std::string RestClient::borrow_spot_cross_margin(const std::string& coin, const std::string& qty) {
+  return private_.borrow_spot_cross_margin(coin, qty);
+}
+
+std::string RestClient::repay_spot_cross_margin(const std::string& coin, const std::optional<std::string>& qty) {
+  return private_.repay_spot_cross_margin(coin, qty);
+}
+
+std::string RestClient::get_spot_cross_margin_borrow_orders(const QueryParams& filters) {
+  return private_.get_spot_cross_margin_borrow_orders(filters);
+}
+
+std::string RestClient::get_spot_cross_margin_repayment_history(const QueryParams& filters) {
+  return private_.get_spot_cross_margin_repayment_history(filters);
+}
+
+std::string RestClient::switch_spot_cross_margin(const std::string& switch_flag) {
+  return private_.switch_spot_cross_margin(switch_flag);
+}
+
 }  // namespace bybit

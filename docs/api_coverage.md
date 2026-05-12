@@ -162,27 +162,11 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 
 ### Spot Margin Trade
 
-| Endpoint | Method |
-| --- | --- |
-| `GET /v5/spot-margin-trade/data` | `get_spot_margin_vip_data(...)` |
-| `GET /v5/spot-margin-trade/currency-data` | `get_spot_margin_currency_data(...)` |
-| `GET /v5/spot-margin-trade/state` | `get_spot_margin_state()` |
-| `POST /v5/spot-margin-trade/switch-mode` | `switch_spot_margin_mode(...)` |
-| `POST /v5/spot-margin-trade/set-leverage` | `set_spot_margin_leverage(...)` |
-| `GET /v5/spot-margin-trade/max-borrowable` | `get_spot_margin_max_borrowable(...)` |
-| `GET /v5/spot-margin-trade/position-tiers` | `get_spot_margin_position_tiers(...)` |
-| `GET /v5/spot-margin-trade/coinstate` | `get_spot_margin_coin_state(...)` |
-| `GET /v5/spot-margin-trade/repayment-available-amount` | `get_spot_margin_repayment_available_amount(...)` |
-| `POST /v5/spot-margin-trade/set-auto-repay-mode` | `set_spot_margin_auto_repay_mode(...)` |
-| `GET /v5/spot-margin-trade/get-auto-repay-mode` | `get_spot_margin_auto_repay_mode(...)` |
-| `GET /v5/spot-margin-trade/interest-rate-history` | `get_spot_margin_interest_rate_history(...)` |
-| `GET /v5/spot-margin-trade/collateral` | `get_spot_margin_tiered_collateral_ratio(...)` |
-| `GET /v5/spot-margin-trade/fixedborrow-order-quote` | `get_spot_margin_fixed_borrow_order_quote(...)` |
-| `POST /v5/spot-margin-trade/fixedborrow` | `create_spot_margin_fixed_borrow(...)` |
-| `POST /v5/spot-margin-trade/fixedborrow-renew` | `renew_spot_margin_fixed_borrow(...)` |
-| `GET /v5/spot-margin-trade/fixedborrow-order-info` | `get_spot_margin_fixed_borrow_order_info(...)` |
-| `GET /v5/spot-margin-trade/fixedborrow-contract-info` | `get_spot_margin_fixed_borrow_contract_info(...)` |
-| `GET /v5/spot-margin-trade/liability` | `get_spot_margin_liability(...)` |
+| Area | Endpoints | Representative methods |
+| --- | --- | --- |
+| UTA state, risk, and repay | `GET/POST /v5/spot-margin-trade/*` | `get_spot_margin_state()`, `set_spot_margin_leverage(...)`, `get_spot_margin_max_borrowable(...)`, `set_spot_margin_auto_repay_mode(...)` |
+| UTA rates and fixed borrow | `GET/POST /v5/spot-margin-trade/*` | `get_spot_margin_interest_rate_history(...)`, `get_spot_margin_tiered_collateral_ratio(...)`, `create_spot_margin_fixed_borrow(...)`, `get_spot_margin_liability(...)` |
+| Normal account spot cross margin | `GET/POST /v5/spot-cross-margin-trade/*` | `get_spot_cross_margin_vip_data(...)`, `borrow_spot_cross_margin(...)`, `repay_spot_cross_margin(...)`, `switch_spot_cross_margin(...)` |
 
 ### Pre-upgrade
 
@@ -297,4 +281,4 @@ Covered via `get_leverage_token_info(...)`, `get_leverage_token_market(...)`, `p
 Legacy `move_position(...)` is retained for compatibility with the old singular path; prefer `move_positions(...)`. Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, including SBE market topic helpers, binary payload delivery, and market-data decoding for BBO, level-50 orderbook, and public trades. SBE order entry is still open.
 
 ## Not Yet Covered
-Known gaps: Spot Margin normal-account endpoints, niche account-mode operations, and SBE order entry.
+Known gaps: niche account-mode operations and SBE order entry.

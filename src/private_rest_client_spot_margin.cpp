@@ -99,4 +99,47 @@ std::string PrivateRestClient::get_spot_margin_liability(const std::string& curr
   return http_.get("/v5/spot-margin-trade/liability", {{"currency", currency}}, true);
 }
 
+std::string PrivateRestClient::get_spot_cross_margin_vip_data(const QueryParams& filters) {
+  return http_.get("/v5/spot-cross-margin-trade/data", filters, false);
+}
+
+std::string PrivateRestClient::get_spot_cross_margin_pledge_token(const QueryParams& filters) {
+  return http_.get("/v5/spot-cross-margin-trade/pledge-token", filters, false);
+}
+
+std::string PrivateRestClient::get_spot_cross_margin_borrow_token(const QueryParams& filters) {
+  return http_.get("/v5/spot-cross-margin-trade/borrow-token", filters, false);
+}
+
+std::string PrivateRestClient::get_spot_cross_margin_loan_info(const std::string& coin) {
+  return http_.get("/v5/spot-cross-margin-trade/loan-info", {{"coin", coin}}, true);
+}
+
+std::string PrivateRestClient::get_spot_cross_margin_account(const QueryParams& filters) {
+  return http_.get("/v5/spot-cross-margin-trade/account", filters, true);
+}
+
+std::string PrivateRestClient::borrow_spot_cross_margin(const std::string& coin, const std::string& qty) {
+  return http_.post("/v5/spot-cross-margin-trade/loan", to_json_object({{"coin", coin}, {"qty", qty}}), true);
+}
+
+std::string PrivateRestClient::repay_spot_cross_margin(const std::string& coin,
+                                                       const std::optional<std::string>& qty) {
+  QueryParams params{{"coin", coin}};
+  if (qty) params.emplace_back("qty", *qty);
+  return http_.post("/v5/spot-cross-margin-trade/repay", to_json_object(params), true);
+}
+
+std::string PrivateRestClient::get_spot_cross_margin_borrow_orders(const QueryParams& filters) {
+  return http_.get("/v5/spot-cross-margin-trade/orders", filters, true);
+}
+
+std::string PrivateRestClient::get_spot_cross_margin_repayment_history(const QueryParams& filters) {
+  return http_.get("/v5/spot-cross-margin-trade/repay-history", filters, true);
+}
+
+std::string PrivateRestClient::switch_spot_cross_margin(const std::string& switch_flag) {
+  return http_.post("/v5/spot-cross-margin-trade/switch", to_json_object({{"switch", switch_flag}}), true);
+}
+
 }  // namespace bybit

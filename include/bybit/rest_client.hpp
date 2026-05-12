@@ -119,6 +119,16 @@ class RestClient {
   std::string get_spot_margin_fixed_borrow_order_info(const QueryParams& filters = {});
   std::string get_spot_margin_fixed_borrow_contract_info(const QueryParams& filters = {});
   std::string get_spot_margin_liability(const std::string& currency);
+  std::string get_spot_cross_margin_vip_data(const QueryParams& filters = {});
+  std::string get_spot_cross_margin_pledge_token(const QueryParams& filters = {});
+  std::string get_spot_cross_margin_borrow_token(const QueryParams& filters = {});
+  std::string get_spot_cross_margin_loan_info(const std::string& coin);
+  std::string get_spot_cross_margin_account(const QueryParams& filters = {});
+  std::string borrow_spot_cross_margin(const std::string& coin, const std::string& qty);
+  std::string repay_spot_cross_margin(const std::string& coin, const std::optional<std::string>& qty = std::nullopt);
+  std::string get_spot_cross_margin_borrow_orders(const QueryParams& filters = {});
+  std::string get_spot_cross_margin_repayment_history(const QueryParams& filters = {});
+  std::string switch_spot_cross_margin(const std::string& switch_flag);
   std::string get_asset_info(const QueryParams& filters);
   std::string get_asset_overview(const QueryParams& filters = {});
   std::string get_portfolio_margin_info(const QueryParams& filters = {});
