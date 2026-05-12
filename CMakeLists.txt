@@ -11,6 +11,7 @@ add_library(bybit_client
     src/rest_client.cpp
     src/rest_client_asset.cpp
     src/rest_client_pre_upgrade.cpp
+    src/rest_client_rfq.cpp
     src/rest_client_spot_margin.cpp
     src/rest_client_spread.cpp
     src/rest_client_user.cpp
@@ -24,6 +25,7 @@ add_library(bybit_client
     src/private_rest_client_user.cpp
     src/private_rest_client_history.cpp
     src/private_rest_client_position.cpp
+    src/private_rest_client_rfq.cpp
     src/private_rest_client_trade.cpp
     src/signing.cpp
     src/websocket_client.cpp
@@ -138,6 +140,9 @@ if(BYBIT_BUILD_TESTS)
         add_executable(bybit_pre_upgrade_api_test tests/test_pre_upgrade_api.cpp)
         target_link_libraries(bybit_pre_upgrade_api_test PRIVATE bybit_client)
         add_test(NAME bybit_pre_upgrade_api_test COMMAND bybit_pre_upgrade_api_test)
+        add_executable(bybit_rfq_api_test tests/test_rfq_api.cpp)
+        target_link_libraries(bybit_rfq_api_test PRIVATE bybit_client)
+        add_test(NAME bybit_rfq_api_test COMMAND bybit_rfq_api_test)
         add_executable(bybit_spot_margin_api_test tests/test_spot_margin_api.cpp)
         target_link_libraries(bybit_spot_margin_api_test PRIVATE bybit_client)
         add_test(NAME bybit_spot_margin_api_test COMMAND bybit_spot_margin_api_test)

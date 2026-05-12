@@ -218,6 +218,26 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `GET /v5/spread/execution/list` | `get_spread_trade_history(...)` |
 | `GET /v5/spread/max-qty` | `get_spread_max_order_qty(...)` |
 
+### RFQ Trading
+
+| Endpoint | Method |
+| --- | --- |
+| `POST /v5/rfq/create-rfq` | `create_rfq(...)` |
+| `GET /v5/rfq/config` | `get_rfq_config()` |
+| `POST /v5/rfq/cancel-rfq` | `cancel_rfq(...)` |
+| `POST /v5/rfq/cancel-all-rfq` | `cancel_all_rfqs()` |
+| `POST /v5/rfq/accept-other-quote` | `accept_non_lp_quote(...)` |
+| `POST /v5/rfq/create-quote` | `create_rfq_quote(...)` |
+| `POST /v5/rfq/execute-quote` | `execute_rfq_quote(...)` |
+| `POST /v5/rfq/cancel-quote` | `cancel_rfq_quote(...)` |
+| `POST /v5/rfq/cancel-all-quotes` | `cancel_all_rfq_quotes()` |
+| `GET /v5/rfq/rfq-realtime` | `get_rfqs_realtime(...)` |
+| `GET /v5/rfq/rfq-list` | `get_rfqs(...)` |
+| `GET /v5/rfq/quote-realtime` | `get_rfq_quotes_realtime(...)` |
+| `GET /v5/rfq/quote-list` | `get_rfq_quotes(...)` |
+| `GET /v5/rfq/trade-list` | `get_rfq_trade_history(...)` |
+| `GET /v5/rfq/public-trades` | `get_rfq_public_trades(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |
@@ -233,7 +253,6 @@ High-value REST gaps:
 
 Product areas not in scope yet:
 - Spot Margin normal-account endpoints and remaining niche account-mode operations
-- RFQ Trading
 - Crypto Loan and Institutional Loan
 - Broker
 - Finance
