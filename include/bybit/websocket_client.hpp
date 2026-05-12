@@ -53,6 +53,7 @@ class WebSocketClient {
   void subscribe_kline(const std::vector<std::string>& symbols, const std::string& interval,
                        const std::string& req_id = "");
   void subscribe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id = "");
+  void subscribe_all_liquidation(const std::vector<std::string>& symbols, const std::string& req_id = "");
   void subscribe_sbe_bbo(const std::vector<std::string>& symbols, const std::string& req_id = "");
   void subscribe_sbe_orderbook_50(const std::vector<std::string>& symbols, const std::string& req_id = "");
   void subscribe_sbe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id = "");
@@ -62,6 +63,7 @@ class WebSocketClient {
   void unsubscribe_kline(const std::vector<std::string>& symbols, const std::string& interval,
                          const std::string& req_id = "");
   void unsubscribe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id = "");
+  void unsubscribe_all_liquidation(const std::vector<std::string>& symbols, const std::string& req_id = "");
   void unsubscribe_sbe_bbo(const std::vector<std::string>& symbols, const std::string& req_id = "");
   void unsubscribe_sbe_orderbook_50(const std::vector<std::string>& symbols, const std::string& req_id = "");
   void unsubscribe_sbe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id = "");
