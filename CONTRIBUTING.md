@@ -87,6 +87,8 @@ Useful PR descriptions usually answer:
 2. What request or response contract matters?
 3. How was the change validated?
 
+The repository also provides GitHub issue templates and a pull request template. Use the endpoint request template for missing Bybit V5 endpoints and include the official docs link so reviewers can verify the contract quickly.
+
 ## Review Expectations
 
 Review will generally focus on:

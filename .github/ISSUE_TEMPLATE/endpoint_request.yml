@@ -1,0 +1,59 @@
+name: Endpoint request
+description: Request support for a missing Bybit Open API V5 endpoint.
+title: "feat(endpoint): "
+labels: ["api coverage"]
+body:
+  - type: input
+    id: endpoint
+    attributes:
+      label: Endpoint
+      placeholder: GET /v5/account/collateral-info
+    validations:
+      required: true
+  - type: input
+    id: docs
+    attributes:
+      label: Official Bybit docs URL
+      placeholder: https://bybit-exchange.github.io/docs/v5/...
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: API category
+      options:
+        - Market
+        - Trade
+        - Position
+        - Account
+        - Asset
+        - User
+        - Spot Margin Trade
+        - Spread Trading
+        - RFQ Trading
+        - Broker/affiliate
+        - Finance/loan/card
+        - Web3
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: What user workflow or bot behavior does this unblock?
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Request contract notes
+      description: Required params, optional params, account-mode constraints, rate-limit notes, and safety concerns.
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I can help implement this endpoint.
+        - label: I can test this on Bybit testnet.
+        - label: This endpoint requires live account state that is hard to test publicly.

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security report
+    url: https://github.com/SebastianBoehler/bybit-cpp-client/security/advisories/new
+    about: Please report credential leaks or security issues privately first.
+  - name: Bybit Open API V5 docs
+    url: https://bybit-exchange.github.io/docs/v5/intro
+    about: Official upstream API documentation for endpoint contracts.
