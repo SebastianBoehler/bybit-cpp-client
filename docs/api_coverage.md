@@ -238,6 +238,15 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | `GET /v5/rfq/trade-list` | `get_rfq_trade_history(...)` |
 | `GET /v5/rfq/public-trades` | `get_rfq_public_trades(...)` |
 
+### Crypto Loan (New)
+
+| Area | Endpoints | Representative methods |
+| --- | --- | --- |
+| Common data | `GET /v5/crypto-loan-common/loanable-data`, `GET /v5/crypto-loan-common/collateral-data` | `get_crypto_loan_borrowable_coins(...)`, `get_crypto_loan_collateral_coins(...)` |
+| Collateral and position | `GET/POST /v5/crypto-loan-common/*` | `adjust_crypto_loan_collateral(...)`, `get_crypto_loan_position()`, `get_crypto_loan_max_loan_amount(...)` |
+| Flexible loans | `GET/POST /v5/crypto-loan-flexible/*` | `borrow_flexible_crypto_loan(...)`, `repay_flexible_crypto_loan(...)`, `get_flexible_crypto_loans(...)` |
+| Fixed loans | `GET/POST /v5/crypto-loan-fixed/*` | `borrow_fixed_crypto_loan(...)`, `supply_fixed_crypto_loan(...)`, `get_fixed_crypto_loan_borrow_contract_info(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |
@@ -253,7 +262,7 @@ High-value REST gaps:
 
 Product areas not in scope yet:
 - Spot Margin normal-account endpoints and remaining niche account-mode operations
-- Crypto Loan and Institutional Loan
+- Crypto Loan legacy endpoints and Institutional Loan
 - Broker
 - Finance
 - Bybit Card

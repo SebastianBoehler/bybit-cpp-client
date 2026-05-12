@@ -47,6 +47,7 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Spot margin repayment data | `GET/POST /v5/spot-margin-trade/*repay*`, `GET /v5/spot-margin-trade/repayment-available-amount` | `get_spot_margin_repayment_available_amount(...)`, `set_spot_margin_auto_repay_mode(...)` |
 | Spread Trading | `GET/POST /v5/spread/*` | `get_spread_instruments(...)`, `create_spread_order(...)`, `get_spread_trade_history(...)` |
 | RFQ Trading | `GET/POST /v5/rfq/*` | `create_rfq(...)`, `create_rfq_quote(...)`, `get_rfq_trade_history(...)` |
+| Crypto Loan (New) | `GET/POST /v5/crypto-loan-*` | `get_crypto_loan_position()`, `borrow_flexible_crypto_loan(...)`, `borrow_fixed_crypto_loan(...)` |
 | Account margin mode | `GET /v5/account/info` | `get_account_info()` |
 | Account upgrade and demo trading | `POST /v5/account/upgrade-to-uta`, `POST /v5/account/demo-apply-money`, `POST /v5/user/create-demo-member` | `upgrade_to_unified_account()`, `request_demo_trading_funds(...)`, `create_demo_account()` |
 | Account instruments | `GET /v5/account/instruments-info` | `get_account_instruments_info(...)` |
@@ -107,8 +108,9 @@ Recent Bybit changes to keep in mind:
 - User endpoints now cover sub UID management, sub API key management, master API key mutation/deletion, UID wallet type, and affiliate user info.
 - Demo trading support now covers demo-account creation and demo-funds requests; use `https://api-demo.bybit.com` for demo-account-key calls.
 - Spot Margin Trade now covers UTA margin state, leverage, public VIP data, currency data, historical rates, tiered collateral ratio, position tiers, coin state, max borrowable amount, repayment controls, fixed-rate borrow lifecycle, and liability info.
+- Crypto Loan (New) now covers common loan data, collateral adjustment, flexible loans, fixed borrow/supply orders, contract info, renewals, and repayment history.
 
-This client covers the core trading wrapper surface plus high-value Account, Asset, User, Affiliate, Spread Trading, RFQ Trading, Spot Margin Trade, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as Crypto Loan, Broker, Finance, Bybit Card, Web3, or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
+This client covers the core trading wrapper surface plus high-value Account, Asset, User, Affiliate, Spread Trading, RFQ Trading, Crypto Loan (New), Spot Margin Trade, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as legacy Crypto Loan, Broker, Finance, Bybit Card, Web3, or SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
 
 Because responses are returned as raw JSON, additive response fields usually do not require a client release. Breaking request-contract changes should be tracked in issues and covered by tests before release.
 
