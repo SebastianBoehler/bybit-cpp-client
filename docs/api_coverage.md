@@ -2,8 +2,6 @@
 
 Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 
-This repository intentionally focuses on the trading wrapper surface first. It is not a complete mirror of every Bybit product API.
-
 ## Covered
 
 ### Market
@@ -283,6 +281,12 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 | Advanced Earn structured products | `GET/POST /v5/earn/advance/*` | `get_advanced_earn_product_info(...)`, `get_advanced_earn_product_quote(...)`, `place_advanced_earn_order(...)` |
 | Advanced Earn liquidity mining | `GET/POST /v5/earn/liquidity-mining/*` | `get_advanced_earn_liquidity_mining_product_info(...)`, `add_advanced_earn_liquidity_mining_liquidity(...)`, `get_advanced_earn_liquidity_mining_yield_records(...)` |
 
+### Web3 Alpha
+
+| Endpoints | Representative methods |
+| --- | --- |
+| `POST /v5/alpha/trade/*` | `get_web3_trade_quote(...)`, `execute_web3_purchase(...)`, `get_web3_order_list(...)` |
+
 ## Partially Covered or Needs Review
 
 | Area | Status |
@@ -292,8 +296,5 @@ This repository intentionally focuses on the trading wrapper surface first. It i
 
 ## Not Yet Covered
 
-High-value REST gaps:
-
-- remaining Asset endpoints for broker-specific transfer controls
-
-Product areas not in scope yet: Spot Margin normal-account endpoints and niche account-mode operations, Crypto Loan legacy endpoints, Web3, and SBE.
+High-value REST gap: remaining Asset endpoints for broker-specific transfer controls.
+Product areas not in scope yet: Spot Margin normal-account endpoints and niche account-mode operations, Crypto Loan legacy endpoints, and SBE.

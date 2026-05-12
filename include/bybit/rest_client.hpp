@@ -4,15 +4,13 @@
 
 namespace bybit {
 
-// Facade preserving previous interface while delegating to public/private clients.
 class RestClient {
  public:
-  explicit RestClient(std::string api_key, std::string api_secret, std::string category,
-                      std::string base_url = "https://api.bybit.com", std::string recv_window = "5000");
+  explicit RestClient(std::string api_key, std::string api_secret, std::string category, std::string base_url = "https://api.bybit.com",
+                      std::string recv_window = "5000");
   RestClient(std::string api_key, std::string api_secret, std::string category, HttpOptions options);
-  RestClient(std::string api_key, std::string api_secret, std::string category, std::string base_url,
-             std::string recv_window, HttpOptions options);
-
+  RestClient(std::string api_key, std::string api_secret, std::string category, std::string base_url, std::string recv_window,
+             HttpOptions options);
   std::string get_query_api_key();
   std::string get_account_info();
   std::string upgrade_to_unified_account();
@@ -26,8 +24,7 @@ class RestClient {
   std::string get_coin_greeks(const std::optional<std::string>& base_coin = std::nullopt);
   std::string manual_borrow(const std::string& coin, const std::string& amount);
   std::string manual_repay(const QueryParams& params = {});
-  std::string no_convert_repay(const std::string& coin, const std::optional<std::string>& amount = std::nullopt,
-                               const std::optional<std::string>& repayment_type = std::nullopt);
+  std::string no_convert_repay(const std::string& coin, const std::optional<std::string>& amount = std::nullopt, const std::optional<std::string>& repayment_type = std::nullopt);
   std::string quick_repayment(const std::optional<std::string>& coin = std::nullopt);
   std::string set_spot_hedging(const std::string& set_hedging_mode);
   std::string get_mmp_state(const std::string& base_coin);
@@ -90,6 +87,16 @@ class RestClient {
   std::string get_advanced_earn_liquidity_mining_order_history(const QueryParams& filters);
   std::string get_advanced_earn_liquidity_mining_yield_records(const QueryParams& filters);
   std::string get_advanced_earn_liquidity_mining_liquidation_records(const QueryParams& filters);
+  std::string get_web3_trade_quote(const std::string& json_body);
+  std::string execute_web3_purchase(const std::string& json_body);
+  std::string execute_web3_redeem(const std::string& json_body);
+  std::string get_web3_payment_token_list(const std::string& json_body);
+  std::string get_web3_order_list(const std::string& json_body);
+  std::string get_web3_business_token_list(const std::string& json_body);
+  std::string get_web3_token_price_list(const std::string& json_body);
+  std::string get_web3_token_details(const std::string& json_body);
+  std::string get_web3_asset_list(const std::string& json_body);
+  std::string get_web3_asset_detail(const std::string& json_body);
   std::string get_spot_margin_vip_data(const QueryParams& filters = {});
   std::string get_spot_margin_currency_data(const std::optional<std::string>& currency = std::nullopt);
   std::string get_spot_margin_state();
@@ -283,7 +290,6 @@ class RestClient {
   std::string switch_position_mode(const std::string& mode, int position_idx = 1);
   std::string switch_margin_mode(const std::string& symbol, const std::string& mode, int leverage);
   std::string cancel_all(const std::string& symbol);
-
  private:
   HttpClient http_;
   PublicRestClient public_;
