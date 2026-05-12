@@ -58,6 +58,13 @@ class WebSocketClient {
   void subscribe_sbe_orderbook_50(const std::vector<std::string>& symbols, const std::string& req_id = "");
   void subscribe_sbe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id = "");
 
+  // Convenience helpers for common private topics.
+  void subscribe_private_order(const std::string& category = "", const std::string& req_id = "");
+  void subscribe_private_execution(const std::string& category = "", const std::string& req_id = "");
+  void subscribe_private_position(const std::string& category = "", const std::string& req_id = "");
+  void subscribe_private_wallet(const std::string& req_id = "");
+  void subscribe_private_greeks(const std::string& req_id = "");
+
   void unsubscribe_tickers(const std::vector<std::string>& symbols, const std::string& req_id = "");
   void unsubscribe_orderbook(const std::vector<std::string>& symbols, int depth = 1, const std::string& req_id = "");
   void unsubscribe_kline(const std::vector<std::string>& symbols, const std::string& interval,
@@ -67,6 +74,12 @@ class WebSocketClient {
   void unsubscribe_sbe_bbo(const std::vector<std::string>& symbols, const std::string& req_id = "");
   void unsubscribe_sbe_orderbook_50(const std::vector<std::string>& symbols, const std::string& req_id = "");
   void unsubscribe_sbe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id = "");
+
+  void unsubscribe_private_order(const std::string& category = "", const std::string& req_id = "");
+  void unsubscribe_private_execution(const std::string& category = "", const std::string& req_id = "");
+  void unsubscribe_private_position(const std::string& category = "", const std::string& req_id = "");
+  void unsubscribe_private_wallet(const std::string& req_id = "");
+  void unsubscribe_private_greeks(const std::string& req_id = "");
 
   // Auto reconnect/resubscribe support.
   void enable_auto_reconnect(bool enabled = true, int max_retries = 5);
@@ -78,6 +91,7 @@ class WebSocketClient {
   static std::string now_ms();
   static std::vector<std::string> make_topics(const std::string& prefix, const std::vector<std::string>& symbols,
                                               const std::string& suffix = "");
+  static std::string private_topic(const std::string& topic, const std::string& category);
   void remember_topics(const std::vector<std::string>& topics);
   void forget_topics(const std::vector<std::string>& topics);
   void resubscribe_all();

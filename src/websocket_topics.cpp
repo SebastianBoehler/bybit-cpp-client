@@ -26,6 +26,13 @@ std::string WebSocketClient::serialize_args(const std::vector<std::string>& topi
   return "[" + args + "]";
 }
 
+std::string WebSocketClient::private_topic(const std::string& topic, const std::string& category) {
+  if (category.empty()) {
+    return topic;
+  }
+  return topic + "." + category;
+}
+
 void WebSocketClient::subscribe_tickers(const std::vector<std::string>& symbols, const std::string& req_id) {
   subscribe(make_topics("tickers.", symbols), req_id);
 }
@@ -58,6 +65,26 @@ void WebSocketClient::subscribe_sbe_orderbook_50(const std::vector<std::string>&
 
 void WebSocketClient::subscribe_sbe_public_trades(const std::vector<std::string>& symbols, const std::string& req_id) {
   subscribe(make_topics("publicTrade.sbe.", symbols), req_id);
+}
+
+void WebSocketClient::subscribe_private_order(const std::string& category, const std::string& req_id) {
+  subscribe_topic(private_topic("order", category), req_id);
+}
+
+void WebSocketClient::subscribe_private_execution(const std::string& category, const std::string& req_id) {
+  subscribe_topic(private_topic("execution", category), req_id);
+}
+
+void WebSocketClient::subscribe_private_position(const std::string& category, const std::string& req_id) {
+  subscribe_topic(private_topic("position", category), req_id);
+}
+
+void WebSocketClient::subscribe_private_wallet(const std::string& req_id) {
+  subscribe_topic("wallet", req_id);
+}
+
+void WebSocketClient::subscribe_private_greeks(const std::string& req_id) {
+  subscribe_topic("greeks", req_id);
 }
 
 void WebSocketClient::unsubscribe_tickers(const std::vector<std::string>& symbols, const std::string& req_id) {
@@ -93,6 +120,26 @@ void WebSocketClient::unsubscribe_sbe_orderbook_50(const std::vector<std::string
 void WebSocketClient::unsubscribe_sbe_public_trades(const std::vector<std::string>& symbols,
                                                     const std::string& req_id) {
   unsubscribe(make_topics("publicTrade.sbe.", symbols), req_id);
+}
+
+void WebSocketClient::unsubscribe_private_order(const std::string& category, const std::string& req_id) {
+  unsubscribe_topic(private_topic("order", category), req_id);
+}
+
+void WebSocketClient::unsubscribe_private_execution(const std::string& category, const std::string& req_id) {
+  unsubscribe_topic(private_topic("execution", category), req_id);
+}
+
+void WebSocketClient::unsubscribe_private_position(const std::string& category, const std::string& req_id) {
+  unsubscribe_topic(private_topic("position", category), req_id);
+}
+
+void WebSocketClient::unsubscribe_private_wallet(const std::string& req_id) {
+  unsubscribe_topic("wallet", req_id);
+}
+
+void WebSocketClient::unsubscribe_private_greeks(const std::string& req_id) {
+  unsubscribe_topic("greeks", req_id);
 }
 
 }  // namespace bybit
