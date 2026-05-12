@@ -7,3 +7,5 @@
   std::string get_order_price_limit(const std::string& symbol, const std::optional<std::string>& category = std::nullopt);
   std::string get_adl_alert(const std::optional<std::string>& symbol = std::nullopt);
   std::string get_fee_group_info(const QueryParams& filters);
+  std::string get_announcements(const std::string& locale, QueryParams filters = {});
+  std::string get_system_status(const QueryParams& filters = {});

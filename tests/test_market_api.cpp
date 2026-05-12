@@ -12,6 +12,8 @@ int main() {
   auto price_limit = &RestClient::get_order_price_limit;
   auto adl_alert = &RestClient::get_adl_alert;
   auto fee_group = &RestClient::get_fee_group_info;
+  auto announcements = &RestClient::get_announcements;
+  auto system_status = &RestClient::get_system_status;
 
   (void)rpi_orderbook;
   (void)historical_volatility;
@@ -22,6 +24,8 @@ int main() {
   (void)price_limit;
   (void)adl_alert;
   (void)fee_group;
+  (void)announcements;
+  (void)system_status;
 
   return 0;
 }

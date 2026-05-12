@@ -37,7 +37,7 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Capability | Bybit endpoint | Client method |
 | --- | --- | --- |
 | Server time | `GET /v5/market/time` | `get_server_time()` |
-| Advanced market data | `GET /v5/market/*` | `get_rpi_orderbook(...)`, `get_adl_alert(...)`, `get_fee_group_info(...)` |
+| Market and platform data | `GET /v5/market/*`, `GET /v5/announcements/index`, `GET /v5/system/status` | `get_rpi_orderbook(...)`, `get_announcements(...)`, `get_system_status(...)` |
 | API key validation | `GET /v5/user/query-api` | `get_query_api_key()` |
 | Subaccounts | `GET/POST /v5/user/*sub*` | `get_sub_uid_list()`, `get_sub_uid_list_unlimited(...)`, `get_fund_custodial_sub_accounts(...)` |
 | API key management | `POST /v5/user/*api` | `create_sub_api_key(...)`, `update_master_api_key(...)`, `update_sub_api_key(...)` |

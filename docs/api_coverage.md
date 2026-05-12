@@ -21,7 +21,7 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | `GET /v5/market/open-interest` | `get_open_interest(...)` |
 | `GET /v5/market/account-ratio` | `get_long_short_ratio(...)` |
 | `GET /v5/market/risk-limit` | `get_risk_limit(...)` |
-| Additional `GET /v5/market/*` data | `get_rpi_orderbook(...)`, `get_insurance(...)`, `get_adl_alert(...)`, `get_fee_group_info(...)` |
+| Additional `GET /v5/market/*`, `GET /v5/announcements/index`, `GET /v5/system/status` data | `get_rpi_orderbook(...)`, `get_insurance(...)`, `get_announcements(...)`, `get_system_status(...)` |
 
 ### Trade
 

@@ -1,5 +1,7 @@
 #include "bybit/rest_client.hpp"
 
+#include <utility>
+
 namespace bybit {
 
 std::string RestClient::get_rpi_orderbook(const std::string& symbol, int limit) {
@@ -37,6 +39,14 @@ std::string RestClient::get_adl_alert(const std::optional<std::string>& symbol) 
 
 std::string RestClient::get_fee_group_info(const QueryParams& filters) {
   return public_.get_fee_group_info(filters);
+}
+
+std::string RestClient::get_announcements(const std::string& locale, QueryParams filters) {
+  return public_.get_announcements(locale, std::move(filters));
+}
+
+std::string RestClient::get_system_status(const QueryParams& filters) {
+  return public_.get_system_status(filters);
 }
 
 }  // namespace bybit

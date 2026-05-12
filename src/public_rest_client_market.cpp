@@ -46,4 +46,13 @@ std::string PublicRestClient::get_fee_group_info(const QueryParams& filters) {
   return http_.get("/v5/market/fee-group-info", filters, false);
 }
 
+std::string PublicRestClient::get_announcements(const std::string& locale, QueryParams filters) {
+  filters.emplace_back("locale", locale);
+  return http_.get("/v5/announcements/index", filters, false);
+}
+
+std::string PublicRestClient::get_system_status(const QueryParams& filters) {
+  return http_.get("/v5/system/status", filters, false);
+}
+
 }  // namespace bybit
