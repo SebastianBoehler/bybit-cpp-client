@@ -25,7 +25,7 @@ The library does not ship mock data, hidden fallbacks, or trading opinions. It s
 - HMAC-SHA256 request signing through OpenSSL and HTTP transport through libcurl.
 - Persistent libcurl handles plus shared DNS/TLS-session caching for lower request setup cost.
 - Broad public market coverage including filter-complete instruments info, RPI orderbooks, volatility, ADL alerts, and fee groups.
-- Optional WebSocket V5 client behind `-DBYBIT_ENABLE_WEBSOCKET=ON`.
+- Optional WebSocket V5 client behind `-DBYBIT_ENABLE_WEBSOCKET=ON`, including SBE market topic helpers.
 - CMake install targets for package consumers, submodules, and `FetchContent`.
 - Small examples for market data, positions, wallet balance, orders, and WebSocket streams.
 - Focused tests for public REST calls and signing behavior.
@@ -125,7 +125,7 @@ Recent Bybit changes to keep in mind:
 - Strategy orders now cover TWAP, chase, and iceberg create/list/order-list/stop endpoints.
 - Web3 Alpha now covers quote, purchase, redeem, token metadata, payment-token, order, asset-list, and asset-detail endpoints.
 
-This client covers the core trading wrapper surface plus high-value Account, Asset, User, Affiliate, Exchange Broker, Bybit Card, Earn, Advanced Earn, Strategy, Web3 Alpha, Spread Trading, RFQ Trading, Crypto Loan, Institutional Loan, Spot Margin Trade, Position, Trade, and Market methods. It does not yet wrap every Bybit V5 product category such as SBE. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
+This client covers the core trading wrapper surface plus high-value Account, Asset, User, Affiliate, Exchange Broker, Bybit Card, Earn, Advanced Earn, Strategy, Web3 Alpha, Spread Trading, RFQ Trading, Crypto Loan, Institutional Loan, Spot Margin Trade, Position, Trade, Market, and WebSocket/SBE market-topic methods. SBE decoding and order entry are still open. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
 
 Because responses are returned as raw JSON, additive response fields usually do not require a client release. Breaking request-contract changes should be tracked in issues and covered by tests before release.
 
@@ -234,7 +234,7 @@ int main() {
 | `examples/wallet_balance.cpp` | Wallet balance query |
 | `examples/limit_order.cpp` | Order placement example |
 | `examples/latency_benchmark.cpp` | Cold versus warm public REST latency |
-| `examples/ws_market_data.cpp` | Public WebSocket market stream |
+| `examples/ws_market_data.cpp`, `examples/ws_sbe_market.cpp` | Public JSON/SBE WebSocket market streams |
 | `examples/ws_orderbook.cpp` | Public WebSocket orderbook stream |
 | `examples/ws_private_positions.cpp` | Private WebSocket position stream |
 
