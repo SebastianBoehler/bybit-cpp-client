@@ -138,6 +138,15 @@ void WebSocketClient::ping(const std::string& req_id) {
   send_raw(oss.str());
 }
 
+void WebSocketClient::send_binary(const std::string& payload) {
+#ifndef BYBIT_ENABLE_WEBSOCKET
+  (void)payload;
+  throw std::runtime_error("WebSocket support disabled at build time. Rebuild with BYBIT_ENABLE_WEBSOCKET=ON.");
+#else
+  ws_.sendBinary(payload);
+#endif
+}
+
 void WebSocketClient::enable_auto_reconnect(bool enabled, int max_retries) {
   std::scoped_lock lock(state_mutex_);
   auto_reconnect_ = enabled;

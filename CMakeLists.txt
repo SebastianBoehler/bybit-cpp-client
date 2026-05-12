@@ -52,6 +52,7 @@ add_library(bybit_client
     src/private_rest_client_web3.cpp
     src/signing.cpp
     src/sbe_market_decoder.cpp
+    src/sbe_order_entry_encoder.cpp
     src/websocket_client.cpp
     src/websocket_topics.cpp
     src/http_error.cpp
@@ -218,5 +219,8 @@ if(BYBIT_BUILD_TESTS)
         add_executable(bybit_sbe_market_decoder_test tests/test_sbe_market_decoder.cpp)
         target_link_libraries(bybit_sbe_market_decoder_test PRIVATE bybit_client)
         add_test(NAME bybit_sbe_market_decoder_test COMMAND bybit_sbe_market_decoder_test)
+        add_executable(bybit_sbe_order_entry_encoder_test tests/test_sbe_order_entry_encoder.cpp)
+        target_link_libraries(bybit_sbe_order_entry_encoder_test PRIVATE bybit_client)
+        add_test(NAME bybit_sbe_order_entry_encoder_test COMMAND bybit_sbe_order_entry_encoder_test)
     endif()
 endif()

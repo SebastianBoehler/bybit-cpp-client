@@ -7,6 +7,7 @@ int main() {
 
   auto text_handler = &WebSocketClient::set_message_handler;
   auto binary_handler = &WebSocketClient::set_binary_message_handler;
+  auto send_binary = &WebSocketClient::send_binary;
   auto sbe_bbo = &WebSocketClient::subscribe_sbe_bbo;
   auto sbe_book = &WebSocketClient::subscribe_sbe_orderbook_50;
   auto sbe_trades = &WebSocketClient::subscribe_sbe_public_trades;
@@ -16,6 +17,7 @@ int main() {
 
   (void)text_handler;
   (void)binary_handler;
+  (void)send_binary;
   (void)sbe_bbo;
   (void)sbe_book;
   (void)sbe_trades;

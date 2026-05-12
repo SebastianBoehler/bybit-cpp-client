@@ -278,7 +278,7 @@ Covered via `get_leverage_token_info(...)`, `get_leverage_token_market(...)`, `p
 | `POST /v5/alpha/trade/*` | `get_web3_trade_quote(...)`, `execute_web3_purchase(...)`, `get_web3_order_list(...)` |
 
 ## Partially Covered or Needs Review
-Legacy `move_position(...)` is retained for compatibility with the old singular path; prefer `move_positions(...)`. Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, including SBE market topic helpers, binary payload delivery, and market-data decoding for BBO, level-50 orderbook, and public trades. SBE order entry is still open.
+Legacy `move_position(...)` is retained for compatibility with the old singular path; prefer `move_positions(...)`. Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, including SBE market topic helpers, binary send/payload delivery, market-data decoding for BBO, level-50 orderbook, public trades, and SBE auth/ping/create/replace/cancel order encoders. SBE order-entry response decoding and batch messages are still open.
 
 ## Not Yet Covered
-Known gaps: niche account-mode operations and SBE order entry.
+Known gaps: niche account-mode operations and complete SBE order entry.

@@ -45,6 +45,7 @@ class WebSocketClient {
   void subscribe(const std::vector<std::string>& topics, const std::string& req_id = "");
   void unsubscribe(const std::vector<std::string>& topics, const std::string& req_id = "");
   void ping(const std::string& req_id = "");
+  void send_binary(const std::string& payload);
 
   // Convenience helpers for common public topics.
   void subscribe_tickers(const std::vector<std::string>& symbols, const std::string& req_id = "");
