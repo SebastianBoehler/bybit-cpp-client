@@ -26,7 +26,8 @@ This repository is part of a small C++ crypto exchange client suite:
 - [bybit-cpp-client](https://github.com/SebastianBoehler/bybit-cpp-client)
   for Bybit Open API V5 REST, optional WebSockets, and SBE helpers.
 - [binance-cpp-client](https://github.com/SebastianBoehler/binance-cpp-client)
-  for Binance Spot REST and public market WebSocket helpers.
+  for Binance Spot, USD-M futures, COIN-M futures, and Options REST plus Spot
+  public market WebSocket helpers.
 
 Both clients favor reusable transports, OpenSSL signing, raw upstream JSON, and
 thin route wrappers so trading systems can share the same integration style
