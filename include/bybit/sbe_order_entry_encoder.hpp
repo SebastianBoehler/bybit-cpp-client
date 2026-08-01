@@ -58,6 +58,7 @@ struct CreateOrderRequest {
   bool close_on_trigger{};
   bool mmp{};
   SmpType smp_type{SmpType::Unknown};
+  bool rpi_taker_access{};
 };
 
 struct ReplaceOrderRequest {
@@ -182,7 +183,6 @@ struct BatchOrderResponseItem {
   std::string order_id;
   std::string order_link_id;
   std::string msg;
-  std::string created_at;
 };
 
 struct BatchOrderResponse {

@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 
+#include "bybit/json.hpp"
+
 namespace bybit {
 
 using HttpHeaders = std::vector<std::pair<std::string, std::string>>;

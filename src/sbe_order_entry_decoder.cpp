@@ -44,8 +44,8 @@ class Reader {
     return std::string(data.substr(0, end));
   }
 
-  std::string read_var_string8() {
-    const auto length = read_le<std::uint8_t>();
+  std::string read_var_string16() {
+    const auto length = read_le<std::uint16_t>();
     require(length);
     const auto data = payload_.substr(pos_, length);
     pos_ += length;
@@ -110,7 +110,7 @@ bool is_batch_response(std::uint16_t template_id) {
   return template_id == 12 || template_id == 14 || template_id == 16;
 }
 
-BatchOrderResponseItem read_batch_item(Reader& reader, bool has_created_at, std::uint16_t block_length) {
+BatchOrderResponseItem read_batch_item(Reader& reader, std::uint16_t block_length) {
   if (block_length < kBatchResponseItemBlock)
     throw std::runtime_error("unexpected SBE batch item block length");
   const auto item_end = reader.pos() + block_length;
@@ -121,9 +121,7 @@ BatchOrderResponseItem read_batch_item(Reader& reader, bool has_created_at, std:
   item.order_id = reader.read_fixed_string(kString64);
   item.order_link_id = reader.read_fixed_string(kString64);
   reader.seek(item_end);
-  item.msg = reader.read_var_string8();
-  if (has_created_at)
-    item.created_at = reader.read_var_string8();
+  item.msg = reader.read_var_string16();
   return item;
 }
 
@@ -146,7 +144,7 @@ AuthResponse decode_auth_response(std::string_view payload) {
   response.ret_code = reader.read_le<std::int32_t>();
   response.conn_id = reader.read_fixed_string(kString64);
   reader.seek(8 + header.block_length);
-  response.ret_msg = reader.read_var_string8();
+  response.ret_msg = reader.read_var_string16();
   return response;
 }
 
@@ -179,7 +177,7 @@ OrderResponse decode_order_response(std::string_view payload) {
   response.order_id = reader.read_fixed_string(kString64);
   response.order_link_id = reader.read_fixed_string(kString64);
   reader.seek(8 + header.block_length);
-  response.ret_msg = reader.read_var_string8();
+  response.ret_msg = reader.read_var_string16();
   return response;
 }
 
@@ -200,9 +198,9 @@ BatchOrderResponse decode_batch_order_response(std::string_view payload) {
   const auto item_count = reader.read_le<std::uint16_t>();
   response.items.reserve(item_count);
   for (std::uint16_t i = 0; i < item_count; ++i) {
-    response.items.push_back(read_batch_item(reader, header.template_id == 12, item_block_length));
+    response.items.push_back(read_batch_item(reader, item_block_length));
   }
-  response.ret_msg = reader.read_var_string8();
+  response.ret_msg = reader.read_var_string16();
   return response;
 }
 
@@ -217,7 +215,7 @@ CommonErrorResponse decode_common_error_response(std::string_view payload) {
   response.response_header = read_response_header(reader);
   response.ret_code = reader.read_le<std::int32_t>();
   reader.seek(8 + header.block_length);
-  response.ret_msg = reader.read_var_string8();
+  response.ret_msg = reader.read_var_string16();
   return response;
 }
 

@@ -9,19 +9,6 @@
 namespace bybit {
 namespace {
 
-std::string json_string(const std::string& value) {
-  std::ostringstream oss;
-  oss << "\"";
-  for (char c : value) {
-    if (c == '"' || c == '\\') {
-      oss << "\\";
-    }
-    oss << c;
-  }
-  oss << "\"";
-  return oss.str();
-}
-
 std::string build_move_positions_body(const std::string& from_uid, const std::string& to_uid,
                                       const std::vector<MovePositionLeg>& legs) {
   if (legs.empty()) {
@@ -32,7 +19,8 @@ std::string build_move_positions_body(const std::string& from_uid, const std::st
   }
 
   std::ostringstream oss;
-  oss << "{\"fromUid\":" << json_string(from_uid) << ",\"toUid\":" << json_string(to_uid) << ",\"list\":[";
+  oss << "{\"fromUid\":" << serialize_json_string(from_uid) << ",\"toUid\":" << serialize_json_string(to_uid)
+      << ",\"list\":[";
   for (size_t i = 0; i < legs.size(); ++i) {
     const auto& leg = legs[i];
     oss << to_json_object({{"category", leg.category},
@@ -60,11 +48,11 @@ std::string PrivateRestClient::set_auto_add_margin(const std::string& symbol, in
     throw std::invalid_argument("set_auto_add_margin auto_add_margin must be 0 or 1");
   }
 
-  QueryParams body_kv{{"category", category_}, {"symbol", symbol}, {"autoAddMargin", std::to_string(auto_add_margin)}};
+  JsonObject body_kv{{"category", category_}, {"symbol", symbol}, {"autoAddMargin", auto_add_margin}};
   if (position_idx) {
-    body_kv.emplace_back("positionIdx", std::to_string(*position_idx));
+    body_kv.emplace_back("positionIdx", *position_idx);
   }
-  return http_.post("/v5/position/set-auto-add-margin", to_json_object(body_kv), true);
+  return http_.post("/v5/position/set-auto-add-margin", serialize_json_object(body_kv), true);
 }
 
 std::string PrivateRestClient::confirm_pending_mmr(const std::string& symbol) {

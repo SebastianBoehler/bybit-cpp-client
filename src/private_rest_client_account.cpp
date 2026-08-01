@@ -10,18 +10,6 @@
 namespace bybit {
 namespace {
 
-std::string json_string(const std::string& value) {
-  std::ostringstream oss;
-  oss << "\"";
-  for (char c : value) {
-    if (c == '"' || c == '\\')
-      oss << "\\";
-    oss << c;
-  }
-  oss << "\"";
-  return oss.str();
-}
-
 std::string build_batch_collateral_body(const std::vector<CollateralCoinSwitch>& request) {
   if (request.empty()) {
     throw std::invalid_argument("batch_set_collateral_coins requires at least one collateral switch");
@@ -40,7 +28,8 @@ std::string build_batch_collateral_body(const std::vector<CollateralCoinSwitch>&
 
 std::string build_price_limit_body(const std::string& category, bool modify_enable) {
   std::ostringstream oss;
-  oss << "{\"category\":" << json_string(category) << ",\"modifyEnable\":" << (modify_enable ? "true" : "false") << "}";
+  oss << "{\"category\":" << serialize_json_string(category)
+      << ",\"modifyEnable\":" << (modify_enable ? "true" : "false") << "}";
   return oss.str();
 }
 

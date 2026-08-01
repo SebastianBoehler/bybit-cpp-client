@@ -6,22 +6,6 @@
 #include "bybit/rest_client.hpp"
 
 namespace bybit {
-namespace {
-
-std::string json_string(const std::string& value) {
-  std::ostringstream oss;
-  oss << "\"";
-  for (char c : value) {
-    if (c == '"' || c == '\\')
-      oss << "\\";
-    oss << c;
-  }
-  oss << "\"";
-  return oss.str();
-}
-
-}  // namespace
-
 std::string PrivateRestClient::get_sub_uid_list() {
   return http_.get("/v5/user/query-sub-members", {}, true);
 }
@@ -77,7 +61,7 @@ std::string PrivateRestClient::update_sub_api_key(const std::string& json_body) 
 }
 
 std::string PrivateRestClient::delete_sub_api_key(const std::optional<std::string>& api_key) {
-  std::string body = api_key ? "{\"apikey\":" + json_string(*api_key) + "}" : "{}";
+  std::string body = api_key ? "{\"apikey\":" + serialize_json_string(*api_key) + "}" : "{}";
   return http_.post("/v5/user/delete-sub-api", body, true);
 }
 

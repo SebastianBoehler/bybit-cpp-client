@@ -217,10 +217,11 @@ class RestClient {
                            const std::string& price = "", const std::string& time_in_force = "GTC",
                            const std::optional<bool>& reduce_only = std::nullopt,
                            const std::optional<std::string>& bbo_side_type = std::nullopt,
-                           const std::optional<std::string>& bbo_level = std::nullopt);
-  std::string batch_submit_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests);
-  std::string batch_cancel_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests);
-  std::string batch_amend_orders(const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests);
+                           const std::optional<std::string>& bbo_level = std::nullopt,
+                           const std::optional<bool>& rpi_taker_access = std::nullopt);
+  std::string batch_submit_orders(const std::vector<JsonObject>& order_requests);
+  std::string batch_cancel_orders(const std::vector<JsonObject>& cancel_requests);
+  std::string batch_amend_orders(const std::vector<JsonObject>& amend_requests);
   std::string set_leverage(const std::string& symbol, const std::string& buy_leverage,
                            const std::string& sell_leverage);
   std::string pre_check_order(const QueryParams& order_params);
@@ -256,7 +257,7 @@ class RestClient {
 #include "bybit/rest_client_crypto_loan_methods.hpp"
 #include "bybit/rest_client_institutional_loan_methods.hpp"
 #include "bybit/rest_client_pre_upgrade_methods.hpp"
-  std::string get_fee_rate();
+  std::string get_fee_rate(const std::optional<std::string>& symbol = std::nullopt);
   std::string get_borrow_quota(const std::string& symbol, const std::string& side);
   // category is provided per-call to avoid forcing a single accountType for all operations.
   std::string get_wallet_balance(const std::string& category, const std::optional<std::string>& coin = std::nullopt);
@@ -270,8 +271,6 @@ class RestClient {
                           const std::optional<std::string>& qty = std::nullopt,
                           const std::optional<std::string>& price = std::nullopt);
   std::string get_transaction_log(int limit = 50, const std::optional<std::string>& cursor = std::nullopt);
-  std::string move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol,
-                            const std::string& qty, int position_idx = 1);
   std::string move_positions(const std::string& from_uid, const std::string& to_uid,
                              const std::vector<MovePositionLeg>& legs);
   std::string get_move_position_history(const QueryParams& filters = {});
@@ -282,10 +281,11 @@ class RestClient {
                                const std::optional<std::string>& take_profit = std::nullopt,
                                const std::optional<std::string>& stop_loss = std::nullopt,
                                const std::optional<std::string>& trailing_stop = std::nullopt);
-  std::string set_risk_limit(const std::string& symbol, const std::string& risk_id, int position_idx = 1);
+  std::string set_risk_limit(const std::string& symbol, int risk_id, int position_idx = 1);
   std::string add_margin(const std::string& symbol, const std::string& margin, int position_idx = 1);
-  std::string switch_position_mode(const std::string& mode, int position_idx = 1);
-  std::string switch_margin_mode(const std::string& symbol, const std::string& mode, int leverage);
+  std::string switch_position_mode(int mode, const std::optional<std::string>& symbol = std::nullopt,
+                                   const std::optional<std::string>& coin = std::nullopt);
+  std::string switch_margin_mode(const std::string& set_margin_mode);
   std::string cancel_all(const std::string& symbol);
 
  private:

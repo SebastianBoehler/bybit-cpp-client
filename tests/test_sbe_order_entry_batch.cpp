@@ -1,11 +1,29 @@
-#include <cassert>
 #include <cstdint>
 #include <cstring>
+#include <stdexcept>
 #include <string>
 
 #include "bybit/sbe_order_entry_encoder.hpp"
 
 namespace {
+
+void check(bool condition, const char* expression, int line) {
+  if (!condition)
+    throw std::runtime_error("check failed at line " + std::to_string(line) + ": " + expression);
+}
+
+#define CHECK(expression) check(static_cast<bool>(expression), #expression, __LINE__)
+
+template <typename Invoke>
+void expect_runtime_error(Invoke invoke) {
+  bool threw = false;
+  try {
+    invoke();
+  } catch (const std::runtime_error&) {
+    threw = true;
+  }
+  CHECK(threw);
+}
 
 template <typename T>
 T read_le(const std::string& data, std::size_t pos) {
@@ -26,8 +44,8 @@ void put_fixed(std::string& out, const std::string& value, std::size_t length) {
   out.append(length - value.size(), '\0');
 }
 
-void put_var(std::string& out, const std::string& value) {
-  put_le<std::uint8_t>(out, static_cast<std::uint8_t>(value.size()));
+void put_var16(std::string& out, const std::string& value) {
+  put_le<std::uint16_t>(out, static_cast<std::uint16_t>(value.size()));
   out.append(value);
 }
 
@@ -35,7 +53,7 @@ void put_sbe_header(std::string& out, std::uint16_t block_length, std::uint16_t 
   put_le<std::uint16_t>(out, block_length);
   put_le<std::uint16_t>(out, template_id);
   put_le<std::uint16_t>(out, 2);
-  put_le<std::uint16_t>(out, 1);
+  put_le<std::uint16_t>(out, 2);
 }
 
 void put_response_header(std::string& out) {
@@ -80,16 +98,17 @@ int main() {
                               bybit::sbe::SmpType::CancelTaker});
 
     const auto encoded = bybit::sbe::encode_batch_create_order_request(request);
-    assert(encoded.size() == 253);
-    assert(read_le<std::uint16_t>(encoded, 0) == 141);
-    assert(read_le<std::uint16_t>(encoded, 2) == 11);
-    assert(static_cast<unsigned char>(encoded[148]) == 2);
-    assert(read_le<std::uint16_t>(encoded, 149) == 100);
-    assert(read_le<std::uint16_t>(encoded, 151) == 1);
-    assert(read_le<std::int64_t>(encoded, 153) == 11);
-    assert(static_cast<unsigned char>(encoded[161]) == 1);
-    assert(static_cast<unsigned char>(encoded[163]) == 252);
-    assert(read_le<std::int64_t>(encoded, 164) == 125000);
+    CHECK(encoded.size() == 253);
+    CHECK(read_le<std::uint16_t>(encoded, 0) == 141);
+    CHECK(read_le<std::uint16_t>(encoded, 2) == 11);
+    CHECK(read_le<std::uint16_t>(encoded, 6) == 2);
+    CHECK(static_cast<unsigned char>(encoded[148]) == 2);
+    CHECK(read_le<std::uint16_t>(encoded, 149) == 100);
+    CHECK(read_le<std::uint16_t>(encoded, 151) == 1);
+    CHECK(read_le<std::int64_t>(encoded, 153) == 11);
+    CHECK(static_cast<unsigned char>(encoded[161]) == 1);
+    CHECK(static_cast<unsigned char>(encoded[163]) == 252);
+    CHECK(read_le<std::int64_t>(encoded, 164) == 125000);
   }
 
   {
@@ -99,11 +118,11 @@ int main() {
     request.orders.push_back({22, "order-2", "link-2"});
 
     const auto encoded = bybit::sbe::encode_batch_cancel_order_request(request);
-    assert(encoded.size() == 289);
-    assert(read_le<std::uint16_t>(encoded, 2) == 15);
-    assert(static_cast<unsigned char>(encoded[148]) == 4);
-    assert(read_le<std::uint16_t>(encoded, 149) == 136);
-    assert(read_le<std::int64_t>(encoded, 153) == 22);
+    CHECK(encoded.size() == 289);
+    CHECK(read_le<std::uint16_t>(encoded, 2) == 15);
+    CHECK(static_cast<unsigned char>(encoded[148]) == 4);
+    CHECK(read_le<std::uint16_t>(encoded, 149) == 136);
+    CHECK(read_le<std::int64_t>(encoded, 153) == 22);
   }
 
   {
@@ -113,11 +132,11 @@ int main() {
     request.orders.push_back({33, "order-3", "link-3", {-3, 5000}, {-1, 123}});
 
     const auto encoded = bybit::sbe::encode_batch_replace_order_request(request);
-    assert(encoded.size() == 307);
-    assert(read_le<std::uint16_t>(encoded, 2) == 13);
-    assert(static_cast<unsigned char>(encoded[148]) == 1);
-    assert(read_le<std::uint16_t>(encoded, 149) == 154);
-    assert(read_le<std::int64_t>(encoded, 153) == 33);
+    CHECK(encoded.size() == 307);
+    CHECK(read_le<std::uint16_t>(encoded, 2) == 13);
+    CHECK(static_cast<unsigned char>(encoded[148]) == 1);
+    CHECK(read_le<std::uint16_t>(encoded, 149) == 154);
+    CHECK(read_le<std::int64_t>(encoded, 153) == 33);
   }
 
   {
@@ -128,21 +147,20 @@ int main() {
     put_le<std::uint16_t>(payload, 141);
     put_le<std::uint16_t>(payload, 1);
     put_batch_response_item(payload);
-    put_var(payload, "OK");
-    put_var(payload, "2026-05-12T00:00:00Z");
-    put_var(payload, "accepted");
+    put_var16(payload, "OK");
+    const std::string ret_msg(300, 'a');
+    put_var16(payload, ret_msg);
 
     const auto decoded = bybit::sbe::decode_batch_order_response(payload);
-    assert(decoded.header.template_id == 12);
-    assert(decoded.response_header.req_id == "req-1");
-    assert(decoded.ret_code == 0);
-    assert(decoded.items.size() == 1);
-    assert(decoded.items[0].category == bybit::sbe::Category::Linear);
-    assert(decoded.items[0].symbol_id == 11);
-    assert(decoded.items[0].order_id == "order-1");
-    assert(decoded.items[0].msg == "OK");
-    assert(decoded.items[0].created_at == "2026-05-12T00:00:00Z");
-    assert(decoded.ret_msg == "accepted");
+    CHECK(decoded.header.template_id == 12);
+    CHECK(decoded.response_header.req_id == "req-1");
+    CHECK(decoded.ret_code == 0);
+    CHECK(decoded.items.size() == 1);
+    CHECK(decoded.items[0].category == bybit::sbe::Category::Linear);
+    CHECK(decoded.items[0].symbol_id == 11);
+    CHECK(decoded.items[0].order_id == "order-1");
+    CHECK(decoded.items[0].msg == "OK");
+    CHECK(decoded.ret_msg == ret_msg);
   }
 
   {
@@ -153,14 +171,23 @@ int main() {
     put_le<std::uint16_t>(payload, 141);
     put_le<std::uint16_t>(payload, 1);
     put_batch_response_item(payload);
-    put_var(payload, "cancelled");
-    put_var(payload, "OK");
+    put_var16(payload, "cancelled");
+    put_var16(payload, "OK");
 
     const auto decoded = bybit::sbe::decode_batch_order_response(payload);
-    assert(decoded.header.template_id == 16);
-    assert(decoded.items.size() == 1);
-    assert(decoded.items[0].msg == "cancelled");
-    assert(decoded.items[0].created_at.empty());
-    assert(decoded.ret_msg == "OK");
+    CHECK(decoded.header.template_id == 16);
+    CHECK(decoded.items.size() == 1);
+    CHECK(decoded.items[0].msg == "cancelled");
+    CHECK(decoded.ret_msg == "OK");
+  }
+
+  {
+    std::string payload;
+    put_sbe_header(payload, 236, 12);
+    put_response_header(payload);
+    put_le<std::int32_t>(payload, 0);
+    put_le<std::uint16_t>(payload, 140);
+    put_le<std::uint16_t>(payload, 1);
+    expect_runtime_error([&payload] { (void)bybit::sbe::decode_batch_order_response(payload); });
   }
 }

@@ -7,7 +7,7 @@ namespace bybit::sbe {
 namespace {
 
 constexpr std::uint16_t kOrderEntrySchema = 2;
-constexpr std::uint16_t kOrderEntryVersion = 1;
+constexpr std::uint16_t kOrderEntryVersion = 2;
 constexpr std::uint16_t kAuthTemplate = 1;
 constexpr std::uint16_t kPingTemplate = 3;
 constexpr std::uint16_t kCreateOrderTemplate = 5;
@@ -19,7 +19,7 @@ constexpr std::uint16_t kBatchCancelOrderTemplate = 15;
 constexpr std::size_t kString64 = 64;
 constexpr std::uint16_t kAuthBlock = 200;
 constexpr std::uint16_t kPingBlock = 8;
-constexpr std::uint16_t kCreateOrderBlock = 241;
+constexpr std::uint16_t kCreateOrderBlock = 242;
 constexpr std::uint16_t kReplaceOrderBlock = 295;
 constexpr std::uint16_t kCancelOrderBlock = 277;
 constexpr std::uint16_t kBatchOrderBlock = 141;
@@ -159,6 +159,7 @@ std::string encode_create_order_request(const CreateOrderRequest& request) {
   put_le<std::uint8_t>(out, request.close_on_trigger ? 1 : 0);
   put_le<std::uint8_t>(out, request.mmp ? 1 : 0);
   put_enum(out, request.smp_type);
+  put_le<std::uint8_t>(out, request.rpi_taker_access ? 1 : 0);
   return out;
 }
 

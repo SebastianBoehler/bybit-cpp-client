@@ -24,18 +24,6 @@ QueryParams with_category(const std::string& category, const QueryParams& params
   return with_category_params;
 }
 
-std::string json_string(const std::string& value) {
-  std::ostringstream oss;
-  oss << "\"";
-  for (char c : value) {
-    if (c == '"' || c == '\\')
-      oss << "\\";
-    oss << c;
-  }
-  oss << "\"";
-  return oss.str();
-}
-
 std::string build_dcp_body(int time_window, const std::optional<std::string>& product) {
   if (time_window < 3 || time_window > 300) {
     throw std::invalid_argument("set_disconnect_cancel_all time_window must be between 3 and 300 seconds");
@@ -44,7 +32,7 @@ std::string build_dcp_body(int time_window, const std::optional<std::string>& pr
   std::ostringstream oss;
   oss << "{\"timeWindow\":" << time_window;
   if (product) {
-    oss << ",\"product\":" << json_string(*product);
+    oss << ",\"product\":" << serialize_json_string(*product);
   }
   oss << "}";
   return oss.str();

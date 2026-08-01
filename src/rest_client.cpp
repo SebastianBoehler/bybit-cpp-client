@@ -171,20 +171,18 @@ std::string RestClient::submit_order(const std::string& symbol, const std::strin
                                      const std::string& price, const std::string& time_in_force,
                                      const std::optional<bool>& reduce_only,
                                      const std::optional<std::string>& bbo_side_type,
-                                     const std::optional<std::string>& bbo_level) {
+                                     const std::optional<std::string>& bbo_level,
+                                     const std::optional<bool>& rpi_taker_access) {
   return private_.submit_order(symbol, side, order_type, qty, order_link_id, position_idx, price, time_in_force,
-                               reduce_only, bbo_side_type, bbo_level);
+                               reduce_only, bbo_side_type, bbo_level, rpi_taker_access);
 }
-std::string RestClient::batch_submit_orders(
-    const std::vector<std::vector<std::pair<std::string, std::string>>>& order_requests) {
+std::string RestClient::batch_submit_orders(const std::vector<JsonObject>& order_requests) {
   return private_.batch_submit_orders(order_requests);
 }
-std::string RestClient::batch_cancel_orders(
-    const std::vector<std::vector<std::pair<std::string, std::string>>>& cancel_requests) {
+std::string RestClient::batch_cancel_orders(const std::vector<JsonObject>& cancel_requests) {
   return private_.batch_cancel_orders(cancel_requests);
 }
-std::string RestClient::batch_amend_orders(
-    const std::vector<std::vector<std::pair<std::string, std::string>>>& amend_requests) {
+std::string RestClient::batch_amend_orders(const std::vector<JsonObject>& amend_requests) {
   return private_.batch_amend_orders(amend_requests);
 }
 std::string RestClient::set_leverage(const std::string& symbol, const std::string& buy_leverage,
@@ -209,8 +207,8 @@ std::string RestClient::get_closed_pnl(const QueryParams& filters) {
 std::string RestClient::get_closed_options_positions(const QueryParams& filters) {
   return private_.get_closed_options_positions(filters);
 }
-std::string RestClient::get_fee_rate() {
-  return private_.get_fee_rate();
+std::string RestClient::get_fee_rate(const std::optional<std::string>& symbol) {
+  return private_.get_fee_rate(symbol);
 }
 std::string RestClient::get_borrow_quota(const std::string& symbol, const std::string& side) {
   return private_.get_borrow_quota(symbol, side);
@@ -243,10 +241,6 @@ std::string RestClient::amend_order(const std::string& symbol, const std::string
 std::string RestClient::get_transaction_log(int limit, const std::optional<std::string>& cursor) {
   return private_.get_transaction_log(limit, cursor);
 }
-std::string RestClient::move_position(const std::string& from_uid, const std::string& to_uid, const std::string& symbol,
-                                      const std::string& qty, int position_idx) {
-  return private_.move_position(from_uid, to_uid, symbol, qty, position_idx);
-}
 std::string RestClient::move_positions(const std::string& from_uid, const std::string& to_uid,
                                        const std::vector<MovePositionLeg>& legs) {
   return private_.move_positions(from_uid, to_uid, legs);
@@ -267,17 +261,18 @@ std::string RestClient::set_trading_stop(const std::string& symbol, int position
                                          const std::optional<std::string>& trailing_stop) {
   return private_.set_trading_stop(symbol, position_idx, take_profit, stop_loss, trailing_stop);
 }
-std::string RestClient::set_risk_limit(const std::string& symbol, const std::string& risk_id, int position_idx) {
+std::string RestClient::set_risk_limit(const std::string& symbol, int risk_id, int position_idx) {
   return private_.set_risk_limit(symbol, risk_id, position_idx);
 }
 std::string RestClient::add_margin(const std::string& symbol, const std::string& margin, int position_idx) {
   return private_.add_margin(symbol, margin, position_idx);
 }
-std::string RestClient::switch_position_mode(const std::string& mode, int position_idx) {
-  return private_.switch_position_mode(mode, position_idx);
+std::string RestClient::switch_position_mode(int mode, const std::optional<std::string>& symbol,
+                                             const std::optional<std::string>& coin) {
+  return private_.switch_position_mode(mode, symbol, coin);
 }
-std::string RestClient::switch_margin_mode(const std::string& symbol, const std::string& mode, int leverage) {
-  return private_.switch_margin_mode(symbol, mode, leverage);
+std::string RestClient::switch_margin_mode(const std::string& set_margin_mode) {
+  return private_.switch_margin_mode(set_margin_mode);
 }
 std::string RestClient::cancel_all(const std::string& symbol) {
   return private_.cancel_all(symbol);

@@ -136,12 +136,7 @@ std::string HttpClient::warm_up() const {
 
 std::string HttpClient::get(const std::string& path, const std::vector<std::pair<std::string, std::string>>& params,
                             bool is_private) const {
-  std::vector<std::pair<std::string, std::string>> final_params = params;
-  if (is_private) {
-    final_params.emplace_back("recvWindow", recv_window_);
-  }
-
-  std::string query = canonical_query(final_params);
+  std::string query = canonical_query(params);
   std::string url = join_url(base_url_, path);
   if (!query.empty()) {
     url += "?" + query;
@@ -234,12 +229,7 @@ std::string HttpClient::post(const std::string& path, const std::string& body, b
 std::string HttpClient::post_query(const std::string& path,
                                    const std::vector<std::pair<std::string, std::string>>& params,
                                    bool is_private) const {
-  std::vector<std::pair<std::string, std::string>> final_params = params;
-  if (is_private) {
-    final_params.emplace_back("recvWindow", recv_window_);
-  }
-
-  std::string query = canonical_query(final_params);
+  std::string query = canonical_query(params);
   std::string url = join_url(base_url_, path);
   if (!query.empty()) {
     url += "?" + query;

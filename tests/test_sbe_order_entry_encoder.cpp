@@ -1,4 +1,3 @@
-#include <cassert>
 #include <cstdint>
 #include <cstring>
 #include <stdexcept>
@@ -7,6 +6,24 @@
 #include "bybit/sbe_order_entry_encoder.hpp"
 
 namespace {
+
+void check(bool condition, const char* expression, int line) {
+  if (!condition)
+    throw std::runtime_error("check failed at line " + std::to_string(line) + ": " + expression);
+}
+
+#define CHECK(expression) check(static_cast<bool>(expression), #expression, __LINE__)
+
+template <typename Invoke>
+void expect_runtime_error(Invoke invoke) {
+  bool threw = false;
+  try {
+    invoke();
+  } catch (const std::runtime_error&) {
+    threw = true;
+  }
+  CHECK(threw);
+}
 
 template <typename T>
 T read_le(const std::string& data, std::size_t pos) {
@@ -31,8 +48,8 @@ void put_fixed(std::string& out, const std::string& value, std::size_t length) {
   out.append(length - value.size(), '\0');
 }
 
-void put_var(std::string& out, const std::string& value) {
-  put_le<std::uint8_t>(out, static_cast<std::uint8_t>(value.size()));
+void put_var16(std::string& out, const std::string& value) {
+  put_le<std::uint16_t>(out, static_cast<std::uint16_t>(value.size()));
   out.append(value);
 }
 
@@ -40,7 +57,7 @@ void put_sbe_header(std::string& out, std::uint16_t block_length, std::uint16_t 
   put_le<std::uint16_t>(out, block_length);
   put_le<std::uint16_t>(out, template_id);
   put_le<std::uint16_t>(out, 2);
-  put_le<std::uint16_t>(out, 1);
+  put_le<std::uint16_t>(out, 2);
 }
 
 void put_response_header(std::string& out) {
@@ -59,23 +76,23 @@ void put_response_header(std::string& out) {
 int main() {
   {
     const auto encoded = bybit::sbe::encode_auth_request({"auth-1", "key", 42, "sig"});
-    assert(encoded.size() == 208);
-    assert(read_le<std::uint16_t>(encoded, 0) == 200);
-    assert(read_le<std::uint16_t>(encoded, 2) == 1);
-    assert(read_le<std::uint16_t>(encoded, 4) == 2);
-    assert(read_le<std::uint16_t>(encoded, 6) == 1);
-    assert(fixed_string(encoded, 8, 6) == "auth-1");
-    assert(fixed_string(encoded, 72, 3) == "key");
-    assert(read_le<std::uint64_t>(encoded, 136) == 42);
-    assert(fixed_string(encoded, 144, 3) == "sig");
+    CHECK(encoded.size() == 208);
+    CHECK(read_le<std::uint16_t>(encoded, 0) == 200);
+    CHECK(read_le<std::uint16_t>(encoded, 2) == 1);
+    CHECK(read_le<std::uint16_t>(encoded, 4) == 2);
+    CHECK(read_le<std::uint16_t>(encoded, 6) == 2);
+    CHECK(fixed_string(encoded, 8, 6) == "auth-1");
+    CHECK(fixed_string(encoded, 72, 3) == "key");
+    CHECK(read_le<std::uint64_t>(encoded, 136) == 42);
+    CHECK(fixed_string(encoded, 144, 3) == "sig");
   }
 
   {
     const auto encoded = bybit::sbe::encode_ping_request(1234);
-    assert(encoded.size() == 16);
-    assert(read_le<std::uint16_t>(encoded, 0) == 8);
-    assert(read_le<std::uint16_t>(encoded, 2) == 3);
-    assert(read_le<std::uint64_t>(encoded, 8) == 1234);
+    CHECK(encoded.size() == 16);
+    CHECK(read_le<std::uint16_t>(encoded, 0) == 8);
+    CHECK(read_le<std::uint16_t>(encoded, 2) == 3);
+    CHECK(read_le<std::uint64_t>(encoded, 8) == 1234);
   }
 
   {
@@ -99,23 +116,26 @@ int main() {
     request.market_unit = bybit::sbe::MarketUnit::BaseCoin;
     request.is_leverage = true;
     request.smp_type = bybit::sbe::SmpType::CancelTaker;
+    request.rpi_taker_access = true;
 
     const auto encoded = bybit::sbe::encode_create_order_request(request);
-    assert(encoded.size() == 249);
-    assert(read_le<std::uint16_t>(encoded, 0) == 241);
-    assert(read_le<std::uint16_t>(encoded, 2) == 5);
-    assert(fixed_string(encoded, 8, 8) == "create-1");
-    assert(read_le<std::uint64_t>(encoded, 72) == 1000);
-    assert(read_le<std::uint32_t>(encoded, 80) == 5000);
-    assert(fixed_string(encoded, 84, 4) == "desk");
-    assert(static_cast<unsigned char>(encoded[148]) == 2);
-    assert(read_le<std::int64_t>(encoded, 149) == 11);
-    assert(static_cast<unsigned char>(encoded[157]) == 1);
-    assert(static_cast<unsigned char>(encoded[159]) == 252);
-    assert(read_le<std::int64_t>(encoded, 160) == 125000);
-    assert(fixed_string(encoded, 177, 6) == "link-1");
-    assert(static_cast<unsigned char>(encoded[241]) == 1);
-    assert(static_cast<unsigned char>(encoded[248]) == 1);
+    CHECK(encoded.size() == 250);
+    CHECK(read_le<std::uint16_t>(encoded, 0) == 242);
+    CHECK(read_le<std::uint16_t>(encoded, 2) == 5);
+    CHECK(read_le<std::uint16_t>(encoded, 6) == 2);
+    CHECK(fixed_string(encoded, 8, 8) == "create-1");
+    CHECK(read_le<std::uint64_t>(encoded, 72) == 1000);
+    CHECK(read_le<std::uint32_t>(encoded, 80) == 5000);
+    CHECK(fixed_string(encoded, 84, 4) == "desk");
+    CHECK(static_cast<unsigned char>(encoded[148]) == 2);
+    CHECK(read_le<std::int64_t>(encoded, 149) == 11);
+    CHECK(static_cast<unsigned char>(encoded[157]) == 1);
+    CHECK(static_cast<unsigned char>(encoded[159]) == 252);
+    CHECK(read_le<std::int64_t>(encoded, 160) == 125000);
+    CHECK(fixed_string(encoded, 177, 6) == "link-1");
+    CHECK(static_cast<unsigned char>(encoded[241]) == 1);
+    CHECK(static_cast<unsigned char>(encoded[248]) == 1);
+    CHECK(static_cast<unsigned char>(encoded[249]) == 1);
   }
 
   {
@@ -130,15 +150,15 @@ int main() {
     request.price = {-1, 123};
 
     const auto encoded = bybit::sbe::encode_replace_order_request(request);
-    assert(encoded.size() == 303);
-    assert(read_le<std::uint16_t>(encoded, 0) == 295);
-    assert(read_le<std::uint16_t>(encoded, 2) == 7);
-    assert(static_cast<unsigned char>(encoded[148]) == 1);
-    assert(read_le<std::int64_t>(encoded, 149) == 22);
-    assert(fixed_string(encoded, 157, 7) == "order-1");
-    assert(fixed_string(encoded, 221, 6) == "link-2");
-    assert(static_cast<unsigned char>(encoded[285]) == 253);
-    assert(read_le<std::int64_t>(encoded, 286) == 5000);
+    CHECK(encoded.size() == 303);
+    CHECK(read_le<std::uint16_t>(encoded, 0) == 295);
+    CHECK(read_le<std::uint16_t>(encoded, 2) == 7);
+    CHECK(static_cast<unsigned char>(encoded[148]) == 1);
+    CHECK(read_le<std::int64_t>(encoded, 149) == 22);
+    CHECK(fixed_string(encoded, 157, 7) == "order-1");
+    CHECK(fixed_string(encoded, 221, 6) == "link-2");
+    CHECK(static_cast<unsigned char>(encoded[285]) == 253);
+    CHECK(read_le<std::int64_t>(encoded, 286) == 5000);
   }
 
   {
@@ -150,13 +170,13 @@ int main() {
     request.order_link_id = "link-3";
 
     const auto encoded = bybit::sbe::encode_cancel_order_request(request);
-    assert(encoded.size() == 285);
-    assert(read_le<std::uint16_t>(encoded, 0) == 277);
-    assert(read_le<std::uint16_t>(encoded, 2) == 9);
-    assert(static_cast<unsigned char>(encoded[148]) == 4);
-    assert(read_le<std::int64_t>(encoded, 149) == 33);
-    assert(fixed_string(encoded, 157, 7) == "order-2");
-    assert(fixed_string(encoded, 221, 6) == "link-3");
+    CHECK(encoded.size() == 285);
+    CHECK(read_le<std::uint16_t>(encoded, 0) == 277);
+    CHECK(read_le<std::uint16_t>(encoded, 2) == 9);
+    CHECK(static_cast<unsigned char>(encoded[148]) == 4);
+    CHECK(read_le<std::int64_t>(encoded, 149) == 33);
+    CHECK(fixed_string(encoded, 157, 7) == "order-2");
+    CHECK(fixed_string(encoded, 221, 6) == "link-3");
   }
 
   {
@@ -164,7 +184,7 @@ int main() {
     request.req_id.assign(65, 'x');
     try {
       (void)bybit::sbe::encode_auth_request(request);
-      assert(false);
+      CHECK(false);
     } catch (const std::invalid_argument&) {
     }
   }
@@ -175,14 +195,15 @@ int main() {
     put_fixed(payload, "auth-1", 64);
     put_le<std::int32_t>(payload, 0);
     put_fixed(payload, "conn-1", 64);
-    put_var(payload, "OK");
+    const std::string ret_msg(300, 'x');
+    put_var16(payload, ret_msg);
 
     const auto decoded = bybit::sbe::decode_auth_response(payload);
-    assert(decoded.header.template_id == 2);
-    assert(decoded.req_id == "auth-1");
-    assert(decoded.ret_code == 0);
-    assert(decoded.conn_id == "conn-1");
-    assert(decoded.ret_msg == "OK");
+    CHECK(decoded.header.template_id == 2);
+    CHECK(decoded.req_id == "auth-1");
+    CHECK(decoded.ret_code == 0);
+    CHECK(decoded.conn_id == "conn-1");
+    CHECK(decoded.ret_msg == ret_msg);
   }
 
   {
@@ -192,8 +213,8 @@ int main() {
     put_le<std::uint64_t>(payload, 20);
 
     const auto decoded = bybit::sbe::decode_pong_response(payload);
-    assert(decoded.timestamp == 10);
-    assert(decoded.pong_time == 20);
+    CHECK(decoded.timestamp == 10);
+    CHECK(decoded.pong_time == 20);
   }
 
   {
@@ -203,16 +224,16 @@ int main() {
     put_le<std::int32_t>(payload, 0);
     put_fixed(payload, "order-1", 64);
     put_fixed(payload, "link-1", 64);
-    put_var(payload, "OK");
+    put_var16(payload, "OK");
 
     const auto decoded = bybit::sbe::decode_order_response(payload);
-    assert(decoded.header.template_id == 6);
-    assert(decoded.response_header.req_id == "req-1");
-    assert(decoded.response_header.bapi_limit == 50);
-    assert(decoded.ret_code == 0);
-    assert(decoded.order_id == "order-1");
-    assert(decoded.order_link_id == "link-1");
-    assert(decoded.ret_msg == "OK");
+    CHECK(decoded.header.template_id == 6);
+    CHECK(decoded.response_header.req_id == "req-1");
+    CHECK(decoded.response_header.bapi_limit == 50);
+    CHECK(decoded.ret_code == 0);
+    CHECK(decoded.order_id == "order-1");
+    CHECK(decoded.order_link_id == "link-1");
+    CHECK(decoded.ret_msg == "OK");
   }
 
   {
@@ -220,11 +241,28 @@ int main() {
     put_sbe_header(payload, 236, 17);
     put_response_header(payload);
     put_le<std::int32_t>(payload, 10001);
-    put_var(payload, "bad request");
+    put_var16(payload, "bad request");
 
     const auto decoded = bybit::sbe::decode_common_error_response(payload);
-    assert(decoded.header.template_id == 17);
-    assert(decoded.ret_code == 10001);
-    assert(decoded.ret_msg == "bad request");
+    CHECK(decoded.header.template_id == 17);
+    CHECK(decoded.ret_code == 10001);
+    CHECK(decoded.ret_msg == "bad request");
+  }
+
+  {
+    std::string payload;
+    put_sbe_header(payload, 132, 2);
+    put_fixed(payload, "auth-1", 64);
+    put_le<std::int32_t>(payload, 0);
+    put_fixed(payload, "conn-1", 64);
+    put_le<std::uint16_t>(payload, 4);
+    payload += "no";
+    expect_runtime_error([&payload] { (void)bybit::sbe::decode_auth_response(payload); });
+  }
+
+  {
+    std::string payload;
+    put_sbe_header(payload, 131, 2);
+    expect_runtime_error([&payload] { (void)bybit::sbe::decode_auth_response(payload); });
   }
 }
