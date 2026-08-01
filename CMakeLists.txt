@@ -6,6 +6,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(OpenSSL REQUIRED)
 find_package(CURL REQUIRED)
 
+option(BYBIT_ENABLE_WEBSOCKET "Enable websocket client (requires ixwebsocket)" OFF)
+
 file(GLOB_RECURSE BYBIT_STYLE_FILES CONFIGURE_DEPENDS
     include/*.hpp
     src/*.cpp
@@ -17,6 +19,10 @@ file(GLOB_RECURSE BYBIT_LINT_FILES CONFIGURE_DEPENDS
     tests/*.cpp
     examples/*.cpp
 )
+if(NOT BYBIT_ENABLE_WEBSOCKET)
+    list(FILTER BYBIT_LINT_FILES EXCLUDE REGEX
+        "tests/test_websocket_(callback_connect_race|close_race|self_destruction)\\.cpp$")
+endif()
 
 find_program(CLANG_FORMAT_EXE NAMES clang-format HINTS
     /opt/homebrew/opt/llvm/bin
@@ -140,7 +146,6 @@ target_link_libraries(bybit_client
         CURL::libcurl
 )
 
-option(BYBIT_ENABLE_WEBSOCKET "Enable websocket client (requires ixwebsocket)" OFF)
 if(BYBIT_ENABLE_WEBSOCKET)
     # Ensure ixwebsocket builds with TLS + OpenSSL backend.
     set(USE_TLS ON CACHE BOOL "Enable TLS in ixwebsocket" FORCE)
@@ -156,7 +161,7 @@ if(BYBIT_ENABLE_WEBSOCKET)
         FetchContent_Declare(
             ixwebsocket
             GIT_REPOSITORY https://github.com/machinezone/IXWebSocket.git
-            GIT_TAG v11.3.3
+            GIT_TAG v11.4.6
         )
         FetchContent_MakeAvailable(ixwebsocket)
         # Match the direct header directory exported by installed IX packages.
