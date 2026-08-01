@@ -1,6 +1,6 @@
 # Bybit V5 API Coverage
 
-Checked against the official Bybit Open API V5 documentation on 2026-05-12.
+Checked against the official Bybit Open API V5 documentation on 2026-08-01.
 
 ## Covered
 
@@ -50,7 +50,7 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | `POST /v5/position/set-leverage` | `set_leverage(...)` |
 | `POST /v5/position/switch-mode` | `switch_position_mode(...)` |
 | `POST /v5/position/trading-stop` | `set_trading_stop(...)` |
-| `POST /v5/position/set-risk-limit` | `set_risk_limit(...)` |
+| `POST /v5/position/set-risk-limit` | `set_risk_limit(...)` (Bybit marks this endpoint abandoned and without effect) |
 | `POST /v5/position/set-auto-add-margin` | `set_auto_add_margin(...)` |
 | `POST /v5/position/add-margin` | `add_margin(...)` |
 | `GET /v5/position/closed-pnl` | `get_closed_pnl(...)` |
@@ -85,7 +85,7 @@ Checked against the official Bybit Open API V5 documentation on 2026-05-12.
 | `GET /v5/account/wallet-balance` | `get_wallet_balance(...)` |
 | `GET /v5/account/withdrawal` | `get_transferable_amount(...)` |
 | `GET /v5/account/transaction-log` | `get_transaction_log(...)` |
-| `GET /v5/account/fee-rate` | `get_fee_rate()` |
+| `GET /v5/account/fee-rate` | `get_fee_rate(...)` |
 | `GET /v5/account/collateral-info` | `get_collateral_info(...)` |
 | `POST /v5/account/set-collateral-switch` | `set_collateral_coin(...)` |
 | `POST /v5/account/set-collateral-switch-batch` | `batch_set_collateral_coins(...)` |
@@ -278,7 +278,9 @@ Covered via `get_leverage_token_info(...)`, `get_leverage_token_market(...)`, `p
 | `POST /v5/alpha/trade/*` | `get_web3_trade_quote(...)`, `execute_web3_purchase(...)`, `get_web3_order_list(...)` |
 
 ## Partially Covered or Needs Review
-Legacy `move_position(...)` is retained for compatibility with the old singular path; prefer `move_positions(...)`. Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, including current all-liquidation public topic helpers, private order/execution/position/wallet/Greeks topic helpers, SBE market topic helpers, binary send/payload delivery, market-data decoding for BBO, level-50 orderbook, public trades, SBE auth/ping/create/replace/cancel order encoders, batch create/replace/cancel order encoders, and auth/pong/single-order/batch/common-error response decoders.
+Public/private WebSocket support exists behind `BYBIT_ENABLE_WEBSOCKET`, including current all-liquidation public topic helpers, private order/execution/position/wallet/Greeks topic helpers, SBE market topic helpers, binary send/payload delivery, market-data decoding for BBO, level-50 orderbook, public trades, explicit auth-acknowledgement gating for private subscriptions, SBE schema version 2 auth/ping/create/replace/cancel order encoders, batch create/replace/cancel order encoders, and auth/pong/single-order/batch/common-error response decoders.
+
+Pre-1.0 contract migration: batch order inputs use `JsonObject` for native scalar types; risk IDs and position-mode values are integers; account margin mode uses only `setMarginMode`; the invalid singular move-position route is not exposed; and the removed SBE batch `created_at` field is not decoded.
 
 ## Not Yet Covered
-Known gaps: no specific V5 REST account-mode endpoint gap is known after the 2026-05-12 account/API-explorer audit; keep monitoring the Bybit changelog for additive fields and new endpoints.
+Known gaps: no specific V5 REST account-mode endpoint gap is known after the 2026-08-01 account/API-explorer audit; keep monitoring the Bybit changelog for additive fields and new endpoints.

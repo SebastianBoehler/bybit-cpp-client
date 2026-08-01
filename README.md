@@ -6,7 +6,7 @@ Modern C++ client for Bybit Open API V5 REST and optional WebSocket flows.
 
 [![Build](https://github.com/SebastianBoehler/bybit-cpp-client/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/SebastianBoehler/bybit-cpp-client/actions/workflows/c-cpp.yml)
 [![Tests](https://github.com/SebastianBoehler/bybit-cpp-client/actions/workflows/tests.yml/badge.svg)](https://github.com/SebastianBoehler/bybit-cpp-client/actions/workflows/tests.yml)
-![C++](https://img.shields.io/badge/C%2B%2B-20-00599C?logo=cplusplus&logoColor=white)
+![C++](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus&logoColor=white)
 ![CMake](https://img.shields.io/badge/CMake-3.16%2B-064F8C?logo=cmake&logoColor=white)
 ![Bybit](https://img.shields.io/badge/Bybit-Open%20API%20V5-F7A600)
 ![License](https://img.shields.io/badge/license-Apache--2.0-D22128.svg)
@@ -42,11 +42,11 @@ across exchanges without inheriting hidden strategy logic.
 - Optional WebSocket V5 client behind `-DBYBIT_ENABLE_WEBSOCKET=ON`, including binary send support, SBE market helpers, and SBE encoders/decoders.
 - CMake install targets for package consumers, submodules, and `FetchContent`.
 - Small examples for market data, positions, wallet balance, orders, and WebSocket streams.
-- Focused tests for public REST calls and signing behavior.
+- Focused tests for REST request contracts, signing behavior, SBE codecs, and WebSocket lifecycle state.
 
 ## API Coverage
 
-The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5/intro). The [official V5 changelog](https://bybit-exchange.github.io/docs/changelog/v5) was last checked on 2026-05-12; V5 remains the current public API family, with active schema additions rather than a newer major version.
+The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5/intro). The [official V5 changelog](https://bybit-exchange.github.io/docs/changelog/v5) was last checked on 2026-08-01; V5 remains the current public API family, with active schema additions rather than a newer major version.
 
 | Capability | Bybit endpoint | Client method |
 | --- | --- | --- |
@@ -117,15 +117,16 @@ The wrapper targets [Bybit Open API V5](https://bybit-exchange.github.io/docs/v5
 | Move position history | `GET /v5/position/move-history` | `get_move_position_history(...)` |
 | Auto add margin | `POST /v5/position/set-auto-add-margin` | `set_auto_add_margin(...)` |
 | Confirm pending MMR | `POST /v5/position/confirm-pending-mmr` | `confirm_pending_mmr(...)` |
-| Fee rates | `GET /v5/account/fee-rate` | `get_fee_rate()` |
+| Fee rates | `GET /v5/account/fee-rate` | `get_fee_rate(...)` |
 | Spot borrow quota | `GET /v5/order/spot-borrow-check` | `get_borrow_quota(...)` |
 
 Recent Bybit changes to keep in mind:
 
 - `Get Instruments Info` now returns `symbolId` for spot, futures, and options.
 - `Get Position Info` now includes `openTime`.
-- `Get API Key Information` includes `FiatBitPay` while the older `FiatBybitPay` field remains during transition.
-- `Place Order` supports BBO order parameters `bboSideType` and `bboLevel`; this client already exposes optional parameters for them.
+- `Get API Key Information` includes `FiatBitPay`; the older `FiatBybitPay` field was removed.
+- `Place Order` supports BBO order parameters `bboSideType` and `bboLevel` plus `rpiTakerAccess`; this client exposes optional parameters for all three.
+- Typed and batch order bodies preserve native JSON booleans and integers instead of stringifying scalar values.
 - Manual borrow/repay, Delta Neutral mode, pay info, option asset info, and spot trade analysis are active Account endpoints and are now wrapped.
 - Asset endpoints now cover core balances, portfolio overview, transfers, funding/delivery/settlement history, exchange records, crypto convert quote/execute/status/history, small-balance convert, fiat convert, deposit records/settings, deposit addresses, coin metadata, withdrawable amount, VASP metadata, withdrawal addresses, withdrawal records, withdrawal creation, and cancellation.
 - User endpoints now cover sub UID management, sub API key management, master API key mutation/deletion, UID wallet type, and affiliate user info.
@@ -142,6 +143,8 @@ Recent Bybit changes to keep in mind:
 This client covers the core trading wrapper surface plus high-value Account, Asset, User, Affiliate, Exchange Broker, Bybit Card, Earn, Advanced Earn, Strategy, Web3 Alpha, Spread Trading, RFQ Trading, Crypto Loan, Institutional Loan, Spot Margin Trade, Position, Trade, Market, and WebSocket/SBE market-topic methods. SBE market-data decoding plus single and batch order-entry encoding/response decoding are covered. See [`docs/api_coverage.md`](./docs/api_coverage.md) for the current coverage map.
 
 Because responses are returned as raw JSON, additive response fields usually do not require a client release. Breaking request-contract changes should be tracked in issues and covered by tests before release.
+
+Current-contract migration notes for this pre-1.0 API: batch order methods now accept `std::vector<JsonObject>` so native booleans and integers are preserved; `set_risk_limit(...)` takes an integer `riskId`; position mode takes integer mode plus symbol/coin scope; margin mode takes only `setMarginMode`; the invalid singular `move_position(...)` helper was removed; and SBE batch response items no longer expose the removed `created_at` field.
 
 ## Install
 
@@ -161,6 +164,8 @@ Enable the optional WebSocket client:
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBYBIT_ENABLE_WEBSOCKET=ON
 cmake --build build
 ```
+
+Examples build by default only when this repository is the top-level CMake project. Set `BYBIT_BUILD_EXAMPLES` explicitly to override that behavior.
 
 ## Use via FetchContent
 
@@ -271,6 +276,8 @@ cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
 cmake --build build
 ctest --test-dir build --output-on-failure
 ```
+
+The default test suite is offline. Configure with `-DBYBIT_BUILD_NETWORK_TESTS=ON` to add the live public-API smoke test.
 
 Run the WebSocket build when touching stream code:
 
