@@ -16,16 +16,6 @@ std::vector<std::string> WebSocketClient::make_topics(const std::string& prefix,
   return topics;
 }
 
-std::string WebSocketClient::serialize_args(const std::vector<std::string>& topics) const {
-  std::string args;
-  for (size_t i = 0; i < topics.size(); ++i) {
-    if (i > 0)
-      args += ",";
-    args += "\"" + topics[i] + "\"";
-  }
-  return "[" + args + "]";
-}
-
 std::string WebSocketClient::private_topic(const std::string& topic, const std::string& category) {
   if (category.empty()) {
     return topic;

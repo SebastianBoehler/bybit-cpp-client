@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.16)
+project(BybitSubprojectConsumer LANGUAGES CXX)
+
+if(NOT BYBIT_SOURCE_DIR)
+    message(FATAL_ERROR "BYBIT_SOURCE_DIR is required")
+endif()
+
+add_subdirectory("${BYBIT_SOURCE_DIR}" bybit)
+
+if(NOT TARGET bybit_client)
+    message(FATAL_ERROR "bybit_client target was not created")
+endif()
+if(TARGET basic_linear OR TARGET latency_benchmark)
+    message(FATAL_ERROR "Bybit examples must be disabled by default for subprojects")
+endif()
+if(TARGET bybit_public_test)
+    message(FATAL_ERROR "live-network tests must be opt-in")
+endif()
+if(TARGET bybit_signing_test)
+    message(FATAL_ERROR "Bybit tests must be disabled by default for subprojects")
+endif()
+
+get_target_property(BYBIT_COMPILE_FEATURES bybit_client INTERFACE_COMPILE_FEATURES)
+if(NOT "cxx_std_17" IN_LIST BYBIT_COMPILE_FEATURES)
+    message(FATAL_ERROR "bybit_client must publish its C++17 requirement through the target")
+endif()

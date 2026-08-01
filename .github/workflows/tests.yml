@@ -18,13 +18,60 @@ jobs:
           sudo apt-get install -y cmake build-essential pkg-config libssl-dev libcurl4-openssl-dev
 
       - name: Configure
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+        run: >
+          cmake -S . -B build
+          -DCMAKE_BUILD_TYPE=Release
+          -DBYBIT_BUILD_NETWORK_TESTS=OFF
 
       - name: Build
         run: cmake --build build --config Release
 
-      - name: Run tests (public endpoints only by default)
+      - name: Run offline tests
         run: ctest --test-dir build --output-on-failure
-        env:
-          BYBIT_BUILD_TESTS: "ON"
-          # Optionally set BYBIT_API_KEY/BYBIT_API_SECRET/BYBIT_CATEGORY to run private/readonly test
+
+  websocket:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential pkg-config libssl-dev libcurl4-openssl-dev
+
+      - name: Configure WebSocket build
+        run: >
+          cmake -S . -B build-ws
+          -DCMAKE_BUILD_TYPE=Release
+          -DBYBIT_ENABLE_WEBSOCKET=ON
+          -DBYBIT_BUILD_EXAMPLES=OFF
+          -DBYBIT_BUILD_NETWORK_TESTS=OFF
+
+      - name: Build WebSocket tests
+        run: >
+          cmake --build build-ws --config Release --parallel
+          --target bybit_websocket_lifecycle_test bybit_websocket_messages_test
+          bybit_websocket_callback_connect_race_test bybit_websocket_close_race_test
+          bybit_websocket_self_destruction_test
+
+      - name: Run offline WebSocket tests
+        run: >
+          ctest --test-dir build-ws --output-on-failure
+          -R '^bybit_websocket_(lifecycle|messages|callback_connect_race|close_race|self_destruction)_test$'
+
+      - name: Verify installed consumer
+        run: |
+          cmake --install build-ws --prefix "$PWD/install-ws"
+          cmake -DCONFIG_DIR="$PWD/install-ws/lib/cmake/ixwebsocket" -P tests/cmake/assert_relocatable_config.cmake
+          cmake -S tests/cmake/package_consumer -B build-consumer -DCMAKE_PREFIX_PATH="$PWD/install-ws"
+          cmake --build build-consumer --parallel
+          cmake -S . -B build-preinstalled \
+            -DBYBIT_ENABLE_WEBSOCKET=ON \
+            -DBYBIT_BUILD_EXAMPLES=OFF \
+            -DBYBIT_BUILD_TESTS=OFF \
+            -DCMAKE_PREFIX_PATH="$PWD/install-ws"
+          cmake --build build-preinstalled --target bybit_client --parallel
+          cmake --install build-preinstalled --prefix "$PWD/install-bybit-split"
+          cmake -S tests/cmake/package_consumer -B build-split-consumer \
+            -DCMAKE_PREFIX_PATH="$PWD/install-bybit-split;$PWD/install-ws"
+          cmake --build build-split-consumer --parallel

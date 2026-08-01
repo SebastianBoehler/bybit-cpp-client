@@ -1,15 +1,22 @@
 #pragma once
 
-#include <atomic>
+#include <chrono>
+#include <condition_variable>
+#include <cstdint>
 #include <functional>
+#include <memory>
 #include <mutex>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <thread>
 #include <vector>
 
+#include "bybit/detail/websocket_lifecycle.hpp"
+#include "bybit/detail/websocket_transport.hpp"
+
 #ifdef BYBIT_ENABLE_WEBSOCKET
-#include <ixwebsocket/IXWebSocket.h>
+#include <IXWebSocket.h>
 #else
 namespace ix {
 class WebSocket;
@@ -26,6 +33,7 @@ class WebSocketClient {
 
   WebSocketClient(std::string url, std::string api_key = "", std::string api_secret = "",
                   std::string recv_window = "5000");
+  ~WebSocketClient() noexcept;
 
   // Register a callback invoked on text messages.
   void set_message_handler(MessageHandler handler);
@@ -87,7 +95,6 @@ class WebSocketClient {
  private:
   void send_raw(const std::string& payload);
   void authenticate();
-  std::string serialize_args(const std::vector<std::string>& topics) const;
   static std::string now_ms();
   static std::vector<std::string> make_topics(const std::string& prefix, const std::vector<std::string>& symbols,
                                               const std::string& suffix = "");
@@ -96,11 +103,12 @@ class WebSocketClient {
   void forget_topics(const std::vector<std::string>& topics);
   void resubscribe_all();
   void schedule_reconnect();
+  void start_reconnect_worker();
   void start_ping_timer();
-  void stop_ping_timer();
+  bool stop_workers(std::optional<std::uint64_t> expected_generation = std::nullopt);
 
 #ifdef BYBIT_ENABLE_WEBSOCKET
-  ix::WebSocket ws_;
+  std::unique_ptr<ix::WebSocket> ws_;
 #endif
   std::string url_;
   std::string api_key_;
@@ -110,12 +118,21 @@ class WebSocketClient {
   BinaryMessageHandler binary_handler_;
   mutable std::mutex handler_mutex_;
   mutable std::mutex state_mutex_;
-  bool auto_reconnect_{false};
-  int max_retries_{5};
-  int reconnect_attempts_{0};
+  // Guards the transport pointer only; never hold it while waiting for IXWebSocket threads to stop.
+  mutable std::mutex transport_mutex_;
+  // Serializes transport start/stop. WebSocket callbacks and sends never acquire it.
+  std::mutex transport_control_mutex_;
+  // Serializes worker start/stop and guarantees each join is owned by one caller.
+  std::mutex worker_control_mutex_;
+  std::condition_variable state_cv_;
+  detail::WebSocketLifecycle lifecycle_;
+  std::optional<std::chrono::steady_clock::time_point> reconnect_due_;
   std::vector<std::string> subscribed_topics_;
-  std::atomic<bool> ping_running_{false};
-  std::atomic<bool> stop_ping_{false};
+  std::thread reconnect_worker_;
+  std::thread ping_worker_;
+  bool workers_stopping_{false};
+  std::uint64_t connection_generation_{0};
+  detail::WebSocketCallbackOwner<WebSocketClient> callback_owner_{this};
 };
 
 }  // namespace bybit
